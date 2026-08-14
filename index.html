@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIGSM - Portal Clínicas</title>
+    <link rel="stylesheet" href="assets/css/estilos.css">
+</head>
+<body>
+
+    <header class="topbar">
+        <div class="logo"></div>
+    <div class="titulo-sistema">
+        <h1>SIGSM</h1>
+        <p>Sistema Informático de Gestión de Servicios Médicos Hospital de Clínicas</p>
+    </div>
+    </header>
+
+    <div class="layout">
+        <aside class="sidebar">
+               <p class="sidebar-titulo">COMPONENTES</p>
+    <nav>
+        <ul>
+            <li class="activo"><a href="index.html">Portal Clínicas (Login)</a></li>
+            <li><a href="modulos/folleteria/listar.php">Folletería Médica (Admin) <span class="badge">Mód. 1</span></a></li>
+            <li><a href="modulos/folleto_publico/ver.php">Folleto QR (Paciente)</a></li>
+            <li><a href="modulos/ambulancias/listar.php">Rutas de Ambulancias <span class="badge">Mód. 4</span></a></li>
+            <li><a href="modulos/recursos/ambulancias.php">ABM Recursos <span class="badge">Mód. 5</span></a></li>
+            <li><a href="modulos/encuestas/listar.php">Encuestas y Reportes <span class="badge">Mód. 3</span></a></li>
+        </ul>
+    </nav>
+        </aside>
+
+        <main class="contenido">
+        <section class="banner-portal">
+        <h2>Portal Central Hospital de Clínicas</h2>
+        <p>Bienvenido al Sistema de Gestión de Servicios Médicos. Este portal sirve como núcleo centralizado para que el personal administrativo y médico acceda a los módulos clínicos, realice el seguimiento del parque de ambulancias y administre la folletería interactiva por código QR.</p>
+        <div class="banner-botones">
+            <a href="modulos/folleteria/listar.php" class="boton boton-secundario">Módulo 1: Folletos</a>
+            <a href="modulos/ambulancias/listar.php" class="boton boton-primario">Módulo 2: Ambulancias</a>
+        </div>
+    </section>
+ <div class="tarjetas-portal">
+        <section class="tarjeta tarjeta-login">
+        <h3>Ingreso Personal Administrativo</h3>
+        <p>Ingrese con sus credenciales institucionales registradas en el servidor DTI (Piso 6).</p>
+        <form action="login.php" method="POST">
+            <label for="usuario">Usuario:</label>
+            <input type="text" id="usuario" name="usuario" placeholder="admin_clinicas" required>
+            <label for="contrasenia">Contraseña:</label>
+            <input type="password" id="contrasenia" name="contrasenia" required>
+
+                <button type="submit" class="boton boton-primario">Autenticar Credenciales</button>
+            </form>
+        </section>
+
+    </div>
+        </main>
+    </div>
+
+
+</body>
+</html>
