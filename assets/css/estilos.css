@@ -1,0 +1,228 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f6f9;
+    color: #1a1a1a;
+}
+.topbar {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px 30px;
+    background-color: #ffffff;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.layout {
+    display: flex;
+}
+
+.sidebar {
+    width: 260px;
+    flex-shrink: 0;  /* me sirve para que nunca se achique y quede fijo en 260px */
+    background-color: #ffffff;
+    border-right: 1px solid #e0e0e0;
+    padding: 20px;
+}
+
+.contenido {
+    flex: 1;
+    padding: 30px;
+}
+
+.logo {
+    width: 40px;
+    height: 40px;
+    background-color: #2f6fed;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.logo::before {
+    content: "S";
+}
+
+.titulo-sistema h1 {
+    font-size: 20px;
+}
+
+.titulo-sistema p {
+    font-size: 13px;
+    color: #6b7280;
+}
+
+.sidebar-titulo {
+    font-size: 12px;
+    color: #9ca3af;
+    letter-spacing: 0.5px;
+    margin-bottom: 15px;
+}
+
+nav ul {
+    list-style: none;
+}
+
+nav li {
+    margin-bottom: 4px;
+}
+
+nav a {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 12px;
+    border-radius: 6px;
+    color: #374151;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+nav a:hover {
+    background-color: #f4f6f9;
+}
+
+.activo a {
+    background-color: #e8f0fe;
+    color: #2f6fed;
+    font-weight: bold;
+}
+
+.badge {
+    background-color: #eef0f3;
+    color: #6b7280;
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 10px;
+}
+.banner-portal {
+    background-color: #14213d;
+    color: #ffffff;
+    padding: 30px;
+    border-radius: 0px;
+    margin-bottom: 20px;
+}
+
+.banner-portal h2 {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.banner-portal p {
+    color: #cbd5e1;
+    font-size: 14px;
+    line-height: 1.6;
+    max-width: 700px;
+    margin-bottom: 20px;
+}
+
+.banner-botones {
+    display: flex;
+    gap: 12px;
+}
+.tarjetas-portal {
+    display: flex;
+    gap: 20px;
+}
+.tarjeta {
+    flex: 1;
+    background-color: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    padding: 25px;
+}
+
+.tarjeta h3 {
+    font-size: 16px;
+    margin-bottom: 8px;
+}
+
+.tarjeta p {
+    font-size: 14px;
+    color: #4b5563;
+    line-height: 1.6;
+    margin-bottom: 15px;
+}
+.boton {
+    display: inline-block;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: bold;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.boton-primario {
+    background-color: #2f6fed;
+    color: #ffffff;
+}
+
+.boton-primario:hover {
+    background-color: #1d4ed8;
+}
+
+.boton-secundario {
+    background-color: #eef0f3;
+    color: #374151;
+}
+
+.boton-secundario:hover {
+    background-color: #dfe3e8;
+}
+.tarjeta-login label {
+    display: block;
+    font-size: 13px;
+    font-weight: bold;
+    margin-bottom: 6px;
+}
+
+.tarjeta-login input {
+    display: block;
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 14px;
+    margin-bottom: 16px;
+}
+
+.tarjeta-login input:focus {
+    outline: none;
+    border-color: #2f6fed;
+}
+
+.tarjeta-login button {
+    margin-top: 5px;
+}
+
+.aviso-simulador {
+    background-color: #eafaf0;
+    border: 1px solid #b7e4c7;
+    border-radius: 6px;
+    padding: 12px 15px;
+    font-size: 13px;
+    color: #2f6f4f;
+    line-height: 1.5;
+    margin-bottom: 20px;
+}
+
+.aviso-simulador strong {
+    color: #1f7a4d;
+}
+
+.tarjeta-paciente .boton-secundario {
+    display: block;
+    width: 100%;
+    text-align: center;
+}
