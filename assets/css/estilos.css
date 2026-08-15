@@ -269,3 +269,11 @@ th {
     font-size: 12px;
     text-transform: uppercase;
 }
+.tarjeta-folleto {
+    flex: 1;
+}
+
+.fecha-folleto {
+    font-size: 12px;
+    color: #9ca3af;
+}
