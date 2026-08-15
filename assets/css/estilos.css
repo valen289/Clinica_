@@ -226,3 +226,46 @@ nav a:hover {
     width: 100%;
     text-align: center;
 }
+
+.tarjeta-tabla {
+    flex: 2;
+}
+
+.tarjeta-formulario label {
+    display: block;
+    font-size: 13px;
+    font-weight: bold;
+    margin-top: 12px;
+    margin-bottom: 6px;
+}
+
+.tarjeta-formulario input {
+    display: block;
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+.tarjeta-formulario button {
+    margin-top: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+th, td {
+    text-align: left;
+    padding: 10px 8px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+th {
+    color: #6b7280;
+    font-size: 12px;
+    text-transform: uppercase;
+}
