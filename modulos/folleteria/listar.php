@@ -20,11 +20,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['guardar_documento']))
 
     if ($archivo['error'] === 0) { // 0 = subio bien, cualquier otro numero es que algo fallo
 
-        $nombre_archivo = time() . '_' . $archivo['name']; // le pego la hora actual adelante para que dos folletos con el mismo nombre no se pisen entre si
+        $nombre_archivo = time() . '_' . basename($archivo['name']); // le pego la hora actual adelante para que dos folletos con el mismo nombre no se pisen entre si
         $ruta = 'documentos/' . $nombre_archivo;
         move_uploaded_file($archivo['tmp_name'], $ruta); // esto es lo que realmente mueve el archivo de la carpeta temporal a documentos/
 
-        // ojo: en la bd NUNCA se guarda el archivo en si, solo la ruta de texto para despues poder encontrarlo
+        //  en la base de datos nunca se guarda el archivo en si, solo la ruta de texto para despues poder encontrarlo
         $sql_doc = "INSERT INTO Documento (titulo, descripcion, archivo, fecha_carga, id_funcionario) VALUES (?, ?, ?, CURDATE(), ?)";
         $stmt_doc = $con->prepare($sql_doc);
         $stmt_doc->bind_param("sssi", $titulo, $descripcion, $ruta, $_SESSION['id_funcionario']); // el funcionario sale de la sesion, no del formulario

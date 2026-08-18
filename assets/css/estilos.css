@@ -277,3 +277,25 @@ th {
     font-size: 12px;
     color: #9ca3af;
 }
+
+.pantalla-paciente {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.pantalla-paciente .tarjeta {
+    max-width: 380px;
+}
+.tarjeta-formulario select {
+    display: block;
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 14px;
+    margin-bottom: 4px;
+    background-color: #ffffff;
+}
