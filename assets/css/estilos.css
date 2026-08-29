@@ -321,3 +321,18 @@ th {
     color: #b91c1c;
     font-weight: bold;
 }
+
+.enlace-accion {
+    font-size: 13px;
+    text-decoration: none;
+    color: #2f6fed;
+    margin-right: 10px;
+}
+
+.enlace-accion.confirmar-borrado {
+    color: #b91c1c;
+}
+
+.acciones-tarjeta {
+    margin-top: 12px;
+}
