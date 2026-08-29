@@ -15,10 +15,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['guardar_ambulancia'])
     $matricula = trim($_POST['matricula']);
     $marca = trim($_POST['marca']);
     $modelo = trim($_POST['modelo']);
+    $estado = $_POST['estado'];
 
-    $sql_insert = "INSERT INTO Ambulancia (matricula, marca, modelo) VALUES (?, ?, ?)";
+    $sql_insert = "INSERT INTO Ambulancia (matricula, marca, modelo, estado) VALUES (?, ?, ?, ?)";
     $stmt_insert = $con->prepare($sql_insert);
-    $stmt_insert->bind_param("sss", $matricula, $marca, $modelo);
+    $stmt_insert->bind_param("ssss", $matricula, $marca, $modelo, $estado);
     $stmt_insert->execute();
     $stmt_insert->close();
 
@@ -59,6 +60,13 @@ $resultado_ambulancias = $con->query($sql_listado);
             <label for="modelo">Modelo:</label>
             <input type="text" id="modelo" name="modelo" placeholder="Sprinter 415" required>
 
+            <label for="estado">Estado:</label>
+            <select id="estado" name="estado" required>
+                <option value="Disponible">Disponible</option>
+                <option value="Mantenimiento">Mantenimiento</option>
+                <option value="Fuera de Servicio">Fuera de Servicio</option>
+            </select>
+
             <button type="submit" name="guardar_ambulancia" class="boton boton-primario">Guardar Vehículo</button>
         </form>
     </section>
@@ -80,7 +88,7 @@ $resultado_ambulancias = $con->query($sql_listado);
                     <td><?php echo htmlspecialchars($fila['matricula']); ?></td>
                     <td><?php echo htmlspecialchars($fila['marca']); ?></td>
                     <td><?php echo htmlspecialchars($fila['modelo']); ?></td>
-                    <td><?php echo $fila['estado'] ? 'Disponible' : 'Fuera de servicio'; ?></td>
+                    <td><?php echo htmlspecialchars($fila['estado']); ?></td>
                 </tr>
                 <?php endwhile; ?>
             </tbody>

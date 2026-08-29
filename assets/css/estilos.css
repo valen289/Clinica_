@@ -299,3 +299,25 @@ th {
     margin-bottom: 4px;
     background-color: #ffffff;
 }
+
+.tarjeta .badge {
+    display: inline-block;
+    margin-bottom: 8px;
+}
+
+.lista-instrucciones {
+    list-style: none;
+    margin: 10px 0;
+}
+
+.lista-instrucciones li {
+    font-size: 13px;
+    color: #4b5563;
+    padding: 6px 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.lista-instrucciones li.pauta-alarma {
+    color: #b91c1c;
+    font-weight: bold;
+}

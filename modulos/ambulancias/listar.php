@@ -29,8 +29,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['despachar_traslado'])
 }
 
 // datos para poblar los <select> del formulario
-$ambulancias_disponibles = $con->query("SELECT id_ambulancia, matricula FROM Ambulancia WHERE estado = 1");
-$conductores_disponibles = $con->query("SELECT id_ci, nombre, apellido FROM Conductor WHERE estado = 1");
+$ambulancias_disponibles = $con->query("SELECT id_ambulancia, matricula FROM Ambulancia WHERE estado = 'Disponible'");
+$conductores_disponibles = $con->query("SELECT id_ci, nombre, apellido FROM Conductor WHERE estado = 'Activo'");
 $acompanantes = $con->query("SELECT id_ci, nombre, apellido FROM Acompaniante");
 $elementos = $con->query("SELECT id_elemento, tipo FROM Elemento_traslado");
 $rutas = $con->query("SELECT id_ruta, origen, destino FROM Ruta");
@@ -134,7 +134,7 @@ $resultado_traslados = $con->query($sql_listado);
                     <td><?php echo htmlspecialchars($t['origen'] . ' → ' . $t['destino']); ?></td>
                     <td><?php echo htmlspecialchars($t['fecha']); ?></td>
                     <td><?php echo htmlspecialchars($t['hora_salida']); ?></td>
-                    <td><?php echo $t['estado'] ? 'En curso' : 'Finalizado'; ?></td>
+                    <td><?php echo htmlspecialchars($t['estado']); ?></td>
                 </tr>
                 <?php endwhile; ?>
             </tbody>
