@@ -197,9 +197,9 @@ ALTER TABLE Funcionario
 ADD COLUMN apellido VARCHAR(50) NOT NULL,
 ADD COLUMN ci VARCHAR(20) UNIQUE;
 
-UPDATE Funcionario
-SET apellido = 'Clínicas', ci = '1.234.567-8'
-WHERE usuario = 'admin_clinicas';
+-- Usuario admin por defecto (contraseña: admin123)
+INSERT INTO Funcionario (nombre, apellido, email, usuario, rol, ci, contrasenia)
+VALUES ('Admin Clínicas', 'Clínicas', 'admin@hospitalclinicas.uy', 'admin_clinicas', 'Administrador', '1.234.567-8', '$2y$10$vDWjkj7cwAqVwjHCSi/efuonbnrDZdeiw/AIh.v/6pfLx0qLQIc62');
 
 -- Documento: categoría clínica
 ALTER TABLE Documento

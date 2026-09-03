@@ -8,8 +8,10 @@ if (!isset($_SESSION['id_funcionario'])) {  //esto es lo que convierte a esta pÃ
 }
 
 $pagina_actual = 'recursos';
+$tab_activo = 'ambulancias';
 
 require_once '../../config/conexion.php';
+require_once '../../includes/iconos.php';
 
 // Borrar: viene como GET porque es un link, no un formulario
 if (isset($_GET['eliminar'])) {
@@ -79,7 +81,7 @@ $resultado_ambulancias = $con->query($sql_listado);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SIGSM - ABM Recursos</title>
-    <link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/estilos.css">
+    <link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/estilos.css?v=<?php echo filemtime(__DIR__ . '/../../assets/css/estilos.css'); ?>">
 </head>
 <body>
 
@@ -88,10 +90,14 @@ $resultado_ambulancias = $con->query($sql_listado);
     <div class="layout">
         <?php require_once '../../includes/sidebar.php'; ?>
 
+        <main class="contenido">
+
+    <?php require_once '../../includes/recursos_header.php'; ?>
+
   <div class="tarjetas-portal">
 
     <section class="tarjeta tarjeta-formulario">
-        <h3><?php echo $ambulancia_editar ? 'Editar Ambulancia' : 'Registrar Nueva Ambulancia'; ?></h3>
+        <h3><?php echo icono($ambulancia_editar ? 'pencil' : 'plus'); ?><?php echo $ambulancia_editar ? 'Editar Ambulancia' : 'Registrar Nueva Ambulancia'; ?></h3>
         <form action="ambulancias.php" method="POST">
             <input type="hidden" name="id_ambulancia_editar" value="<?php echo $ambulancia_editar ? htmlspecialchars($ambulancia_editar['id_ambulancia']) : ''; ?>">
 
@@ -116,7 +122,10 @@ $resultado_ambulancias = $con->query($sql_listado);
     </section>
 
     <section class="tarjeta tarjeta-tabla">
-        <h3>Parque Automotor Activo</h3>
+        <div class="cabecera-tarjeta">
+            <h3><?php echo icono('ambulance'); ?>Parque Automotor Activo</h3>
+            <span class="badge-total">Total: <?php echo $resultado_ambulancias->num_rows; ?> ambulancias</span>
+        </div>
         <table>
             <thead>
                 <tr>
@@ -128,15 +137,19 @@ $resultado_ambulancias = $con->query($sql_listado);
                 </tr>
             </thead>
             <tbody>
-                <?php while ($fila = $resultado_ambulancias->fetch_assoc()): ?>
+                <?php while ($fila = $resultado_ambulancias->fetch_assoc()):
+                    $clase_pill = 'pill-naranja';
+                    if ($fila['estado'] === 'Disponible') $clase_pill = 'pill-verde';
+                    if ($fila['estado'] === 'Fuera de Servicio') $clase_pill = 'pill-rojo';
+                ?>
                 <tr>
                     <td><?php echo htmlspecialchars($fila['matricula']); ?></td>
                     <td><?php echo htmlspecialchars($fila['marca']); ?></td>
                     <td><?php echo htmlspecialchars($fila['modelo']); ?></td>
-                    <td><?php echo htmlspecialchars($fila['estado']); ?></td>
+                    <td><span class="pill-estado <?php echo $clase_pill; ?>"><?php echo htmlspecialchars($fila['estado']); ?></span></td>
                     <td>
                         <a href="ambulancias.php?editar=<?php echo $fila['id_ambulancia']; ?>" class="enlace-accion">Editar</a>
-                        <a href="ambulancias.php?eliminar=<?php echo $fila['id_ambulancia']; ?>" class="enlace-accion confirmar-borrado">Borrar</a>
+                        <a href="ambulancias.php?eliminar=<?php echo $fila['id_ambulancia']; ?>" class="enlace-accion confirmar-borrado enlace-icono" title="Borrar"><?php echo icono('trash'); ?></a>
                     </td>
                 </tr>
                 <?php endwhile; ?>

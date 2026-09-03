@@ -180,6 +180,24 @@ nav a:hover {
 .boton-secundario:hover {
     background-color: #dfe3e8;
 }
+
+.boton-violeta {
+    background-color: #7c3aed;
+    color: #ffffff;
+}
+
+.boton-violeta:hover {
+    background-color: #6d28d9;
+}
+
+.boton-verde {
+    background-color: #16a34a;
+    color: #ffffff;
+}
+
+.boton-verde:hover {
+    background-color: #15803d;
+}
 .tarjeta-login label {
     display: block;
     font-size: 13px;
@@ -335,4 +353,164 @@ th {
 
 .acciones-tarjeta {
     margin-top: 12px;
+}
+
+/* ---- Cabecera de módulo con pestañas (ABM Recursos) ---- */
+.cabecera-modulo {
+    background-color: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    padding: 22px 25px;
+    margin-bottom: 20px;
+}
+
+.fila-badges-modulo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+.badge-modulo {
+    background-color: #7c3aed;
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+    padding: 4px 12px;
+    border-radius: 20px;
+}
+
+.cabecera-modulo h2 {
+    font-size: 21px;
+    margin-bottom: 8px;
+}
+
+.cabecera-modulo p {
+    font-size: 14px;
+    color: #6b7280;
+    line-height: 1.6;
+    max-width: 800px;
+}
+
+.tabs-cu {
+    display: flex;
+    gap: 10px;
+    margin-top: 18px;
+    flex-wrap: wrap;
+}
+
+.tab-cu {
+    display: block;
+    background-color: #f4f6f9;
+    border: 1px solid #e5e7eb;
+    color: #374151;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: bold;
+    padding: 10px 18px;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.tab-cu span {
+    display: block;
+    font-weight: normal;
+    font-size: 11px;
+    color: #9ca3af;
+}
+
+.tab-cu.activo {
+    color: #ffffff;
+}
+
+.tab-cu.activo span {
+    color: rgba(255, 255, 255, 0.75);
+}
+
+.tab-cu.tab-azul.activo {
+    background-color: #2f6fed;
+    border-color: #2f6fed;
+}
+
+.tab-cu.tab-violeta.activo {
+    background-color: #7c3aed;
+    border-color: #7c3aed;
+}
+
+.tab-cu.tab-verde.activo {
+    background-color: #16a34a;
+    border-color: #16a34a;
+}
+
+/* ---- Tarjeta de tabla con badge de total ---- */
+.cabecera-tarjeta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.cabecera-tarjeta h3 {
+    margin-bottom: 0;
+}
+
+.badge-total {
+    background-color: #ede9fe;
+    color: #7c3aed;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 3px 10px;
+    border-radius: 10px;
+    white-space: nowrap;
+}
+
+.texto-ci {
+    color: #7c3aed;
+    font-weight: bold;
+}
+
+/* ---- Pills de estado ---- */
+.pill-estado {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: bold;
+    letter-spacing: 0.3px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    text-transform: uppercase;
+}
+
+.pill-estado.pill-verde {
+    background-color: #dcfce7;
+    color: #15803d;
+}
+
+.pill-estado.pill-naranja {
+    background-color: #ffedd5;
+    color: #c2410c;
+}
+
+.pill-estado.pill-rojo {
+    background-color: #fee2e2;
+    color: #b91c1c;
+}
+
+.enlace-icono {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+    margin-right: 8px;
+}
+
+.icono {
+    width: 16px;
+    height: 16px;
+    vertical-align: -3px;
+    margin-right: 6px;
+}
+
+.enlace-icono .icono {
+    margin-right: 0;
+    vertical-align: middle;
 }
