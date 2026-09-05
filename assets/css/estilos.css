@@ -44,12 +44,12 @@ body {
     align-items: center;
     justify-content: center;
     color: #ffffff;
-    font-weight: bold;
-    font-size: 20px;
+    flex-shrink: 0;
 }
 
-.logo::before {
-    content: "S";
+.logo svg {
+    width: 60%;
+    height: 60%;
 }
 
 .titulo-sistema h1 {
@@ -222,6 +222,178 @@ nav a:hover {
 
 .tarjeta-login button {
     margin-top: 5px;
+}
+
+.mensaje-error {
+    color: #b91c1c;
+    font-size: 13px;
+    min-height: 16px;
+    margin-top: -6px;
+    margin-bottom: 10px;
+}
+
+.enlace-secundario {
+    font-size: 13px;
+    text-align: center;
+    margin-top: 14px;
+}
+
+.enlace-secundario a {
+    color: #2f6fed;
+    text-decoration: none;
+}
+
+/* ---- Pantalla de autenticación (login/registro) ---- */
+.pantalla-auth {
+    min-height: 100vh;
+    display: flex;
+}
+
+.panel-marca {
+    flex: 1;
+    max-width: 440px;
+    background: linear-gradient(160deg, #14213d 0%, #1d3461 100%);
+    color: #ffffff;
+    padding: 50px 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.panel-marca .logo-marca {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.panel-marca .logo-marca .logo {
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
+}
+
+.panel-marca .logo-marca h1 {
+    font-size: 19px;
+}
+
+.panel-marca .logo-marca p {
+    font-size: 12px;
+    color: #94a3c4;
+}
+
+.marca-contenido h2 {
+    font-size: 25px;
+    line-height: 1.35;
+    margin-bottom: 14px;
+}
+
+.marca-contenido > p {
+    font-size: 14px;
+    color: #b6c2dd;
+    line-height: 1.6;
+    margin-bottom: 26px;
+    max-width: 340px;
+}
+
+.lista-features {
+    list-style: none;
+}
+
+.lista-features li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    color: #dbe4f5;
+    padding: 8px 0;
+}
+
+.lista-features svg {
+    flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+    color: #6f96f2;
+}
+
+.marca-footer {
+    font-size: 12px;
+    color: #6f80a3;
+}
+
+.panel-formulario {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    background-color: #f4f6f9;
+}
+
+.panel-formulario .tarjeta-login {
+    width: 100%;
+    max-width: 380px;
+    box-shadow: 0 12px 30px rgba(20, 33, 61, 0.08);
+}
+
+.icono-insignia {
+    width: 46px;
+    height: 46px;
+    border-radius: 12px;
+    background-color: #e8f0fe;
+    color: #2f6fed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 18px;
+}
+
+.icono-insignia svg {
+    width: 22px;
+    height: 22px;
+}
+
+.input-con-icono {
+    position: relative;
+}
+
+.input-con-icono svg {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 16px;
+    height: 16px;
+    color: #9ca3af;
+    pointer-events: none;
+}
+
+.input-con-icono input {
+    padding: 10px 12px 10px 36px;
+}
+
+@media (max-width: 860px) {
+    .pantalla-auth {
+        flex-direction: column;
+    }
+
+    .panel-marca {
+        max-width: 100%;
+        padding: 26px 24px;
+    }
+
+    .marca-contenido h2 {
+        font-size: 19px;
+    }
+
+    .marca-contenido > p {
+        margin-bottom: 14px;
+        max-width: none;
+    }
+
+    .lista-features,
+    .marca-footer {
+        display: none;
+    }
 }
 
 .aviso-simulador {
@@ -513,4 +685,95 @@ th {
 .enlace-icono .icono {
     margin-right: 0;
     vertical-align: middle;
+}
+
+/* ---- Responsive ---- */
+
+.tarjeta-tabla {
+    overflow-x: auto;
+}
+
+.tarjeta-tabla table {
+    min-width: 560px;
+}
+
+@media (max-width: 1024px) {
+    .contenido {
+        padding: 20px;
+    }
+
+    .cabecera-modulo {
+        padding: 18px 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    .layout {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid #e0e0e0;
+        padding: 15px;
+    }
+
+    .sidebar-titulo {
+        display: none;
+    }
+
+    nav ul {
+        display: flex;
+        gap: 8px;
+        overflow-x: auto;
+        padding-bottom: 4px;
+    }
+
+    nav li {
+        margin-bottom: 0;
+        flex-shrink: 0;
+    }
+
+    nav a {
+        white-space: nowrap;
+    }
+
+    .contenido {
+        padding: 16px;
+    }
+
+    .tarjetas-portal {
+        flex-direction: column;
+    }
+
+    .tarjeta {
+        width: 100%;
+    }
+
+    .cabecera-modulo {
+        padding: 16px;
+    }
+
+    .cabecera-modulo h2 {
+        font-size: 18px;
+    }
+
+    .tab-cu {
+        flex: 1 1 auto;
+    }
+
+    .cabecera-tarjeta {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+    }
+
+    .banner-botones {
+        flex-wrap: wrap;
+    }
+
+    .banner-portal {
+        padding: 20px;
+    }
 }

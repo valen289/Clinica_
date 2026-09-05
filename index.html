@@ -3,71 +3,78 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SIGSM - Portal Clínicas</title>
+    <title>SIGSM - Iniciar Sesión</title>
     <link rel="stylesheet" href="assets/css/estilos.css">
 </head>
 <body>
 
-    <header class="topbar">
-        <div class="logo"></div>
-    <div class="titulo-sistema">
-        <h1>SIGSM</h1>
-        <p>Sistema Informático de Gestión de Servicios Médicos Hospital de Clínicas</p>
-    </div>
-    </header>
+    <div class="pantalla-auth">
 
-    <div class="layout">
-        <aside class="sidebar">
-               <p class="sidebar-titulo">COMPONENTES</p>
-    <nav>
-        <ul>
-            <li class="activo"><a href="index.html">Portal Clínicas (Login)</a></li>
-            <li><a href="modulos/folleteria/listar.php">Folletería Médica (Admin) <span class="badge">Mód. 1</span></a></li>
-            <li><a href="modulos/folleto_publico/ver.php">Folleto QR (Paciente)</a></li>
-            <li><a href="modulos/ambulancias/listar.php">Rutas de Ambulancias <span class="badge">Mód. 4</span></a></li>
-            <li><a href="modulos/recursos/ambulancias.php">ABM Recursos <span class="badge">Mód. 5</span></a></li>
-            <li><a href="modulos/encuestas/listar.php">Encuestas y Reportes <span class="badge">Mód. 3</span></a></li>
-        </ul>
-    </nav>
-        </aside>
+        <div class="panel-marca">
+            <div class="logo-marca">
+                <div class="logo">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l2-6 3 12 2-8 2 2h5"/></svg>
+                </div>
+                <div>
+                    <h1>SIGSM</h1>
+                    <p>Hospital de Clínicas</p>
+                </div>
+            </div>
 
-        <main class="contenido">
-        <section class="banner-portal">
-        <h2>Portal Central Hospital de Clínicas</h2>
-        <p>Bienvenido al Sistema de Gestión de Servicios Médicos. Este portal sirve como núcleo centralizado para que el personal administrativo y médico acceda a los módulos clínicos, realice el seguimiento del parque de ambulancias y administre la folletería interactiva por código QR.</p>
-        <div class="banner-botones">
-            <a href="modulos/folleteria/listar.php" class="boton boton-secundario">Módulo 1: Folletos</a>
-            <a href="modulos/ambulancias/listar.php" class="boton boton-primario">Módulo 2: Ambulancias</a>
+            <div class="marca-contenido">
+                <h2>Sistema Informático de Gestión de Servicios Médicos</h2>
+                <p>Núcleo centralizado para que el personal administrativo y médico acceda a los módulos clínicos, realice el seguimiento del parque de ambulancias y administre la folletería interactiva por código QR.</p>
+
+                <ul class="lista-features">
+                    <li>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                        Gestión de ambulancias, personal y rutas de traslado
+                    </li>
+                    <li>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                        Folletería médica con código QR para pacientes
+                    </li>
+                    <li>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                        Encuestas, reportes y seguimiento de traslados
+                    </li>
+                </ul>
+            </div>
+
+            <p class="marca-footer">Acceso restringido a personal institucional autorizado.</p>
         </div>
-    </section>
- <div class="tarjetas-portal">
-        <section class="tarjeta tarjeta-login">
-        <h3>Ingreso Personal Administrativo</h3>
-        <p>Ingrese con sus credenciales institucionales registradas en el servidor DTI (Piso 6).</p>
-        <form action="login.php" method="POST">
-            <label for="usuario">Usuario:</label>
-            <input type="text" id="usuario" name="usuario" placeholder="admin_clinicas" required>
-            <label for="contrasenia">Contraseña:</label>
-            <input type="password" id="contrasenia" name="contrasenia" required>
-                <button type="submit" class="boton boton-primario">Autenticar Credenciales</button>
-            </form>
-            
-        </section>
 
-        <section class="tarjeta tarjeta-paciente">
-    <h3>Acceso Rápido para Pacientes</h3>
-    <p>Los pacientes no requieren iniciar sesión en este portal. Simplemente enfocan el código QR impreso en el consultorio o recepción con la cámara de sus celulares para abrir al instante las pautas médicas y encuestas.</p>
-   <div class="aviso-simulador">
-    <strong>Simulador integrado:</strong> Vaya a la pestaña de "Folletería Médica (Admin)", haga click en el código QR de un folleto y observe cómo se carga la simulación del celular del paciente.
-   </div>
-       <button type="button" class="boton boton-secundario">Abrir Demo Celular Paciente</button>
+        <div class="panel-formulario">
+            <section class="tarjeta tarjeta-login">
+                <div class="icono-insignia">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                </div>
+                <h3>Ingreso Personal Administrativo</h3>
+                <p>Ingrese con sus credenciales institucionales registradas en el servidor DTI (Piso 6).</p>
 
-    </section>
-    
-     </div>
-        </main>
+                <form id="form-login" action="login.php" method="POST">
+                    <label for="usuario">Usuario:</label>
+                    <div class="input-con-icono">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                        <input type="text" id="usuario" name="usuario" placeholder="admin_clinicas" required>
+                    </div>
+
+                    <label for="contrasenia">Contraseña:</label>
+                    <div class="input-con-icono">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                        <input type="password" id="contrasenia" name="contrasenia" required>
+                    </div>
+
+                    <div id="mensaje-login" class="mensaje-error"></div>
+                    <button type="submit" class="boton boton-primario">Autenticar Credenciales</button>
+                </form>
+                <p class="enlace-secundario">¿No tenés cuenta? <a href="registro.html">Registrate acá</a></p>
+            </section>
+        </div>
+
     </div>
 
+    <script src="assets/js/login.js"></script>
 
 </body>
 </html>

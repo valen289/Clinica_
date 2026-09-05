@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIGSM - Registro de Funcionario</title>
+    <link rel="stylesheet" href="assets/css/estilos.css">
+</head>
+<body>
+
+    <div class="pantalla-paciente">
+        <section class="tarjeta tarjeta-login">
+            <h3>Registro de Funcionario</h3>
+            <p>Creá tu cuenta para acceder al Portal Clínicas.</p>
+
+            <form id="form-registro">
+                <label for="nombre">Nombre:</label>
+                <input type="text" id="nombre" name="nombre" placeholder="Juan" required>
+
+                <label for="apellido">Apellido:</label>
+                <input type="text" id="apellido" name="apellido" placeholder="Pérez" required>
+
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" placeholder="juan.perez@hospitalclinicas.uy" required>
+
+                <label for="ci">Cédula:</label>
+                <input type="text" id="ci" name="ci" placeholder="1.234.567-8" required>
+
+                <label for="usuario">Usuario:</label>
+                <input type="text" id="usuario" name="usuario" placeholder="jperez" required>
+
+                <label for="contrasenia">Contraseña:</label>
+                <input type="password" id="contrasenia" name="contrasenia" minlength="6" required>
+
+                <label for="rol">Rol:</label>
+                <select id="rol" name="rol" required>
+                    <option value="">Seleccione un rol</option>
+                    <option value="Administrador">Administrador</option>
+                    <option value="Recepción">Recepción</option>
+                    <option value="Chofer">Chofer</option>
+                    <option value="Médico">Médico</option>
+                </select>
+
+                <div id="mensaje-registro" class="mensaje-error"></div>
+
+                <button type="submit" class="boton boton-primario">Registrarse</button>
+            </form>
+            <p class="enlace-secundario"><a href="index.html">Volver al inicio</a></p>
+        </section>
+    </div>
+
+    <script src="assets/js/registro.js"></script>
+
+</body>
+</html>
