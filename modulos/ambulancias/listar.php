@@ -10,6 +10,10 @@ if (!isset($_SESSION['id_funcionario'])) {
 $pagina_actual = 'ambulancias';
 
 require_once '../../config/conexion.php';
+
+// secuencia de estados de un traslado: cada "Avanzar" pasa al siguiente
+$secuencia_estados = ['Pendiente', 'En curso', 'Llegado a destino', 'Retornando', 'Finalizado'];
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['despachar_traslado'])) {
 
     $id_ambulancia = $_POST['id_ambulancia'];
@@ -17,12 +21,43 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['despachar_traslado'])
     $id_acompanante = !empty($_POST['id_acompanante']) ? $_POST['id_acompanante'] : null;
     $id_elemento = !empty($_POST['id_elemento']) ? $_POST['id_elemento'] : null;
     $id_ruta = $_POST['id_ruta'];
+    $estado_inicial = $secuencia_estados[0];
 
-    $sql_insert = "INSERT INTO Traslado (fecha, hora_salida, id_ambulancia, id_conductor, id_acompanante, id_elemento, id_ruta, id_funcionario) VALUES (CURDATE(), CURTIME(), ?, ?, ?, ?, ?, ?)";
+    $sql_insert = "INSERT INTO Traslado (fecha, hora_salida, estado, id_ambulancia, id_conductor, id_acompanante, id_elemento, id_ruta, id_funcionario) VALUES (CURDATE(), CURTIME(), ?, ?, ?, ?, ?, ?, ?)";
     $stmt_insert = $con->prepare($sql_insert);
-    $stmt_insert->bind_param("iiiiii", $id_ambulancia, $id_conductor, $id_acompanante, $id_elemento, $id_ruta, $_SESSION['id_funcionario']);
+    $stmt_insert->bind_param("siiiiii", $estado_inicial, $id_ambulancia, $id_conductor, $id_acompanante, $id_elemento, $id_ruta, $_SESSION['id_funcionario']);
     $stmt_insert->execute();
     $stmt_insert->close();
+
+    header("Location: listar.php");
+    exit;
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['avanzar_estado'])) {
+
+    $id_traslado = $_POST['id_traslado'];
+
+    $stmt_actual = $con->prepare("SELECT estado, hora_llegada FROM Traslado WHERE id_traslado = ?");
+    $stmt_actual->bind_param("i", $id_traslado);
+    $stmt_actual->execute();
+    $traslado_actual = $stmt_actual->get_result()->fetch_assoc();
+    $stmt_actual->close();
+
+    if ($traslado_actual) {
+        $indice_actual = array_search($traslado_actual['estado'], $secuencia_estados);
+        if ($indice_actual !== false && $indice_actual < count($secuencia_estados) - 1) {
+            $nuevo_estado = $secuencia_estados[$indice_actual + 1];
+
+            if ($nuevo_estado === 'Finalizado' && empty($traslado_actual['hora_llegada'])) {
+                $stmt_update = $con->prepare("UPDATE Traslado SET estado = ?, hora_llegada = CURTIME() WHERE id_traslado = ?");
+            } else {
+                $stmt_update = $con->prepare("UPDATE Traslado SET estado = ? WHERE id_traslado = ?");
+            }
+            $stmt_update->bind_param("si", $nuevo_estado, $id_traslado);
+            $stmt_update->execute();
+            $stmt_update->close();
+        }
+    }
 
     header("Location: listar.php");
     exit;
@@ -124,17 +159,31 @@ $resultado_traslados = $con->query($sql_listado);
                     <th>Fecha</th>
                     <th>Salida</th>
                     <th>Estado</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
-                <?php while ($t = $resultado_traslados->fetch_assoc()): ?>
+                <?php while ($t = $resultado_traslados->fetch_assoc()):
+                    $clase_pill = 'pill-naranja';
+                    if (in_array($t['estado'], ['En curso', 'Retornando'])) $clase_pill = 'pill-azul';
+                    if (in_array($t['estado'], ['Llegado a destino', 'Finalizado'])) $clase_pill = 'pill-verde';
+                    $es_finalizado = ($t['estado'] === 'Finalizado');
+                ?>
                 <tr>
                     <td><?php echo htmlspecialchars($t['matricula']); ?></td>
                     <td><?php echo htmlspecialchars($t['conductor_nombre'] . ' ' . $t['conductor_apellido']); ?></td>
                     <td><?php echo htmlspecialchars($t['origen'] . ' → ' . $t['destino']); ?></td>
                     <td><?php echo htmlspecialchars($t['fecha']); ?></td>
                     <td><?php echo htmlspecialchars($t['hora_salida']); ?></td>
-                    <td><?php echo htmlspecialchars($t['estado']); ?></td>
+                    <td><span class="pill-estado <?php echo $clase_pill; ?>"><?php echo htmlspecialchars($t['estado']); ?></span></td>
+                    <td>
+                        <?php if (!$es_finalizado): ?>
+                        <form action="listar.php" method="POST">
+                            <input type="hidden" name="id_traslado" value="<?php echo $t['id_traslado']; ?>">
+                            <button type="submit" name="avanzar_estado" class="enlace-accion">Avanzar →</button>
+                        </form>
+                        <?php endif; ?>
+                    </td>
                 </tr>
                 <?php endwhile; ?>
             </tbody>
