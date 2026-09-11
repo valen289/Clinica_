@@ -7,6 +7,11 @@ if (!isset($_SESSION['id_funcionario'])) {
     exit;
 }
 
+if (($_SESSION['rol'] ?? '') === 'Chofer') {
+    header("Location: ../ambulancias/listar.php");
+    exit;
+}
+
 $pagina_actual = 'recursos';
 $tab_activo = 'personal';
 

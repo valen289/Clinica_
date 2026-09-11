@@ -1,18 +1,20 @@
 <?php
 
 session_start();
+header('Content-Type: application/json');
 
 require_once 'config/conexion.php';
 
-$usuario_ingresado = trim($_POST['usuario']);     //utilizo trim ya que saca los espacios en blanco al principio y al final agrega un string \\
-$contrasenia_ingresada = trim($_POST['contrasenia']);
+$usuario_ingresado = trim($_POST['usuario'] ?? '');
+$contrasenia_ingresada = trim($_POST['contrasenia'] ?? '');
 
-$sql = "SELECT id_funcionario, nombre, contrasenia, rol FROM Funcionario WHERE usuario = ?"; //es un espacio reservado \\
+$sql = "SELECT id_funcionario, nombre, contrasenia, rol FROM Funcionario WHERE usuario = ?";
 $stmt = $con->prepare($sql);
-$stmt->bind_param("s", $usuario_ingresado); //sirve para conectar el valor real (s es el tipo de dato string )
+$stmt->bind_param("s", $usuario_ingresado);
 $stmt->execute();
 $resultado = $stmt->get_result();
-$funcionario = $resultado->fetch_assoc(); //trae la fila encontrada como un array asociativo\\
+$funcionario = $resultado->fetch_assoc();
+$stmt->close();
 
 if ($funcionario && password_verify($contrasenia_ingresada, $funcionario['contrasenia'])) {
 
@@ -20,12 +22,10 @@ if ($funcionario && password_verify($contrasenia_ingresada, $funcionario['contra
     $_SESSION['nombre'] = $funcionario['nombre'];
     $_SESSION['rol'] = $funcionario['rol'];
 
-    header("Location: modulos/recursos/ambulancias.php");
-    exit;
+    echo json_encode(['exito' => true]);
 
 } else {
-    echo "Usuario o contraseña incorrectos.";
+    echo json_encode(['error' => 'Usuario o contraseña incorrectos.']);
 }
 
-$stmt->close();
 $con->close();
