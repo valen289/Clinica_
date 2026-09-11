@@ -1,6 +1,6 @@
 <?php
 
-require_once 'config.php';
+require_once __DIR__ . '/config.php';
 
 $con = new mysqli(BD_HOST, BD_USUARIO, BD_CLAVE, BD_NOMBRE);
 

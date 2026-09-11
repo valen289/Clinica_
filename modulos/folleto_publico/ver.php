@@ -1,6 +1,6 @@
 <?php
 
-require_once '../../config/conexion.php';
+require_once __DIR__ . '/../../config/conexion.php';
 
 $id_documento = $_GET['id'] ?? null; //el get me sirve para traer datos que viene en la url 
 

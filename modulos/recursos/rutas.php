@@ -15,8 +15,8 @@ if (($_SESSION['rol'] ?? '') === 'Chofer') {
 $pagina_actual = 'recursos';
 $tab_activo = 'rutas';
 
-require_once '../../config/conexion.php';
-require_once '../../includes/iconos.php';
+require_once __DIR__ . '/../../config/conexion.php';
+require_once __DIR__ . '/../../includes/iconos.php';
 
 if (isset($_GET['eliminar'])) {
     $id_borrar = $_GET['eliminar'];
@@ -89,14 +89,14 @@ $total_rutas = $resultado_rutas->num_rows;
 </head>
 <body>
 
-    <?php require_once '../../includes/header.php'; ?>
+    <?php require_once __DIR__ . '/../../includes/header.php'; ?>
 
     <div class="layout">
-        <?php require_once '../../includes/sidebar.php'; ?>
+        <?php require_once __DIR__ . '/../../includes/sidebar.php'; ?>
 
         <main class="contenido">
 
-    <?php require_once '../../includes/recursos_header.php'; ?>
+    <?php require_once __DIR__ . '/../../includes/recursos_header.php'; ?>
 
 <div class="tarjetas-portal">
 

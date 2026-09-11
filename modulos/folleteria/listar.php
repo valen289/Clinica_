@@ -14,7 +14,7 @@ if (($_SESSION['rol'] ?? '') === 'Chofer') {
 
 $pagina_actual = 'folleteria';
 
-require_once '../../config/conexion.php';
+require_once __DIR__ . '/../../config/conexion.php';
 
 // Borrar: primero las filas hijas (Instruccion y Codigo_qr referencian a Documento por FK,
 // no se puede borrar el Documento mientras existan) y despues el archivo fisico
@@ -200,10 +200,10 @@ $resultado_documentos = $con->query($sql_listado); // este SELECT no necesita pr
 </head>
 <body>
 
-    <?php require_once '../../includes/header.php'; ?>
+    <?php require_once __DIR__ . '/../../includes/header.php'; ?>
 
     <div class="layout">
-        <?php require_once '../../includes/sidebar.php'; ?>
+        <?php require_once __DIR__ . '/../../includes/sidebar.php'; ?>
 
 <main class="contenido">
 

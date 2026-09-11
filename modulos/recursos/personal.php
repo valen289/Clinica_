@@ -15,8 +15,8 @@ if (($_SESSION['rol'] ?? '') === 'Chofer') {
 $pagina_actual = 'recursos';
 $tab_activo = 'personal';
 
-require_once '../../config/conexion.php';
-require_once '../../includes/iconos.php';
+require_once __DIR__ . '/../../config/conexion.php';
+require_once __DIR__ . '/../../includes/iconos.php';
 
 // El personal vive repartido en dos tablas (Conductor y Acompaniante); "tipo" en la URL/form dice en cual buscar
 if (isset($_GET['eliminar']) && isset($_GET['tipo'])) {
@@ -131,14 +131,14 @@ $total_personal = $resultado_personal->num_rows;
 </head>
 <body>
 
-    <?php require_once '../../includes/header.php'; ?>
+    <?php require_once __DIR__ . '/../../includes/header.php'; ?>
 
     <div class="layout">
-        <?php require_once '../../includes/sidebar.php'; ?>
+        <?php require_once __DIR__ . '/../../includes/sidebar.php'; ?>
 
         <main class="contenido">
 
-    <?php require_once '../../includes/recursos_header.php'; ?>
+    <?php require_once __DIR__ . '/../../includes/recursos_header.php'; ?>
 
 <div class="tarjetas-portal">
 
