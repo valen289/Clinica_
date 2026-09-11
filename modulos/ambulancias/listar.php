@@ -1,9 +1,9 @@
-<?php
+n: ../../index<?php
 
 session_start();
 
 if (!isset($_SESSION['id_funcionario'])) {
-    header("Location: ../../index.html");
+    header("Locatio.html");
     exit;
 }
 
@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['despachar_traslado'])
     $stmt_insert->execute();
     $stmt_insert->close();
 
-    header("Location: listar.php");
+    header("Location: ../listar.php");
     exit;
 }
 
