@@ -3,7 +3,7 @@
 session_start();
 header('Content-Type: application/json');
 
-require_once 'config/conexion.php';
+require_once __DIR__ . '/config/conexion.php';
 
 $usuario_ingresado = trim($_POST['usuario'] ?? '');
 $contrasenia_ingresada = trim($_POST['contrasenia'] ?? '');

@@ -2,7 +2,7 @@
 
 header('Content-Type: application/json');
 
-require_once 'config/conexion.php';
+require_once __DIR__ . '/config/conexion.php';
 
 $nombre = trim($_POST['nombre'] ?? '');
 $apellido = trim($_POST['apellido'] ?? '');

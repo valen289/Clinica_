@@ -195,7 +195,7 @@ $resultado_documentos = $con->query($sql_listado); // este SELECT no necesita pr
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SIGSM - Folletería Médica</title>
+    <title>SIGSM - Documentos Médicos</title>
     <link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/estilos.css?v=<?php echo filemtime(__DIR__ . '/../../assets/css/estilos.css'); ?>">
 </head>
 <body>
@@ -210,7 +210,7 @@ $resultado_documentos = $con->query($sql_listado); // este SELECT no necesita pr
             <div class="tarjetas-portal">
 
                 <section class="tarjeta tarjeta-formulario">
-                    <h3><?php echo $documento_editar ? 'Editar Folleto Médico' : 'Agregar Folleto Médico'; ?></h3>
+                    <h3><?php echo $documento_editar ? 'Editar Documento Médico' : 'Agregar Documento Médico'; ?></h3>
                     <!-- sin enctype="multipart/form-data" el archivo llega vacio al servidor, no tira error, simplemente no llega -->
                     <form action="listar.php" method="POST" enctype="multipart/form-data">
                         <input type="hidden" name="id_documento_editar" value="<?php echo $documento_editar ? htmlspecialchars($documento_editar['id_documento']) : ''; ?>">
@@ -241,7 +241,7 @@ $resultado_documentos = $con->query($sql_listado); // este SELECT no necesita pr
                         <label for="archivo">Archivo (PDF)<?php echo $documento_editar ? ' — dejar vacío para mantener el actual' : ''; ?>:</label>
                         <input type="file" id="archivo" name="archivo" accept="application/pdf" <?php echo $documento_editar ? '' : 'required'; ?>>
 
-                        <button type="submit" name="guardar_documento" class="boton boton-primario"><?php echo $documento_editar ? 'Actualizar Folleto' : 'Agregar Folleto Médico'; ?></button>
+                        <button type="submit" name="guardar_documento" class="boton boton-primario"><?php echo $documento_editar ? 'Actualizar Documento' : 'Agregar Documento Médico'; ?></button>
                     </form>
                 </section>
 
