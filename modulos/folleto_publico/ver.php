@@ -27,7 +27,7 @@ if ($documento) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SIGSM - Documento Médico</title>
-    <link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/estilos.css?v=<?php echo filemtime(__DIR__ . '/../../assets/css/estilos.css'); ?>">
+    <link rel="stylesheet" href="../../assets/css/estilos.css?v=<?php echo filemtime(__DIR__ . '/../../assets/css/estilos.css'); ?>">
 </head>
 <body>
 
@@ -48,7 +48,7 @@ if ($documento) {
                 <?php endwhile; ?>
             </ul>
 
-            <a href="<?php echo BASE_URL; ?>modulos/folleteria/documentos/<?php echo htmlspecialchars(basename($documento['archivo'])); ?>" target="_blank" class="boton boton-primario">Ver Documento Completo (PDF)</a>
+            <a href="../folleteria/documentos/<?php echo htmlspecialchars(basename($documento['archivo'])); ?>" target="_blank" class="boton boton-primario">Ver Documento Completo (PDF)</a>
         </section>
         <?php else: ?>
         <section class="tarjeta">

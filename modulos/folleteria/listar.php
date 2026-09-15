@@ -106,7 +106,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['guardar_documento']))
 
             // armo un codigo y una url cualquiera para este documento, no hace falta que sea sofisticado, solo unico
             $codigo_generado = "QR-" . $id_documento_nuevo . "-" . time();
-            $url_generada = BASE_URL . "modulos/folleto_publico/ver.php?id=" . $id_documento_nuevo;
+
+            // la url del QR tiene que ser absoluta (con dominio) para poder escanearse desde un celular.
+            // se arma en base al request actual, asi funciona sin importar el prefijo que use el servidor
+            // (ej: con proxy /core4/) en vez de depender de una carpeta fija.
+            $protocolo_actual = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+            $ruta_actual = strtok($_SERVER['REQUEST_URI'], '?');
+            $prefijo_proyecto = preg_replace('#modulos/folleteria/listar\.php$#', '', $ruta_actual);
+            $url_generada = $protocolo_actual . '://' . $_SERVER['HTTP_HOST'] . $prefijo_proyecto . "modulos/folleto_publico/ver.php?id=" . $id_documento_nuevo;
 
             $sql_qr = "INSERT INTO Codigo_qr (codigo, url, id_documento) VALUES (?, ?, ?)";
             $stmt_qr = $con->prepare($sql_qr);
@@ -196,7 +203,7 @@ $resultado_documentos = $con->query($sql_listado); // este SELECT no necesita pr
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SIGSM - Documentos Médicos</title>
-    <link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/estilos.css?v=<?php echo filemtime(__DIR__ . '/../../assets/css/estilos.css'); ?>">
+    <link rel="stylesheet" href="../../assets/css/estilos.css?v=<?php echo filemtime(__DIR__ . '/../../assets/css/estilos.css'); ?>">
 </head>
 <body>
 
@@ -285,7 +292,7 @@ $resultado_documentos = $con->query($sql_listado); // este SELECT no necesita pr
 
     </div>
 
-    <script src="<?php echo BASE_URL; ?>assets/js/main.js"></script>
+    <script src="../../assets/js/main.js"></script>
 
 </body>
 </html>

@@ -127,7 +127,7 @@ $total_personal = $resultado_personal->num_rows;
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SIGSM - ABM Personal Operativo</title>
-    <link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/estilos.css?v=<?php echo filemtime(__DIR__ . '/../../assets/css/estilos.css'); ?>">
+    <link rel="stylesheet" href="../../assets/css/estilos.css?v=<?php echo filemtime(__DIR__ . '/../../assets/css/estilos.css'); ?>">
 </head>
 <body>
 
@@ -213,7 +213,7 @@ $total_personal = $resultado_personal->num_rows;
         </main>
     </div>
 
-    <script src="<?php echo BASE_URL; ?>assets/js/main.js"></script>
+    <script src="../../assets/js/main.js"></script>
 
 </body>
 </html>
