@@ -1,9 +1,9 @@
 <?php
 
 define('BD_HOST', getenv('BD_HOST') ?: 'localhost');
-define('BD_USUARIO', getenv('BD_USUARIO') ?: 'root');
-define('BD_CLAVE', getenv('BD_CLAVE') ?: '');
-define('BD_NOMBRE', getenv('BD_NOMBRE') ?: 'hospital_clinicas');
+define('BD_USUARIO', getenv('BD_USUARIO') ?: 'core4');
+define('BD_CLAVE', getenv('BD_CLAVE') ?: 'Core42026@');
+define('BD_NOMBRE', getenv('BD_NOMBRE') ?: 'db_core4');
 
 // BASE_URL se calcula sola a partir de dónde está el proyecto dentro del
 // document root del servidor, para que las rutas funcionen tanto en
@@ -21,3 +21,4 @@ if (!$base_url) {
     $base_url = rtrim($base_url, '/') . '/';
 }
 define('BASE_URL', $base_url);
+
