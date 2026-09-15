@@ -1,12 +1,5 @@
 <?php
 
-// config.local.php es un archivo sin versionar (ver .gitignore) donde cada
-// entorno (servidor) puede fijar sus propias credenciales con putenv(),
-// sin tocar este archivo ni generar conflictos en cada git pull.
-if (file_exists(__DIR__ . '/config.local.php')) {
-    require_once __DIR__ . '/config.local.php';
-}
-
 define('BD_HOST', getenv('BD_HOST') ?: 'localhost');
 define('BD_USUARIO', getenv('BD_USUARIO') ?: 'root');
 define('BD_CLAVE', getenv('BD_CLAVE') ?: '');
