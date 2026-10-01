@@ -15,13 +15,13 @@ $total_rutas = $con->query("SELECT COUNT(*) AS total FROM Ruta")->fetch_assoc()[
     <p>Administración centralizada de unidades móviles (Ambulancias), personal operativo (Conductores y Acompañantes) y catálogo de rutas de traslado nacional.</p>
 
     <div class="tabs-cu">
-        <a href="<?php echo BASE_URL; ?>modulos/recursos/ambulancias.php" class="tab-cu tab-azul <?php echo ($tab_activo === 'ambulancias') ? 'activo' : ''; ?>">
+        <a href="../../modulos/recursos/ambulancias.php" class="tab-cu tab-azul <?php echo ($tab_activo === 'ambulancias') ? 'activo' : ''; ?>">
             AMBULANCIAS<span>(<?php echo $total_ambulancias; ?>)</span>
         </a>
-        <a href="<?php echo BASE_URL; ?>modulos/recursos/personal.php" class="tab-cu tab-violeta <?php echo ($tab_activo === 'personal') ? 'activo' : ''; ?>">
+        <a href="../../modulos/recursos/personal.php" class="tab-cu tab-violeta <?php echo ($tab_activo === 'personal') ? 'activo' : ''; ?>">
             PERSONAL<span>(<?php echo $total_personal; ?>)</span>
         </a>
-        <a href="<?php echo BASE_URL; ?>modulos/recursos/rutas.php" class="tab-cu tab-verde <?php echo ($tab_activo === 'rutas') ? 'activo' : ''; ?>">
+        <a href="../../modulos/recursos/rutas.php" class="tab-cu tab-verde <?php echo ($tab_activo === 'rutas') ? 'activo' : ''; ?>">
             RUTAS<span>(<?php echo $total_rutas; ?>)</span>
         </a>
     </div>

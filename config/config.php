@@ -1,7 +1,7 @@
 <?php
 
-define('BD_HOST', 'localhost');
-define('BD_USUARIO', 'root');
-define('BD_CLAVE', '');
-define('BD_NOMBRE', 'hospital_clinicas');
-define('BASE_URL', '/Clinica_/');
+define('BD_HOST', getenv('BD_HOST') ?: 'localhost');
+define('BD_USUARIO', getenv('BD_USUARIO') ?: 'core4');
+define('BD_CLAVE', getenv('BD_CLAVE') ?: 'Core42026@');
+define('BD_NOMBRE', getenv('BD_NOMBRE') ?: 'db_core4');
+

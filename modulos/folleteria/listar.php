@@ -14,7 +14,7 @@ if (($_SESSION['rol'] ?? '') === 'Chofer') {
 
 $pagina_actual = 'folleteria';
 
-require_once '../../config/conexion.php';
+require_once __DIR__ . '/../../config/conexion.php';
 
 // Borrar: primero las filas hijas (Instruccion y Codigo_qr referencian a Documento por FK,
 // no se puede borrar el Documento mientras existan) y despues el archivo fisico
@@ -106,7 +106,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['guardar_documento']))
 
             // armo un codigo y una url cualquiera para este documento, no hace falta que sea sofisticado, solo unico
             $codigo_generado = "QR-" . $id_documento_nuevo . "-" . time();
-            $url_generada = BASE_URL . "modulos/folleto_publico/ver.php?id=" . $id_documento_nuevo;
+
+            // la url del QR tiene que ser absoluta (con dominio) para poder escanearse desde un celular.
+            // se arma en base al request actual, asi funciona sin importar el prefijo que use el servidor
+            // (ej: con proxy /core4/) en vez de depender de una carpeta fija.
+            $protocolo_actual = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+            $ruta_actual = strtok($_SERVER['REQUEST_URI'], '?');
+            $prefijo_proyecto = preg_replace('#modulos/folleteria/listar\.php$#', '', $ruta_actual);
+            $url_generada = $protocolo_actual . '://' . $_SERVER['HTTP_HOST'] . $prefijo_proyecto . "modulos/folleto_publico/ver.php?id=" . $id_documento_nuevo;
 
             $sql_qr = "INSERT INTO Codigo_qr (codigo, url, id_documento) VALUES (?, ?, ?)";
             $stmt_qr = $con->prepare($sql_qr);
@@ -195,22 +202,22 @@ $resultado_documentos = $con->query($sql_listado); // este SELECT no necesita pr
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SIGSM - Folletería Médica</title>
-    <link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/estilos.css?v=<?php echo filemtime(__DIR__ . '/../../assets/css/estilos.css'); ?>">
+    <title>SIGSM - Documentos Médicos</title>
+    <link rel="stylesheet" href="../../assets/css/estilos.css?v=<?php echo filemtime(__DIR__ . '/../../assets/css/estilos.css'); ?>">
 </head>
 <body>
 
-    <?php require_once '../../includes/header.php'; ?>
+    <?php require_once __DIR__ . '/../../includes/header.php'; ?>
 
     <div class="layout">
-        <?php require_once '../../includes/sidebar.php'; ?>
+        <?php require_once __DIR__ . '/../../includes/sidebar.php'; ?>
 
 <main class="contenido">
 
             <div class="tarjetas-portal">
 
                 <section class="tarjeta tarjeta-formulario">
-                    <h3><?php echo $documento_editar ? 'Editar Folleto Médico' : 'Agregar Folleto Médico'; ?></h3>
+                    <h3><?php echo $documento_editar ? 'Editar Documento Médico' : 'Agregar Documento Médico'; ?></h3>
                     <!-- sin enctype="multipart/form-data" el archivo llega vacio al servidor, no tira error, simplemente no llega -->
                     <form action="listar.php" method="POST" enctype="multipart/form-data">
                         <input type="hidden" name="id_documento_editar" value="<?php echo $documento_editar ? htmlspecialchars($documento_editar['id_documento']) : ''; ?>">
@@ -241,7 +248,7 @@ $resultado_documentos = $con->query($sql_listado); // este SELECT no necesita pr
                         <label for="archivo">Archivo (PDF)<?php echo $documento_editar ? ' — dejar vacío para mantener el actual' : ''; ?>:</label>
                         <input type="file" id="archivo" name="archivo" accept="application/pdf" <?php echo $documento_editar ? '' : 'required'; ?>>
 
-                        <button type="submit" name="guardar_documento" class="boton boton-primario"><?php echo $documento_editar ? 'Actualizar Folleto' : 'Agregar Folleto Médico'; ?></button>
+                        <button type="submit" name="guardar_documento" class="boton boton-primario"><?php echo $documento_editar ? 'Actualizar Documento' : 'Agregar Documento Médico'; ?></button>
                     </form>
                 </section>
 
@@ -285,7 +292,7 @@ $resultado_documentos = $con->query($sql_listado); // este SELECT no necesita pr
 
     </div>
 
-    <script src="<?php echo BASE_URL; ?>assets/js/main.js"></script>
+    <script src="../../assets/js/main.js"></script>
 
 </body>
 </html>

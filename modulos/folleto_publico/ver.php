@@ -1,6 +1,6 @@
 <?php
 
-require_once '../../config/conexion.php';
+require_once __DIR__ . '/../../config/conexion.php';
 
 $id_documento = $_GET['id'] ?? null; //el get me sirve para traer datos que viene en la url 
 
@@ -26,8 +26,8 @@ if ($documento) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SIGSM - Folleto Médico</title>
-    <link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/estilos.css?v=<?php echo filemtime(__DIR__ . '/../../assets/css/estilos.css'); ?>">
+    <title>SIGSM - Documento Médico</title>
+    <link rel="stylesheet" href="../../assets/css/estilos.css?v=<?php echo filemtime(__DIR__ . '/../../assets/css/estilos.css'); ?>">
 </head>
 <body>
 
@@ -48,12 +48,12 @@ if ($documento) {
                 <?php endwhile; ?>
             </ul>
 
-            <a href="<?php echo BASE_URL; ?>modulos/folleteria/documentos/<?php echo htmlspecialchars(basename($documento['archivo'])); ?>" target="_blank" class="boton boton-primario">Ver Folleto Completo (PDF)</a>
+            <a href="../folleteria/documentos/<?php echo htmlspecialchars(basename($documento['archivo'])); ?>" target="_blank" class="boton boton-primario">Ver Documento Completo (PDF)</a>
         </section>
         <?php else: ?>
         <section class="tarjeta">
-            <h3>Folleto no encontrado</h3>
-            <p>El código QR escaneado no corresponde a ningún folleto disponible.</p>
+            <h3>Documento no encontrado</h3>
+            <p>El código QR escaneado no corresponde a ningún documento disponible.</p>
         </section>
         <?php endif; ?>
 

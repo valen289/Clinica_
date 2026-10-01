@@ -9,7 +9,7 @@ if (!isset($_SESSION['id_funcionario'])) {
 
 $pagina_actual = 'ambulancias';
 
-require_once '../../config/conexion.php';
+require_once __DIR__ . '/../../config/conexion.php';
 
 // secuencia de estados de un traslado: cada "Avanzar" pasa al siguiente
 $secuencia_estados = ['Pendiente', 'En curso', 'Llegado a destino', 'Retornando', 'Finalizado'];
@@ -89,14 +89,14 @@ $resultado_traslados = $con->query($sql_listado);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SIGSM - Rutas de Ambulancias</title>
-    <link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/estilos.css?v=<?php echo filemtime(__DIR__ . '/../../assets/css/estilos.css'); ?>">
+    <link rel="stylesheet" href="../../assets/css/estilos.css?v=<?php echo filemtime(__DIR__ . '/../../assets/css/estilos.css'); ?>">
 </head>
 <body>
 
-    <?php require_once '../../includes/header.php'; ?>
+    <?php require_once __DIR__ . '/../../includes/header.php'; ?>
 
     <div class="layout">
-        <?php require_once '../../includes/sidebar.php'; ?>
+        <?php require_once __DIR__ . '/../../includes/sidebar.php'; ?>
 
         <main class="contenido">
 <div class="tarjetas-portal">
