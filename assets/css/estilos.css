@@ -419,6 +419,11 @@ nav a:hover {
 
 .tarjeta-tabla {
     flex: 2;
+    overflow-x: auto;
+}
+
+.tarjeta-tabla table {
+    min-width: 560px;
 }
 
 .tarjeta-formulario label {
@@ -459,11 +464,11 @@ th {
     font-size: 12px;
     text-transform: uppercase;
 }
-.tarjeta-folleto {
+.tarjeta-documento {
     flex: 1;
 }
 
-.fecha-folleto {
+.fecha-documento {
     font-size: 12px;
     color: #9ca3af;
 }
@@ -701,14 +706,6 @@ button.enlace-accion {
 }
 
 /* ---- Responsive ---- */
-
-.tarjeta-tabla {
-    overflow-x: auto;
-}
-
-.tarjeta-tabla table {
-    min-width: 560px;
-}
 
 @media (max-width: 1024px) {
     .contenido {

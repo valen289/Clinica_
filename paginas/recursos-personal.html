@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIGSM - ABM Personal Operativo</title>
+    <link rel="stylesheet" href="../assets/css/estilos.css">
+</head>
+<body>
+
+    <div id="header"></div>
+
+    <div class="layout">
+        <div id="sidebar"></div>
+
+        <main class="contenido">
+
+            <div class="cabecera-modulo">
+                <div class="fila-badges-modulo">
+                    <span class="badge-modulo">MÓDULO 5 · ABM RECURSOS</span>
+                </div>
+                <h2>Mantenimiento de Recursos Operativos de Traslado</h2>
+                <p>Administración centralizada de unidades móviles (Ambulancias), personal operativo (Conductores y Acompañantes) y catálogo de rutas de traslado nacional.</p>
+
+                <div class="tabs-cu">
+                    <a href="recursos-ambulancias.html" class="tab-cu tab-azul">
+                        AMBULANCIAS<span id="contador-ambulancias">(0)</span>
+                    </a>
+                    <a href="recursos-personal.html" class="tab-cu tab-violeta activo">
+                        PERSONAL<span id="contador-personal">(0)</span>
+                    </a>
+                    <a href="recursos-rutas.html" class="tab-cu tab-verde">
+                        RUTAS<span id="contador-rutas">(0)</span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="tarjetas-portal">
+
+                <section class="tarjeta tarjeta-formulario">
+                    <h3>
+                        <svg id="icono-formulario" class="icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                        <span id="titulo-formulario">Registrar Personal Operativo</span>
+                    </h3>
+                    <form id="form-personal">
+                        <input type="hidden" id="id_ci_editar" name="id_ci_editar" value="">
+                        <input type="hidden" id="tipo_editar" name="tipo_editar" value="">
+
+                        <label for="id_ci">Cédula de Identidad (C.I.):</label>
+                        <input type="number" id="id_ci" name="id_ci" placeholder="3.888.999-0" required>
+
+                        <label for="nombre">Nombre:</label>
+                        <input type="text" id="nombre" name="nombre" placeholder="Ej: Gabriel" required>
+
+                        <label for="apellido">Apellido:</label>
+                        <input type="text" id="apellido" name="apellido" placeholder="Ej: Méndez" required>
+
+                        <label for="rol">Rol / Función:</label>
+                        <select id="rol" name="rol" required>
+                            <option value="Conductor Profesional">Conductor Profesional</option>
+                            <option value="Acompañante Médico">Acompañante Médico</option>
+                            <option value="Enfermero de Traslado">Enfermero de Traslado</option>
+                        </select>
+
+                        <label for="estado">Estado:</label>
+                        <select id="estado" name="estado" required>
+                            <option value="Activo">Activo</option>
+                            <option value="De Licencia">De Licencia</option>
+                        </select>
+
+                        <div id="mensaje-form" class="mensaje-error"></div>
+
+                        <button type="submit" id="boton-formulario" class="boton boton-violeta">Guardar Personal</button>
+                    </form>
+                </section>
+
+                <section class="tarjeta tarjeta-tabla">
+                    <div class="cabecera-tarjeta">
+                        <h3>
+                            <svg class="icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                            Nómina de Conductores y Acompañantes
+                        </h3>
+                        <span class="badge-total">Total: <span id="total-personal">0</span> funcionarios</span>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>C.I.</th>
+                                <th>Nombre y Apellido</th>
+                                <th>Rol</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabla-personal"></tbody>
+                    </table>
+                </section>
+
+            </div>
+
+        </main>
+    </div>
+
+    <script src="../js/shell.js"></script>
+    <script src="../js/recursos-personal.js"></script>
+
+</body>
+</html>

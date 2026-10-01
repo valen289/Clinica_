@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function () {
         var datos = new FormData(formulario);
 
         try {
-            var respuesta = await fetch('registro.php', {
+            var respuesta = await fetch('../php/auth-registro.php', {
                 method: 'POST',
                 body: datos
             });

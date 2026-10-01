@@ -14,14 +14,14 @@ document.addEventListener('DOMContentLoaded', function () {
         datos.append('contrasenia', formulario.contrasenia.value);
 
         try {
-            var respuesta = await fetch('login.php', {
+            var respuesta = await fetch('../php/auth-login.php', {
                 method: 'POST',
                 body: datos
             });
             var resultado = await respuesta.json();
 
             if (resultado.exito) {
-                window.location.href = 'modulos/recursos/ambulancias.php';
+                window.location.href = 'recursos-ambulancias.html';
             } else {
                 mensaje.textContent = resultado.error;
             }

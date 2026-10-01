@@ -8,3 +8,11 @@ if ($con->connect_error) {
     error_log("Error de conexión MySQL: " . $con->connect_error);
     die("No se pudo conectar con el servidor. Intente más tarde.");
 }
+
+function filas($resultado) {
+    $out = [];
+    while ($fila = $resultado->fetch_assoc()) {
+        $out[] = $fila;
+    }
+    return $out;
+}

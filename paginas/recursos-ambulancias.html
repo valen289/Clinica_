@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIGSM - ABM Recursos</title>
+    <link rel="stylesheet" href="../assets/css/estilos.css">
+</head>
+<body>
+
+    <div id="header"></div>
+
+    <div class="layout">
+        <div id="sidebar"></div>
+
+        <main class="contenido">
+
+            <div class="cabecera-modulo">
+                <div class="fila-badges-modulo">
+                    <span class="badge-modulo">MÓDULO 5 · ABM RECURSOS</span>
+                </div>
+                <h2>Mantenimiento de Recursos Operativos de Traslado</h2>
+                <p>Administración centralizada de unidades móviles (Ambulancias), personal operativo (Conductores y Acompañantes) y catálogo de rutas de traslado nacional.</p>
+
+                <div class="tabs-cu">
+                    <a href="recursos-ambulancias.html" class="tab-cu tab-azul activo">
+                        AMBULANCIAS<span id="contador-ambulancias">(0)</span>
+                    </a>
+                    <a href="recursos-personal.html" class="tab-cu tab-violeta">
+                        PERSONAL<span id="contador-personal">(0)</span>
+                    </a>
+                    <a href="recursos-rutas.html" class="tab-cu tab-verde">
+                        RUTAS<span id="contador-rutas">(0)</span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="tarjetas-portal">
+
+                <section class="tarjeta tarjeta-formulario">
+                    <h3>
+                        <svg id="icono-formulario" class="icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                        <span id="titulo-formulario">Registrar Nueva Ambulancia</span>
+                    </h3>
+                    <form id="form-ambulancia">
+                        <input type="hidden" id="id_ambulancia_editar" name="id_ambulancia_editar" value="">
+
+                        <label for="matricula">Matrícula:</label>
+                        <input type="text" id="matricula" name="matricula" placeholder="STF-9999" required>
+
+                        <label for="marca">Marca:</label>
+                        <input type="text" id="marca" name="marca" placeholder="Mercedes-Benz" required>
+
+                        <label for="modelo">Modelo:</label>
+                        <input type="text" id="modelo" name="modelo" placeholder="Sprinter 415" required>
+
+                        <label for="estado">Estado:</label>
+                        <select id="estado" name="estado" required>
+                            <option value="Disponible">Disponible</option>
+                            <option value="Mantenimiento">Mantenimiento</option>
+                            <option value="Fuera de Servicio">Fuera de Servicio</option>
+                        </select>
+
+                        <div id="mensaje-form" class="mensaje-error"></div>
+
+                        <button type="submit" id="boton-formulario" class="boton boton-primario">Guardar Vehículo</button>
+                    </form>
+                </section>
+
+                <section class="tarjeta tarjeta-tabla">
+                    <div class="cabecera-tarjeta">
+                        <h3>
+                            <svg class="icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+                            Parque Automotor Activo
+                        </h3>
+                        <span class="badge-total">Total: <span id="total-ambulancias">0</span> ambulancias</span>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Matrícula</th>
+                                <th>Marca</th>
+                                <th>Modelo</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabla-ambulancias"></tbody>
+                    </table>
+                </section>
+
+            </div>
+
+        </main>
+    </div>
+
+    <script src="../js/shell.js"></script>
+    <script src="../js/recursos-ambulancias.js"></script>
+
+</body>
+</html>

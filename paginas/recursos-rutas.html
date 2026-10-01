@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIGSM - ABM Rutas</title>
+    <link rel="stylesheet" href="../assets/css/estilos.css">
+</head>
+<body>
+
+    <div id="header"></div>
+
+    <div class="layout">
+        <div id="sidebar"></div>
+
+        <main class="contenido">
+
+            <div class="cabecera-modulo">
+                <div class="fila-badges-modulo">
+                    <span class="badge-modulo">MÓDULO 5 · ABM RECURSOS</span>
+                </div>
+                <h2>Mantenimiento de Recursos Operativos de Traslado</h2>
+                <p>Administración centralizada de unidades móviles (Ambulancias), personal operativo (Conductores y Acompañantes) y catálogo de rutas de traslado nacional.</p>
+
+                <div class="tabs-cu">
+                    <a href="recursos-ambulancias.html" class="tab-cu tab-azul">
+                        AMBULANCIAS<span id="contador-ambulancias">(0)</span>
+                    </a>
+                    <a href="recursos-personal.html" class="tab-cu tab-violeta">
+                        PERSONAL<span id="contador-personal">(0)</span>
+                    </a>
+                    <a href="recursos-rutas.html" class="tab-cu tab-verde activo">
+                        RUTAS<span id="contador-rutas">(0)</span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="tarjetas-portal">
+
+                <section class="tarjeta tarjeta-formulario">
+                    <h3>
+                        <svg id="icono-formulario" class="icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                        <span id="titulo-formulario">Registrar Nueva Ruta</span>
+                    </h3>
+                    <form id="form-ruta">
+                        <input type="hidden" id="id_ruta_editar" name="id_ruta_editar" value="">
+
+                        <label for="nombre_ruta">Nombre de la ruta:</label>
+                        <input type="text" id="nombre_ruta" name="nombre_ruta" placeholder="Corredor Litoral Norte" required>
+
+                        <label for="origen">Origen:</label>
+                        <input type="text" id="origen" name="origen" placeholder="Hospital de Salto" required>
+
+                        <label for="destino">Destino:</label>
+                        <input type="text" id="destino" name="destino" placeholder="Hospital de Clínicas, Montevideo" required>
+
+                        <label for="distancia">Distancia (km):</label>
+                        <input type="number" step="0.01" id="distancia" name="distancia" placeholder="498.00">
+
+                        <label for="descripcion">Descripción:</label>
+                        <input type="text" id="descripcion" name="descripcion" placeholder="Ruta 3 y 1, sin peajes">
+
+                        <div id="mensaje-form" class="mensaje-error"></div>
+
+                        <button type="submit" id="boton-formulario" class="boton boton-verde">Guardar Ruta</button>
+                    </form>
+                </section>
+
+                <section class="tarjeta tarjeta-tabla">
+                    <div class="cabecera-tarjeta">
+                        <h3>
+                            <svg class="icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>
+                            Catálogo de Rutas
+                        </h3>
+                        <span class="badge-total">Total: <span id="total-rutas">0</span> rutas</span>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Trayecto</th>
+                                <th>Distancia</th>
+                                <th>Descripción</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabla-rutas"></tbody>
+                    </table>
+                </section>
+
+            </div>
+
+        </main>
+    </div>
+
+    <script src="../js/shell.js"></script>
+    <script src="../js/recursos-rutas.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIGSM - Documentos Médicos</title>
+    <link rel="stylesheet" href="../assets/css/estilos.css">
+</head>
+<body>
+
+    <div id="header"></div>
+
+    <div class="layout">
+        <div id="sidebar"></div>
+
+        <main class="contenido">
+            <div class="tarjetas-portal">
+
+                <section class="tarjeta tarjeta-formulario">
+                    <h3 id="titulo-formulario">Agregar Documento Médico</h3>
+                    <!-- sin enctype="multipart/form-data" el archivo llega vacio al servidor, no tira error, simplemente no llega -->
+                    <form id="form-documento" enctype="multipart/form-data">
+                        <input type="hidden" id="id_documento_editar" name="id_documento_editar" value="">
+
+                        <label for="titulo">Título:</label>
+                        <input type="text" id="titulo" name="titulo" placeholder="Indicaciones de IVE" required>
+
+                        <label for="descripcion">Descripción:</label>
+                        <input type="text" id="descripcion" name="descripcion" placeholder="Protocolo de cuidados..." required>
+
+                        <label for="departamento">Departamento Médico:</label>
+                        <select id="departamento" name="departamento" required>
+                            <option value="Ginecología y Obstetricia">Ginecología y Obstetricia</option>
+                            <option value="Urología">Urología</option>
+                            <option value="Cardiología y Hematología">Cardiología y Hematología</option>
+                            <option value="Radiología / Imagenología">Radiología / Imagenología</option>
+                            <option value="Nefrología y Trasplante Renal">Nefrología y Trasplante Renal</option>
+                        </select>
+
+                        <label for="instruccion1">Indicación clínica 1:</label>
+                        <input type="text" id="instruccion1" name="instruccion1" placeholder="Reposo relativo por 48hs" required>
+
+                        <label for="instruccion2">Indicación clínica 2:</label>
+                        <input type="text" id="instruccion2" name="instruccion2" placeholder="Tomar la medicación cada 8hs" required>
+
+                        <label for="pauta_alarma">Pauta de alarma (opcional):</label>
+                        <input type="text" id="pauta_alarma" name="pauta_alarma" placeholder="Fiebre mayor a 38° o sangrado abundante">
+
+                        <label for="archivo" id="label-archivo">Archivo (PDF):</label>
+                        <input type="file" id="archivo" name="archivo" accept="application/pdf" required>
+
+                        <div id="mensaje-form" class="mensaje-error"></div>
+
+                        <button type="submit" id="boton-formulario" class="boton boton-primario">Agregar Documento Médico</button>
+                    </form>
+                </section>
+
+                <div id="lista-documentos"></div>
+
+            </div>
+        </main>
+    </div>
+
+    <script src="../js/shell.js"></script>
+    <script src="../js/documentacion.js"></script>
+
+</body>
+</html>

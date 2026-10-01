@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIGSM - Rutas de Ambulancias</title>
+    <link rel="stylesheet" href="../assets/css/estilos.css">
+</head>
+<body>
+
+    <div id="header"></div>
+
+    <div class="layout">
+        <div id="sidebar"></div>
+
+        <main class="contenido">
+            <div class="tarjetas-portal">
+
+                <section class="tarjeta tarjeta-formulario">
+                    <h3>Despachar Ambulancia</h3>
+                    <form id="form-despacho">
+                        <label for="id_ambulancia">Ambulancia:</label>
+                        <select id="id_ambulancia" name="id_ambulancia" required>
+                            <option value="">Seleccione una ambulancia</option>
+                        </select>
+
+                        <label for="id_conductor">Conductor:</label>
+                        <select id="id_conductor" name="id_conductor" required>
+                            <option value="">Seleccione un conductor</option>
+                        </select>
+
+                        <label for="id_acompanante">Acompañante (opcional):</label>
+                        <select id="id_acompanante" name="id_acompanante">
+                            <option value="">Ninguno</option>
+                        </select>
+
+                        <label for="id_elemento">Elemento de traslado (opcional):</label>
+                        <select id="id_elemento" name="id_elemento">
+                            <option value="">Ninguno</option>
+                        </select>
+
+                        <label for="id_ruta">Ruta:</label>
+                        <select id="id_ruta" name="id_ruta" required>
+                            <option value="">Seleccione una ruta</option>
+                        </select>
+
+                        <div id="mensaje-form" class="mensaje-error"></div>
+
+                        <button type="submit" class="boton boton-primario">Despachar Ambulancia</button>
+                    </form>
+                </section>
+
+                <section class="tarjeta tarjeta-tabla">
+                    <h3>Traslados Despachados</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Ambulancia</th>
+                                <th>Conductor</th>
+                                <th>Ruta</th>
+                                <th>Fecha</th>
+                                <th>Salida</th>
+                                <th>Estado</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabla-traslados"></tbody>
+                    </table>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <script src="../js/shell.js"></script>
+    <script src="../js/traslados.js"></script>
+
+</body>
+</html>
