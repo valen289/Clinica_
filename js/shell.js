@@ -6,12 +6,11 @@
 var SIGSM = (function () {
 
     var ENLACES_SIDEBAR = [
-        { pagina: 'login', href: 'index.html', texto: 'Portal Clínicas (Login)', badge: null, soloNoChofer: false },
         { pagina: 'documentacion', href: 'documentacion.html', texto: 'Documentos Médicos (Admin)', badge: 'Mód. 1', soloNoChofer: true },
         { pagina: 'documento_publico', href: 'documento-publico.html', texto: 'Documento QR (Paciente)', badge: null, soloNoChofer: false },
         { pagina: 'traslados', href: 'traslados.html', texto: 'Rutas de Ambulancias', badge: 'Mód. 4', soloNoChofer: false },
         { pagina: 'recursos', href: 'recursos-ambulancias.html', texto: 'ABM Recursos', badge: 'Mód. 5', soloNoChofer: true },
-        { pagina: 'encuestas', href: 'encuestas.html', texto: 'Encuestas y Reportes', badge: 'Mód. 3', soloNoChofer: false },
+        { pagina: 'encuestas', href: 'encuesta-reporte.html', texto: 'Encuestas y Reportes', badge: 'Mód. 3', soloNoChofer: false },
     ];
 
     var TRAZOS_ICONO = {
@@ -48,7 +47,12 @@ var SIGSM = (function () {
                     '<h1>SIGSM</h1>' +
                     '<p>Sistema Informático de Gestión de Servicios Médicos Hospital de Clínicas</p>' +
                 '</div>' +
+                '<button type="button" class="btn-cerrar-sesion" id="cerrar-sesion">Cerrar sesión</button>' +
             '</header>';
+
+        document.querySelector('#cerrar-sesion').addEventListener('click', function (e) {
+            cerrarSesion(e.currentTarget);
+        });
     }
 
     function renderSidebar(sesion, paginaActual) {
@@ -66,19 +70,20 @@ var SIGSM = (function () {
             })
             .join('');
 
-        items += '<li><a href="#" id="cerrar-sesion">Cerrar sesión</a></li>';
-
         contenedor.outerHTML =
             '<aside class="sidebar">' +
                 '<p class="sidebar-titulo">COMPONENTES</p>' +
                 '<nav><ul>' + items + '</ul></nav>' +
             '</aside>';
+    }
 
-        document.querySelector('#cerrar-sesion').addEventListener('click', async function (e) {
-            e.preventDefault();
+    async function cerrarSesion(boton) {
+        boton.disabled = true;
+        try {
             await fetch('../php/auth-logout.php', { method: 'POST' });
+        } finally {
             window.location.href = 'index.html';
-        });
+        }
     }
 
     async function protegerPagina(paginaActual, rolesPermitidos, rutaFallback) {

@@ -18,6 +18,30 @@ body {
     border-bottom: 1px solid #e0e0e0;
 }
 
+.btn-cerrar-sesion {
+    margin-left: auto;
+    padding: 8px 16px;
+    background-color: #2f6fed;
+    color: #ffffff;
+    border: 1px solid #2f6fed;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s, border-color 0.2s;
+}
+
+.btn-cerrar-sesion:hover,
+.btn-cerrar-sesion:focus-visible {
+    background-color: #d92d20;
+    border-color: #d92d20;
+}
+
+.btn-cerrar-sesion:disabled {
+    opacity: 0.6;
+    cursor: wait;
+}
+
 .layout {
     display: flex;
 }
