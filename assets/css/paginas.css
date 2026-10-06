@@ -1,0 +1,225 @@
+/* ==========================================================
+   PÁGINAS
+   Estilos exclusivos de una pantalla o módulo concreto.
+   ========================================================== */
+
+/* ==========================================================
+   AUTENTICACIÓN (index.html = login, registro.html)
+   ========================================================== */
+.pantalla-auth {
+    min-height: 100vh;
+    display: flex;
+}
+
+.panel-marca {
+    flex: 1;
+    max-width: 440px;
+    background: linear-gradient(160deg, var(--color-azul-oscuro) 0%, #1d3461 100%);
+    color: var(--color-blanco);
+    padding: 50px 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.panel-marca .logo-marca {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.panel-marca .logo-marca .logo {
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
+}
+
+.panel-marca .logo-marca h1 {
+    font-size: 19px;
+}
+
+.panel-marca .logo-marca p {
+    font-size: 12px;
+    color: #94a3c4;
+}
+
+.marca-contenido h2 {
+    font-size: 25px;
+    line-height: 1.35;
+    margin-bottom: 14px;
+}
+
+.marca-contenido > p {
+    font-size: 14px;
+    color: #b6c2dd;
+    line-height: 1.6;
+    margin-bottom: 26px;
+    max-width: 340px;
+}
+
+.lista-features {
+    list-style: none;
+}
+
+.lista-features li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    color: #dbe4f5;
+    padding: var(--espacio-sm) 0;
+}
+
+.lista-features svg {
+    flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+    color: #6f96f2;
+}
+
+.marca-footer {
+    font-size: 12px;
+    color: #6f80a3;
+}
+
+.panel-formulario {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px var(--espacio-lg);
+    background-color: var(--color-fondo);
+}
+
+.panel-formulario .tarjeta-login {
+    width: 100%;
+    max-width: 380px;
+    box-shadow: 0 12px 30px rgba(20, 33, 61, 0.08);
+}
+
+.tarjeta-login label {
+    display: block;
+    font-size: 13px;
+    font-weight: bold;
+    margin-bottom: 6px;
+}
+
+.tarjeta-login input {
+    display: block;
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--color-borde-input);
+    border-radius: var(--radio-chico);
+    font-size: 14px;
+    margin-bottom: 16px;
+}
+
+.tarjeta-login input:focus {
+    outline: none;
+    border-color: var(--color-primario);
+}
+
+.tarjeta-login button {
+    margin-top: 5px;
+}
+
+/* Va después de .tarjeta-login input: misma especificidad, gana por orden */
+.input-con-icono {
+    position: relative;
+}
+
+.input-con-icono svg {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 16px;
+    height: 16px;
+    color: var(--color-texto-tenue);
+    pointer-events: none;
+}
+
+.input-con-icono input {
+    padding: 10px 12px 10px 36px;
+}
+
+/* ==========================================================
+   PANTALLA CENTRADA (documento-publico.html, registro.html)
+   ========================================================== */
+.pantalla-paciente {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--espacio-lg);
+}
+
+.pantalla-paciente .tarjeta {
+    max-width: 380px;
+}
+
+/* ==========================================================
+   RECURSOS (recursos-ambulancias / personal / rutas)
+   ========================================================== */
+.cabecera-modulo {
+    background-color: var(--color-blanco);
+    border: 1px solid var(--color-borde);
+    border-radius: var(--radio-grande);
+    padding: 22px 25px;
+    margin-bottom: var(--espacio-lg);
+}
+
+.cabecera-modulo h2 {
+    font-size: 21px;
+    margin-bottom: var(--espacio-sm);
+}
+
+.cabecera-modulo p {
+    font-size: 14px;
+    color: var(--color-texto-suave);
+    line-height: 1.6;
+    max-width: 800px;
+}
+
+/* Va después de .tarjeta (componentes.css): pisa su flex: 1 */
+.tarjeta-tabla {
+    flex: 2;
+    overflow-x: auto;
+}
+
+.tarjeta-tabla table {
+    min-width: 560px;
+}
+
+/* ==========================================================
+   DOCUMENTACIÓN (documentacion.html, documento-publico.html)
+   ========================================================== */
+.tarjeta-documento {
+    flex: 1;
+}
+
+.fecha-documento {
+    font-size: 12px;
+    color: var(--color-texto-tenue);
+}
+
+.acciones-tarjeta {
+    margin-top: 12px;
+}
+
+.lista-instrucciones {
+    list-style: none;
+    margin: 10px 0;
+}
+
+.lista-instrucciones li {
+    font-size: 13px;
+    color: var(--color-texto-secundario);
+    padding: 6px 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.lista-instrucciones li.pauta-alarma {
+    color: var(--color-peligro);
+    font-weight: bold;
+}

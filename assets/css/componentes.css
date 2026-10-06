@@ -1,0 +1,380 @@
+/* ==========================================================
+   COMPONENTES
+   Piezas reutilizables en varios módulos: botones, tarjetas,
+   badges, formularios, tablas, pills, pestañas, íconos y enlaces.
+   ========================================================== */
+
+/* ==========================================================
+   BOTONES
+   ========================================================== */
+.boton {
+    display: inline-block;
+    padding: 10px var(--espacio-lg);
+    border: none;
+    border-radius: var(--radio-chico);
+    font-size: 14px;
+    font-weight: bold;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.boton-primario {
+    background-color: var(--color-primario);
+    color: var(--color-blanco);
+}
+
+.boton-primario:hover {
+    background-color: var(--color-primario-hover);
+}
+
+.boton-secundario {
+    background-color: var(--color-gris-suave);
+    color: var(--color-texto-medio);
+}
+
+.boton-secundario:hover {
+    background-color: var(--color-gris-hover);
+}
+
+.boton-violeta {
+    background-color: var(--color-violeta);
+    color: var(--color-blanco);
+}
+
+.boton-violeta:hover {
+    background-color: var(--color-violeta-hover);
+}
+
+.boton-verde {
+    background-color: var(--color-verde);
+    color: var(--color-blanco);
+}
+
+.boton-verde:hover {
+    background-color: var(--color-verde-hover);
+}
+
+/* ==========================================================
+   TARJETAS
+   ========================================================== */
+.tarjetas-portal {
+    display: flex;
+    gap: var(--espacio-lg);
+}
+
+.tarjeta {
+    flex: 1;
+    background-color: var(--color-blanco);
+    border: 1px solid var(--color-borde);
+    border-radius: var(--radio-grande);
+    padding: 25px;
+}
+
+.tarjeta h3 {
+    font-size: 16px;
+    margin-bottom: var(--espacio-sm);
+}
+
+.tarjeta p {
+    font-size: 14px;
+    color: var(--color-texto-secundario);
+    line-height: 1.6;
+    margin-bottom: var(--espacio-md);
+}
+
+/* Cabecera de tarjeta con título + badge de total */
+.cabecera-tarjeta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--espacio-sm);
+}
+
+.cabecera-tarjeta h3 {
+    margin-bottom: 0;
+}
+
+/* ==========================================================
+   BADGES
+   ========================================================== */
+.badge {
+    background-color: var(--color-gris-suave);
+    color: var(--color-texto-suave);
+    font-size: 11px;
+    padding: 2px var(--espacio-sm);
+    border-radius: var(--radio-grande);
+}
+
+.tarjeta .badge {
+    display: inline-block;
+    margin-bottom: var(--espacio-sm);
+}
+
+.badge-total {
+    background-color: var(--color-violeta-suave);
+    color: var(--color-violeta);
+    font-size: 12px;
+    font-weight: bold;
+    padding: 3px 10px;
+    border-radius: var(--radio-grande);
+    white-space: nowrap;
+}
+
+.fila-badges-modulo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+.badge-modulo {
+    background-color: var(--color-violeta);
+    color: var(--color-blanco);
+    font-size: 12px;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+    padding: var(--espacio-xs) 12px;
+    border-radius: var(--radio-pill);
+}
+
+/* ==========================================================
+   PILLS DE ESTADO
+   ========================================================== */
+.pill-estado {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: bold;
+    letter-spacing: 0.3px;
+    padding: 3px 10px;
+    border-radius: var(--radio-pill);
+    text-transform: uppercase;
+}
+
+.pill-estado.pill-verde {
+    background-color: #dcfce7;
+    color: var(--color-verde-hover);
+}
+
+.pill-estado.pill-naranja {
+    background-color: #ffedd5;
+    color: #c2410c;
+}
+
+.pill-estado.pill-rojo {
+    background-color: #fee2e2;
+    color: var(--color-peligro);
+}
+
+.pill-estado.pill-azul {
+    background-color: #dbeafe;
+    color: var(--color-primario-hover);
+}
+
+/* ==========================================================
+   PESTAÑAS (casos de uso del módulo)
+   ========================================================== */
+.tabs-cu {
+    display: flex;
+    gap: 10px;
+    margin-top: 18px;
+    flex-wrap: wrap;
+}
+
+.tab-cu {
+    display: block;
+    background-color: var(--color-fondo);
+    border: 1px solid var(--color-borde);
+    color: var(--color-texto-medio);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: bold;
+    padding: 10px 18px;
+    border-radius: var(--radio-medio);
+    text-align: center;
+}
+
+.tab-cu span {
+    display: block;
+    font-weight: normal;
+    font-size: 11px;
+    color: var(--color-texto-tenue);
+}
+
+.tab-cu.activo {
+    color: var(--color-blanco);
+}
+
+.tab-cu.activo span {
+    color: rgba(255, 255, 255, 0.75);
+}
+
+.tab-cu.tab-azul.activo {
+    background-color: var(--color-primario);
+    border-color: var(--color-primario);
+}
+
+.tab-cu.tab-violeta.activo {
+    background-color: var(--color-violeta);
+    border-color: var(--color-violeta);
+}
+
+.tab-cu.tab-verde.activo {
+    background-color: var(--color-verde);
+    border-color: var(--color-verde);
+}
+
+/* ==========================================================
+   FORMULARIOS
+   ========================================================== */
+.tarjeta-formulario label {
+    display: block;
+    font-size: 13px;
+    font-weight: bold;
+    margin-top: 12px;
+    margin-bottom: 6px;
+}
+
+.tarjeta-formulario input {
+    display: block;
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--color-borde-input);
+    border-radius: var(--radio-chico);
+    font-size: 14px;
+}
+
+.tarjeta-formulario select {
+    display: block;
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--color-borde-input);
+    border-radius: var(--radio-chico);
+    font-size: 14px;
+    margin-bottom: var(--espacio-xs);
+    background-color: var(--color-blanco);
+}
+
+.tarjeta-formulario button {
+    margin-top: var(--espacio-lg);
+}
+
+.mensaje-error {
+    color: var(--color-peligro);
+    font-size: 13px;
+    min-height: 16px;
+    margin-top: -6px;
+    margin-bottom: 10px;
+}
+
+/* ==========================================================
+   TABLAS
+   ========================================================== */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+th, td {
+    text-align: left;
+    padding: 10px var(--espacio-sm);
+    border-bottom: 1px solid var(--color-borde);
+}
+
+th {
+    color: var(--color-texto-suave);
+    font-size: 12px;
+    text-transform: uppercase;
+}
+
+.texto-ci {
+    color: var(--color-violeta);
+    font-weight: bold;
+}
+
+/* ==========================================================
+   ENLACES DE ACCIÓN E ÍCONOS
+   ========================================================== */
+.enlace-secundario {
+    font-size: 13px;
+    text-align: center;
+    margin-top: 14px;
+}
+
+.enlace-secundario a {
+    color: var(--color-primario);
+    text-decoration: none;
+}
+
+.enlace-accion {
+    font-size: 13px;
+    text-decoration: none;
+    color: var(--color-primario);
+    margin-right: 10px;
+}
+
+.enlace-accion.confirmar-borrado {
+    color: var(--color-peligro);
+}
+
+button.enlace-accion {
+    background: none;
+    border: none;
+    padding: 0;
+    font-family: inherit;
+    cursor: pointer;
+}
+
+.enlace-icono {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+    margin-right: var(--espacio-sm);
+}
+
+.icono {
+    width: 16px;
+    height: 16px;
+    vertical-align: -3px;
+    margin-right: 6px;
+}
+
+.enlace-icono .icono {
+    margin-right: 0;
+    vertical-align: middle;
+}
+
+.icono-insignia {
+    width: 46px;
+    height: 46px;
+    border-radius: 12px;
+    background-color: var(--color-primario-suave);
+    color: var(--color-primario);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 18px;
+}
+
+.icono-insignia svg {
+    width: 22px;
+    height: 22px;
+}
+
+/* ==========================================================
+   AVISOS
+   ========================================================== */
+.aviso-simulador {
+    background-color: #eafaf0;
+    border: 1px solid #b7e4c7;
+    border-radius: var(--radio-chico);
+    padding: 12px var(--espacio-md);
+    font-size: 13px;
+    color: #2f6f4f;
+    line-height: 1.5;
+    margin-bottom: var(--espacio-lg);
+}
+
+.aviso-simulador strong {
+    color: #1f7a4d;
+}

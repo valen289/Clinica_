@@ -1,0 +1,117 @@
+/* ==========================================================
+   RESPONSIVE
+   Todos los @media del sistema, de pantalla grande a chica.
+   Se carga último para poder pisar al resto de los archivos.
+   ========================================================== */
+
+/* ==========================================================
+   TABLET (≤ 1024px)
+   ========================================================== */
+@media (max-width: 1024px) {
+    /* Layout */
+    .contenido {
+        padding: var(--espacio-lg);
+    }
+
+    /* Recursos */
+    .cabecera-modulo {
+        padding: 18px var(--espacio-lg);
+    }
+}
+
+/* ==========================================================
+   AUTENTICACIÓN (≤ 860px)
+   ========================================================== */
+@media (max-width: 860px) {
+    .pantalla-auth {
+        flex-direction: column;
+    }
+
+    .panel-marca {
+        max-width: 100%;
+        padding: 26px 24px;
+    }
+
+    .marca-contenido h2 {
+        font-size: 19px;
+    }
+
+    .marca-contenido > p {
+        margin-bottom: 14px;
+        max-width: none;
+    }
+
+    .lista-features,
+    .marca-footer {
+        display: none;
+    }
+}
+
+/* ==========================================================
+   CELULAR (≤ 768px)
+   ========================================================== */
+@media (max-width: 768px) {
+    /* Layout */
+    .layout {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid var(--color-borde-layout);
+        padding: var(--espacio-md);
+    }
+
+    .sidebar-titulo {
+        display: none;
+    }
+
+    nav ul {
+        display: flex;
+        gap: var(--espacio-sm);
+        overflow-x: auto;
+        padding-bottom: var(--espacio-xs);
+    }
+
+    nav li {
+        margin-bottom: 0;
+        flex-shrink: 0;
+    }
+
+    nav a {
+        white-space: nowrap;
+    }
+
+    .contenido {
+        padding: 16px;
+    }
+
+    /* Componentes */
+    .tarjetas-portal {
+        flex-direction: column;
+    }
+
+    .tarjeta {
+        width: 100%;
+    }
+
+    .tab-cu {
+        flex: 1 1 auto;
+    }
+
+    .cabecera-tarjeta {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+    }
+
+    /* Recursos */
+    .cabecera-modulo {
+        padding: 16px;
+    }
+
+    .cabecera-modulo h2 {
+        font-size: 18px;
+    }
+}
