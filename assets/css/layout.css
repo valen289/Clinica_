@@ -1,0 +1,120 @@
+/* ==========================================================
+   LAYOUT
+   Esqueleto de las páginas internas que arma js/shell.js:
+   topbar + sidebar + contenido.
+   ========================================================== */
+
+/* ---- Topbar ---- */
+.topbar {
+    display: flex;
+    align-items: center;
+    gap: var(--espacio-md);
+    padding: var(--espacio-md) var(--espacio-xl);
+    background-color: var(--color-blanco);
+    border-bottom: 1px solid var(--color-borde-layout);
+}
+
+.logo {
+    width: 40px;
+    height: 40px;
+    background-color: var(--color-primario);
+    border-radius: var(--radio-medio);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-blanco);
+    flex-shrink: 0;
+}
+
+.logo svg {
+    width: 60%;
+    height: 60%;
+}
+
+.titulo-sistema h1 {
+    font-size: 20px;
+}
+
+.titulo-sistema p {
+    font-size: 13px;
+    color: var(--color-texto-suave);
+}
+
+.btn-cerrar-sesion {
+    margin-left: auto;
+    padding: var(--espacio-sm) 16px;
+    background-color: var(--color-primario);
+    color: var(--color-blanco);
+    border: 1px solid var(--color-primario);
+    border-radius: var(--radio-chico);
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s, border-color 0.2s;
+}
+
+.btn-cerrar-sesion:hover,
+.btn-cerrar-sesion:focus-visible {
+    background-color: var(--color-peligro-fuerte);
+    border-color: var(--color-peligro-fuerte);
+}
+
+.btn-cerrar-sesion:disabled {
+    opacity: 0.6;
+    cursor: wait;
+}
+
+/* ---- Estructura principal ---- */
+.layout {
+    display: flex;
+}
+
+.contenido {
+    flex: 1;
+    padding: var(--espacio-xl);
+}
+
+/* ---- Sidebar ---- */
+.sidebar {
+    width: 260px;
+    flex-shrink: 0;  /* me sirve para que nunca se achique y quede fijo en 260px */
+    background-color: var(--color-blanco);
+    border-right: 1px solid var(--color-borde-layout);
+    padding: var(--espacio-lg);
+}
+
+.sidebar-titulo {
+    font-size: 12px;
+    color: var(--color-texto-tenue);
+    letter-spacing: 0.5px;
+    margin-bottom: var(--espacio-md);
+}
+
+nav ul {
+    list-style: none;
+}
+
+nav li {
+    margin-bottom: var(--espacio-xs);
+}
+
+nav a {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 12px;
+    border-radius: var(--radio-chico);
+    color: var(--color-texto-medio);
+    text-decoration: none;
+    font-size: 14px;
+}
+
+nav a:hover {
+    background-color: var(--color-fondo);
+}
+
+.activo a {
+    background-color: var(--color-primario-suave);
+    color: var(--color-primario);
+    font-weight: bold;
+}

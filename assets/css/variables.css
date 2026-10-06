@@ -1,0 +1,70 @@
+/* ==========================================================
+   VARIABLES + RESET
+   Tokens de diseño compartidos por todo el sistema.
+   Se carga primero en todas las páginas.
+   ========================================================== */
+
+:root {
+    /* ---- Colores de marca ---- */
+    --color-primario: #2f6fed;
+    --color-primario-hover: #1d4ed8;
+    --color-primario-suave: #e8f0fe;
+    --color-violeta: #7c3aed;
+    --color-violeta-hover: #6d28d9;
+    --color-violeta-suave: #ede9fe;
+    --color-verde: #16a34a;
+    --color-verde-hover: #15803d;
+    --color-peligro: #b91c1c;
+    --color-peligro-fuerte: #d92d20;
+    --color-azul-oscuro: #14213d;
+
+    /* ---- Fondos ---- */
+    --color-blanco: #ffffff;
+    --color-fondo: #f4f6f9;
+    --color-gris-suave: #eef0f3;
+    --color-gris-hover: #dfe3e8;
+
+    /* ---- Textos ---- */
+    --color-texto: #1a1a1a;
+    --color-texto-medio: #374151;
+    --color-texto-secundario: #4b5563;
+    --color-texto-suave: #6b7280;
+    --color-texto-tenue: #9ca3af;
+
+    /* ---- Bordes ---- */
+    --color-borde: #e5e7eb;
+    --color-borde-layout: #e0e0e0;
+    --color-borde-input: #d1d5db;
+
+    /* ---- Radios ---- */
+    --radio-chico: 6px;
+    --radio-medio: 8px;
+    --radio-grande: 10px;
+    --radio-pill: 20px;
+
+    /* ---- Espaciado ---- */
+    --espacio-xs: 4px;
+    --espacio-sm: 8px;
+    --espacio-md: 15px;
+    --espacio-lg: 20px;
+    --espacio-xl: 30px;
+
+    /* ---- Tipografía ---- */
+    --fuente-base: Arial, sans-serif;
+}
+
+/* ==========================================================
+   RESET
+   ========================================================== */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: var(--fuente-base);
+    background-color: var(--color-fondo);
+    color: var(--color-texto);
+}
