@@ -223,3 +223,102 @@
     color: var(--color-peligro);
     font-weight: bold;
 }
+/* ==========================================================
+   ENCUESTA (encuesta-reporte.html)
+   ========================================================== */
+
+.encuesta {
+    width: 80%;
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 35px;
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.encuesta h1 {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.encuesta p {
+    text-align: center;
+    color: #666;
+    margin-bottom: 30px;
+}
+
+.pregunta {
+    margin-bottom: 35px;
+}
+
+.pregunta > label {
+    display: block;
+    margin-bottom: 15px;
+    font-weight: bold;
+}
+
+.encuesta input[type="email"] {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    box-sizing: border-box;
+    front-size: 15px;
+}
+.encuesta input[type="email"]:focus {
+    outline: none;
+    border-color: #2c7be5;
+}
+
+.opciones {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.opciones label {
+    font-weight: normal;
+    cursor: pointer;
+}
+.opciones input {
+    margin-right: 8px;
+}
+.encuesta textarea {
+    width: 100%;
+    padding: 12px;
+    border: 10px solid #ccc;
+    border-radius: 6px;
+    box-sizing: border-box;
+    font-size: 15px;
+    resize: vertical;
+}
+.encuesta textarea:focus {
+    outline: none;
+    border-color: #2c7be5;
+}
+.encuesta button {
+    display: block;
+    width: 100%;
+    padding: 13px;
+    background-color: #2c7be5;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.encuesta button:hover {
+    background-color: #1b5fbf;
+}
+.ultima-pregunta {
+    text-align: center;
+
+}
+.ultima-pregunta textarea {
+    display: block;
+    margin: 0 auto;
+    width: 80%;
+}

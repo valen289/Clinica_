@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SIGSM - Encuesta de Satisfacción</title>
+
     <link rel="stylesheet" href="../assets/css/variables.css">
     <link rel="stylesheet" href="../assets/css/layout.css">
     <link rel="stylesheet" href="../assets/css/componentes.css">
@@ -12,15 +13,21 @@
     <link rel="stylesheet" href="../assets/css/responsive.css">
 
  </head>
-<body>
-   <h1>Encuesta de Satisfacción</h1>
 
+<body>
+ 
+    <div class="encuesta">
+        <h1>Encuesta de Satisfacción</h1>
 <p>
     Queremos conocer tu experiencia en nuestro hospital.
+     Tus respuestas nos ayudan a mejorar nuestro servicio
 </p>
 
 <form>
-<label for="correo">Correo electrónico:</label>
+
+    <div class="pregunta">
+
+ <label> Correo electrónico:</label>
 
 <input 
     type="email" 
@@ -28,24 +35,92 @@
     name="correo"
     placeholder="ejemplo@gmail.com"
 >
+    </div>
+
  <label>¿Cómo calificarías el servicio recibido?</label>
+ <div class="opciones">
 
-  <input type="radio" name="calificacion" value="excelente"> Excelente
-  <input type="radio" name="calificacion" value="bueno"> Bueno    
-  <input type="radio" name="calificacion" value="regular"> Regular
-  <input type="radio" name="calificacion" value="malo"> Malo
 
-  <label>Deberiamos cambiar algo de nuestro servicio?</label>
+    <label>
+ <input type="radio" name="servicio" value="Excelente">
+ Excelente
+    </label>
 
-  <input type="radio" name="opinion" value="Excelente"> No, todo estuvo excelente
-  <input type="radio" name="opinion" value="bueno"> Si, pero no es algo grave   
-  <input type="radio" name="opinion" value="regular"> Horrible, no me gusto para nada
-  <input type="radio" name="opinion" value="malo"> Deberian cambiar todo
 
-  <button type="submit">Enviar encuesta</button>
+   <label>
+<input type="radio" name="servicio" value="Bueno">
+ Bueno
+  </label>
+
+
+  <label>
+<input type="radio" name="servicio" value="Regular">
+Regular
+</label>
+
+
+  <label>
+<input type="radio" name="servicio" value="Malo">
+Malo
+ </label>
+
+ </div>
+
+
+  <div class="pregunta">
+
+  <label>
+    Deberiamos cambiar algo de nuestro servicio?
+ </label>
+  </div class="opciones">
+
+  <label> 
+    <input type="radio" name="opinion" value="Excelente"> No, todo estuvo excelente
+  </label>
+
+
+ <label>
+    <input type="radio" name="opinion" value="Excelente"> No, todo estuvo excelente
+ </label>
+
+
+ <label>
+     <input type="radio" name="opinion" value="bueno"> Si, pero no es algo grave
+ </label>
+
+
+ <label>
+    <input type="radio" name="opinion" value="regular"> Horrible, no me gusto para nada
+ </label> 
+
+ 
+ <label>
+    <input type="radio" name="opinion" value="malo"> Deberian cambiar todo
+ </label>
+ 
+  </div>
+</div>
+
+
+<div class="pregunta ultima-pregunta">
+
+<label for="comentario">
+    ¿Tienes alguna sugerencia?
+</label> 
+
+<textarea 
+    id="comentario" 
+    name="comentario" 
+    placeholder="Escribe tu sugerencia aquí..."
+    rows="5">
+</textarea>
+</div>
+
+  <button type="submit"> Enviar encuesta </button>
 </form>
 
-    
+</div>
+
  </body>
 
 </html>
