@@ -1,0 +1,10 @@
+<?php
+
+// Copiá este archivo como config.local.php en esta misma carpeta (php/) y
+// completá los datos reales del servidor. config.local.php NO se sube a git
+// (está en .gitignore) y config.php lo carga automáticamente si existe.
+
+define('BD_HOST', 'localhost');
+define('BD_USUARIO', 'usuario_real_del_servidor');
+define('BD_CLAVE', 'clave_real_del_servidor');
+define('BD_NOMBRE', 'nombre_real_de_la_base');
