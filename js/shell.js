@@ -3,9 +3,9 @@
 // la página redirigiendo al login si no hay sesión (o si el rol no puede entrar acá).
 // OJO: esto es solo UX. La autorización real la hace cada endpoint de /php/.
 
-var SIGSM = (function () {
+const SIGSM = (function () {
 
-    var ENLACES_SIDEBAR = [
+    const ENLACES_SIDEBAR = [
         { pagina: 'documentacion', href: 'documentacion.html', texto: 'Documentos Médicos (Admin)', badge: 'Mód. 1', soloNoChofer: true },
         { pagina: 'documento_publico', href: 'documento-publico.html', texto: 'Documento QR (Paciente)', badge: null, soloNoChofer: false },
         { pagina: 'traslados', href: 'traslados.html', texto: 'Rutas de Ambulancias', badge: 'Mód. 4', soloNoChofer: false },
@@ -13,20 +13,20 @@ var SIGSM = (function () {
         { pagina: 'encuestas', href: 'encuesta-reporte.html', texto: 'Encuestas y Reportes', badge: 'Mód. 3', soloNoChofer: false },
     ];
 
-    var TRAZOS_ICONO = {
+    const TRAZOS_ICONO = {
         plus: '<line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>',
         pencil: '<path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/>',
     };
 
     function escapar(texto) {
-        var div = document.createElement('div');
+        const div = document.createElement('div');
         div.textContent = texto;
         return div.innerHTML;
     }
 
     async function cargarResumenRecursos() {
-        var respuesta = await fetch('../php/recursos-resumen.php');
-        var resultado = await respuesta.json();
+        const respuesta = await fetch('../php/recursos-resumen.php');
+        const resultado = await respuesta.json();
         if (!resultado.exito) return;
 
         document.querySelector('#contador-ambulancias').textContent = '(' + resultado.datos.total_ambulancias + ')';
@@ -35,7 +35,7 @@ var SIGSM = (function () {
     }
 
     function renderHeader() {
-        var contenedor = document.querySelector('#header');
+        const contenedor = document.querySelector('#header');
         if (!contenedor) return;
 
         contenedor.outerHTML =
@@ -56,16 +56,16 @@ var SIGSM = (function () {
     }
 
     function renderSidebar(sesion, paginaActual) {
-        var contenedor = document.querySelector('#sidebar');
+        const contenedor = document.querySelector('#sidebar');
         if (!contenedor) return;
 
-        var esChofer = sesion.rol === 'Chofer';
+        const esChofer = sesion.rol === 'Chofer';
 
-        var items = ENLACES_SIDEBAR
+        const items = ENLACES_SIDEBAR
             .filter(function (item) { return !(esChofer && item.soloNoChofer); })
             .map(function (item) {
-                var activo = (item.pagina === paginaActual) ? ' activo' : '';
-                var badge = item.badge ? ' <span class="badge">' + item.badge + '</span>' : '';
+                const activo = (item.pagina === paginaActual) ? ' activo' : '';
+                const badge = item.badge ? ' <span class="badge">' + item.badge + '</span>' : '';
                 return '<li class="' + activo.trim() + '"><a href="' + item.href + '">' + item.texto + badge + '</a></li>';
             })
             .join('');
@@ -87,8 +87,8 @@ var SIGSM = (function () {
     }
 
     async function protegerPagina(paginaActual, rolesPermitidos, rutaFallback) {
-        var respuesta = await fetch('../php/auth-sesion.php');
-        var sesion = await respuesta.json();
+        const respuesta = await fetch('../php/auth-sesion.php');
+        const sesion = await respuesta.json();
 
         if (!sesion.autenticado) {
             window.location.href = 'index.html';

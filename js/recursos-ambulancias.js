@@ -1,12 +1,12 @@
 document.addEventListener('DOMContentLoaded', async function () {
 
-    var sesion = await SIGSM.protegerPagina('recursos', ['Administrador', 'Recepción', 'Médico'], 'traslados.html');
+    const sesion = await SIGSM.protegerPagina('recursos', ['Administrador', 'Recepción', 'Médico'], 'traslados.html');
     if (!sesion) return;
 
-    var formulario = document.querySelector('#form-ambulancia');
-    var mensaje = document.querySelector('#mensaje-form');
-    var tabla = document.querySelector('#tabla-ambulancias');
-    var listaAmbulancias = [];
+    const formulario = document.querySelector('#form-ambulancia');
+    const mensaje = document.querySelector('#mensaje-form');
+    const tabla = document.querySelector('#tabla-ambulancias');
+    let listaAmbulancias = [];
 
     function claseEstado(estado) {
         if (estado === 'Disponible') return 'pill-verde';
@@ -30,8 +30,8 @@ document.addEventListener('DOMContentLoaded', async function () {
     }
 
     async function cargarListado() {
-        var respuesta = await fetch('../php/recursos-ambulancias.php');
-        var resultado = await respuesta.json();
+        const respuesta = await fetch('../php/recursos-ambulancias.php');
+        const resultado = await respuesta.json();
         if (!resultado.exito) return;
 
         listaAmbulancias = resultado.datos;
@@ -61,23 +61,23 @@ document.addEventListener('DOMContentLoaded', async function () {
     }
 
     tabla.addEventListener('click', async function (e) {
-        var enlace = e.target.closest('[data-accion]');
+        const enlace = e.target.closest('[data-accion]');
         if (!enlace) return;
         e.preventDefault();
 
-        var id = enlace.dataset.id;
+        const id = enlace.dataset.id;
 
         if (enlace.dataset.accion === 'editar') {
-            var amb = listaAmbulancias.find(function (a) { return String(a.id_ambulancia) === id; });
+            const amb = listaAmbulancias.find(function (a) { return String(a.id_ambulancia) === id; });
             if (amb) activarModoEdicion(amb);
             return;
         }
 
         if (enlace.dataset.accion === 'borrar') {
-            var confirmado = confirm('¿Seguro que querés eliminar este registro? Esta acción no se puede deshacer.');
+            const confirmado = confirm('¿Seguro que querés eliminar este registro? Esta acción no se puede deshacer.');
             if (!confirmado) return;
 
-            var datos = new FormData();
+            const datos = new FormData();
             datos.append('eliminar_ambulancia', '1');
             datos.append('id_ambulancia', id);
 
@@ -90,15 +90,15 @@ document.addEventListener('DOMContentLoaded', async function () {
         e.preventDefault();
         mensaje.textContent = '';
 
-        var datos = new FormData(formulario);
+        const datos = new FormData(formulario);
         datos.append('guardar_ambulancia', '1');
 
         try {
-            var respuesta = await fetch('../php/recursos-ambulancias.php', {
+            const respuesta = await fetch('../php/recursos-ambulancias.php', {
                 method: 'POST',
                 body: datos
             });
-            var resultado = await respuesta.json();
+            const resultado = await respuesta.json();
 
             if (resultado.exito) {
                 volverAModoAlta();

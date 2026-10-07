@@ -1,12 +1,12 @@
 document.addEventListener('DOMContentLoaded', async function () {
 
-    var sesion = await SIGSM.protegerPagina('recursos', ['Administrador', 'Recepción', 'Médico'], 'traslados.html');
+    const sesion = await SIGSM.protegerPagina('recursos', ['Administrador', 'Recepción', 'Médico'], 'traslados.html');
     if (!sesion) return;
 
-    var formulario = document.querySelector('#form-personal');
-    var mensaje = document.querySelector('#mensaje-form');
-    var tabla = document.querySelector('#tabla-personal');
-    var listaPersonal = [];
+    const formulario = document.querySelector('#form-personal');
+    const mensaje = document.querySelector('#mensaje-form');
+    const tabla = document.querySelector('#tabla-personal');
+    let listaPersonal = [];
 
     function renderFila(persona) {
         return '<tr>' +
@@ -24,8 +24,8 @@ document.addEventListener('DOMContentLoaded', async function () {
     }
 
     async function cargarListado() {
-        var respuesta = await fetch('../php/recursos-personal.php');
-        var resultado = await respuesta.json();
+        const respuesta = await fetch('../php/recursos-personal.php');
+        const resultado = await respuesta.json();
         if (!resultado.exito) return;
 
         listaPersonal = resultado.datos;
@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         document.querySelector('#id_ci_editar').value = persona.id_ci;
         document.querySelector('#tipo_editar').value = persona.tipo;
 
-        var campoCi = document.querySelector('#id_ci');
+        const campoCi = document.querySelector('#id_ci');
         campoCi.value = persona.id_ci;
         campoCi.readOnly = true;
 
@@ -64,24 +64,24 @@ document.addEventListener('DOMContentLoaded', async function () {
     }
 
     tabla.addEventListener('click', async function (e) {
-        var enlace = e.target.closest('[data-accion]');
+        const enlace = e.target.closest('[data-accion]');
         if (!enlace) return;
         e.preventDefault();
 
-        var id = enlace.dataset.id;
-        var tipo = enlace.dataset.tipo;
+        const id = enlace.dataset.id;
+        const tipo = enlace.dataset.tipo;
 
         if (enlace.dataset.accion === 'editar') {
-            var persona = listaPersonal.find(function (p) { return String(p.id_ci) === id && p.tipo === tipo; });
+            const persona = listaPersonal.find(function (p) { return String(p.id_ci) === id && p.tipo === tipo; });
             if (persona) activarModoEdicion(persona);
             return;
         }
 
         if (enlace.dataset.accion === 'borrar') {
-            var confirmado = confirm('¿Seguro que querés eliminar este registro? Esta acción no se puede deshacer.');
+            const confirmado = confirm('¿Seguro que querés eliminar este registro? Esta acción no se puede deshacer.');
             if (!confirmado) return;
 
-            var datos = new FormData();
+            const datos = new FormData();
             datos.append('eliminar_personal', '1');
             datos.append('id_ci', id);
             datos.append('tipo', tipo);
@@ -95,15 +95,15 @@ document.addEventListener('DOMContentLoaded', async function () {
         e.preventDefault();
         mensaje.textContent = '';
 
-        var datos = new FormData(formulario);
+        const datos = new FormData(formulario);
         datos.append('guardar_personal', '1');
 
         try {
-            var respuesta = await fetch('../php/recursos-personal.php', {
+            const respuesta = await fetch('../php/recursos-personal.php', {
                 method: 'POST',
                 body: datos
             });
-            var resultado = await respuesta.json();
+            const resultado = await respuesta.json();
 
             if (resultado.exito) {
                 volverAModoAlta();

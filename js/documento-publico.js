@@ -1,11 +1,11 @@
 document.addEventListener('DOMContentLoaded', async function () {
 
-    var contenedor = document.querySelector('#contenido-documento');
-    var id = new URLSearchParams(window.location.search).get('id');
+    const contenedor = document.querySelector('#contenido-documento');
+    const id = new URLSearchParams(window.location.search).get('id');
 
-    var respuesta = await fetch('../php/documento-publico-ver.php?id=' + encodeURIComponent(id));
-    var resultado = await respuesta.json();
-    var documento = resultado.exito ? resultado.datos : null;
+    const respuesta = await fetch('../php/documento-publico-ver.php?id=' + encodeURIComponent(id));
+    const resultado = await respuesta.json();
+    const documento = resultado.exito ? resultado.datos : null;
 
     if (!documento) {
         contenedor.innerHTML =
@@ -16,12 +16,12 @@ document.addEventListener('DOMContentLoaded', async function () {
         return;
     }
 
-    var itemsInstrucciones = documento.instrucciones.map(function (instr) {
-        var clase = instr.es_pauta_alarma ? ' class="pauta-alarma"' : '';
+    const itemsInstrucciones = documento.instrucciones.map(function (instr) {
+        const clase = instr.es_pauta_alarma ? ' class="pauta-alarma"' : '';
         return '<li' + clase + '>' + SIGSM.escapar(instr.texto_instruccion) + '</li>';
     }).join('');
 
-    var nombreArchivo = documento.archivo.split('/').pop();
+    const nombreArchivo = documento.archivo.split('/').pop();
 
     contenedor.innerHTML =
         '<section class="tarjeta">' +
