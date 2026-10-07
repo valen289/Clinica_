@@ -1,16 +1,16 @@
 document.addEventListener('DOMContentLoaded', async function () {
 
-    var sesion = await SIGSM.protegerPagina('traslados', null);
+    const sesion = await SIGSM.protegerPagina('traslados', null);
     if (!sesion) return;
 
-    var formulario = document.querySelector('#form-despacho');
-    var mensaje = document.querySelector('#mensaje-form');
-    var tabla = document.querySelector('#tabla-traslados');
+    const formulario = document.querySelector('#form-despacho');
+    const mensaje = document.querySelector('#mensaje-form');
+    const tabla = document.querySelector('#tabla-traslados');
 
     function llenarSelect(select, opciones, campoId, textoFn) {
         while (select.options.length > 1) select.remove(1); // deja solo el placeholder ("Seleccione...")
         opciones.forEach(function (opcion) {
-            var elemento = document.createElement('option');
+            const elemento = document.createElement('option');
             elemento.value = opcion[campoId];
             elemento.textContent = textoFn(opcion);
             select.appendChild(elemento);
@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     }
 
     function renderFilaTraslado(t) {
-        var esFinalizado = (t.estado === 'Finalizado');
+        const esFinalizado = (t.estado === 'Finalizado');
         return '<tr>' +
             '<td>' + SIGSM.escapar(t.matricula) + '</td>' +
             '<td>' + SIGSM.escapar(t.conductor_nombre + ' ' + t.conductor_apellido) + '</td>' +
@@ -39,11 +39,11 @@ document.addEventListener('DOMContentLoaded', async function () {
     }
 
     async function cargarDatos() {
-        var respuesta = await fetch('../php/traslados-listar.php');
-        var resultado = await respuesta.json();
+        const respuesta = await fetch('../php/traslados-listar.php');
+        const resultado = await respuesta.json();
         if (!resultado.exito) return;
 
-        var datos = resultado.datos;
+        const datos = resultado.datos;
 
         llenarSelect(document.querySelector('#id_ambulancia'), datos.ambulancias_disponibles, 'id_ambulancia', function (a) { return a.matricula; });
         llenarSelect(document.querySelector('#id_conductor'), datos.conductores_disponibles, 'id_ci', function (c) { return c.nombre + ' ' + c.apellido; });
@@ -55,10 +55,10 @@ document.addEventListener('DOMContentLoaded', async function () {
     }
 
     tabla.addEventListener('click', async function (e) {
-        var boton = e.target.closest('[data-accion="avanzar"]');
+        const boton = e.target.closest('[data-accion="avanzar"]');
         if (!boton) return;
 
-        var datos = new FormData();
+        const datos = new FormData();
         datos.append('id_traslado', boton.dataset.id);
 
         await fetch('../php/traslados-avanzar.php', { method: 'POST', body: datos });
@@ -69,14 +69,14 @@ document.addEventListener('DOMContentLoaded', async function () {
         e.preventDefault();
         mensaje.textContent = '';
 
-        var datos = new FormData(formulario);
+        const datos = new FormData(formulario);
 
         try {
-            var respuesta = await fetch('../php/traslados-despachar.php', {
+            const respuesta = await fetch('../php/traslados-despachar.php', {
                 method: 'POST',
                 body: datos
             });
-            var resultado = await respuesta.json();
+            const resultado = await respuesta.json();
 
             if (resultado.exito) {
                 formulario.reset();

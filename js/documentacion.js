@@ -1,21 +1,21 @@
 document.addEventListener('DOMContentLoaded', async function () {
 
-    var sesion = await SIGSM.protegerPagina('documentacion', ['Administrador', 'Recepción', 'Médico'], 'traslados.html');
+    const sesion = await SIGSM.protegerPagina('documentacion', ['Administrador', 'Recepción', 'Médico'], 'traslados.html');
     if (!sesion) return;
 
-    var formulario = document.querySelector('#form-documento');
-    var mensaje = document.querySelector('#mensaje-form');
-    var contenedorLista = document.querySelector('#lista-documentos');
-    var campoArchivo = document.querySelector('#archivo');
-    var listaDocumentos = [];
+    const formulario = document.querySelector('#form-documento');
+    const mensaje = document.querySelector('#mensaje-form');
+    const contenedorLista = document.querySelector('#lista-documentos');
+    const campoArchivo = document.querySelector('#archivo');
+    let listaDocumentos = [];
 
     function nombreArchivo(rutaGuardada) {
         return rutaGuardada.split('/').pop();
     }
 
     function renderTarjeta(doc) {
-        var itemsInstrucciones = doc.instrucciones.map(function (instr) {
-            var clase = instr.es_pauta_alarma ? ' class="pauta-alarma"' : '';
+        const itemsInstrucciones = doc.instrucciones.map(function (instr) {
+            const clase = instr.es_pauta_alarma ? ' class="pauta-alarma"' : '';
             return '<li' + clase + '>' + SIGSM.escapar(instr.texto_instruccion) + '</li>';
         }).join('');
 
@@ -34,8 +34,8 @@ document.addEventListener('DOMContentLoaded', async function () {
     }
 
     async function cargarListado() {
-        var respuesta = await fetch('../php/documentacion-listar.php');
-        var resultado = await respuesta.json();
+        const respuesta = await fetch('../php/documentacion-listar.php');
+        const resultado = await respuesta.json();
         if (!resultado.exito) return;
 
         listaDocumentos = resultado.datos;
@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
         // separo las instrucciones ya cargadas: la marcada como pauta de alarma va aparte,
         // las primeras dos normales van a instruccion1/instruccion2
-        var instruccion1 = '', instruccion2 = '', pautaAlarma = '', contadorNormales = 0;
+        let instruccion1 = '', instruccion2 = '', pautaAlarma = '', contadorNormales = 0;
         doc.instrucciones.forEach(function (instr) {
             if (instr.es_pauta_alarma) {
                 pautaAlarma = instr.texto_instruccion;
@@ -81,23 +81,23 @@ document.addEventListener('DOMContentLoaded', async function () {
     }
 
     contenedorLista.addEventListener('click', async function (e) {
-        var enlace = e.target.closest('[data-accion]');
+        const enlace = e.target.closest('[data-accion]');
         if (!enlace) return;
         e.preventDefault();
 
-        var id = enlace.dataset.id;
+        const id = enlace.dataset.id;
 
         if (enlace.dataset.accion === 'editar') {
-            var doc = listaDocumentos.find(function (d) { return String(d.id_documento) === id; });
+            const doc = listaDocumentos.find(function (d) { return String(d.id_documento) === id; });
             if (doc) activarModoEdicion(doc);
             return;
         }
 
         if (enlace.dataset.accion === 'borrar') {
-            var confirmado = confirm('¿Seguro que querés eliminar este registro? Esta acción no se puede deshacer.');
+            const confirmado = confirm('¿Seguro que querés eliminar este registro? Esta acción no se puede deshacer.');
             if (!confirmado) return;
 
-            var datos = new FormData();
+            const datos = new FormData();
             datos.append('id_documento', id);
 
             await fetch('../php/documentacion-eliminar.php', { method: 'POST', body: datos });
@@ -109,14 +109,14 @@ document.addEventListener('DOMContentLoaded', async function () {
         e.preventDefault();
         mensaje.textContent = '';
 
-        var datos = new FormData(formulario);
+        const datos = new FormData(formulario);
 
         try {
-            var respuesta = await fetch('../php/documentacion-guardar.php', {
+            const respuesta = await fetch('../php/documentacion-guardar.php', {
                 method: 'POST',
                 body: datos
             });
-            var resultado = await respuesta.json();
+            const resultado = await respuesta.json();
 
             if (resultado.exito) {
                 volverAModoAlta();

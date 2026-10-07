@@ -1,22 +1,22 @@
 document.addEventListener('DOMContentLoaded', function () {
 
-    var formulario = document.querySelector('#form-registro');
+    const formulario = document.querySelector('#form-registro');
     if (!formulario) return;
 
-    var mensaje = document.querySelector('#mensaje-registro');
+    const mensaje = document.querySelector('#mensaje-registro');
 
     formulario.addEventListener('submit', async function (e) {
         e.preventDefault();
         mensaje.textContent = '';
 
-        var datos = new FormData(formulario);
+        const datos = new FormData(formulario);
 
         try {
-            var respuesta = await fetch('../php/auth-registro.php', {
+            const respuesta = await fetch('../php/auth-registro.php', {
                 method: 'POST',
                 body: datos
             });
-            var resultado = await respuesta.json();
+            const resultado = await respuesta.json();
 
             if (resultado.exito) {
                 alert('Registro exitoso. Ya podés iniciar sesión.');

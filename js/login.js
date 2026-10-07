@@ -1,24 +1,24 @@
 document.addEventListener('DOMContentLoaded', function () {
 
-    var formulario = document.querySelector('#form-login');
+    const formulario = document.querySelector('#form-login');
     if (!formulario) return;
 
-    var mensaje = document.querySelector('#mensaje-login');
+    const mensaje = document.querySelector('#mensaje-login');
 
     formulario.addEventListener('submit', async function (e) {
         e.preventDefault();
         mensaje.textContent = '';
 
-        var datos = new FormData();
+        const datos = new FormData();
         datos.append('usuario', formulario.usuario.value);
         datos.append('contrasenia', formulario.contrasenia.value);
 
         try {
-            var respuesta = await fetch('../php/auth-login.php', {
+            const respuesta = await fetch('../php/auth-login.php', {
                 method: 'POST',
                 body: datos
             });
-            var resultado = await respuesta.json();
+            const resultado = await respuesta.json();
 
             if (resultado.exito) {
                 window.location.href = 'recursos-ambulancias.html';

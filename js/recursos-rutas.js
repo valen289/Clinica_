@@ -1,15 +1,15 @@
 document.addEventListener('DOMContentLoaded', async function () {
 
-    var sesion = await SIGSM.protegerPagina('recursos', ['Administrador', 'Recepción', 'Médico'], 'traslados.html');
+    const sesion = await SIGSM.protegerPagina('recursos', ['Administrador', 'Recepción', 'Médico'], 'traslados.html');
     if (!sesion) return;
 
-    var formulario = document.querySelector('#form-ruta');
-    var mensaje = document.querySelector('#mensaje-form');
-    var tabla = document.querySelector('#tabla-rutas');
-    var listaRutas = [];
+    const formulario = document.querySelector('#form-ruta');
+    const mensaje = document.querySelector('#mensaje-form');
+    const tabla = document.querySelector('#tabla-rutas');
+    let listaRutas = [];
 
     function renderFila(ruta) {
-        var distancia = (ruta.distancia !== null) ? SIGSM.escapar(ruta.distancia) + ' km' : '—';
+        const distancia = (ruta.distancia !== null) ? SIGSM.escapar(ruta.distancia) + ' km' : '—';
         return '<tr>' +
             '<td>' + SIGSM.escapar(ruta.nombre_ruta) + '</td>' +
             '<td>' + SIGSM.escapar(ruta.origen + ' → ' + ruta.destino) + '</td>' +
@@ -25,8 +25,8 @@ document.addEventListener('DOMContentLoaded', async function () {
     }
 
     async function cargarListado() {
-        var respuesta = await fetch('../php/recursos-rutas.php');
-        var resultado = await respuesta.json();
+        const respuesta = await fetch('../php/recursos-rutas.php');
+        const resultado = await respuesta.json();
         if (!resultado.exito) return;
 
         listaRutas = resultado.datos;
@@ -57,23 +57,23 @@ document.addEventListener('DOMContentLoaded', async function () {
     }
 
     tabla.addEventListener('click', async function (e) {
-        var enlace = e.target.closest('[data-accion]');
+        const enlace = e.target.closest('[data-accion]');
         if (!enlace) return;
         e.preventDefault();
 
-        var id = enlace.dataset.id;
+        const id = enlace.dataset.id;
 
         if (enlace.dataset.accion === 'editar') {
-            var ruta = listaRutas.find(function (r) { return String(r.id_ruta) === id; });
+            const ruta = listaRutas.find(function (r) { return String(r.id_ruta) === id; });
             if (ruta) activarModoEdicion(ruta);
             return;
         }
 
         if (enlace.dataset.accion === 'borrar') {
-            var confirmado = confirm('¿Seguro que querés eliminar este registro? Esta acción no se puede deshacer.');
+            const confirmado = confirm('¿Seguro que querés eliminar este registro? Esta acción no se puede deshacer.');
             if (!confirmado) return;
 
-            var datos = new FormData();
+            const datos = new FormData();
             datos.append('eliminar_ruta', '1');
             datos.append('id_ruta', id);
 
@@ -86,15 +86,15 @@ document.addEventListener('DOMContentLoaded', async function () {
         e.preventDefault();
         mensaje.textContent = '';
 
-        var datos = new FormData(formulario);
+        const datos = new FormData(formulario);
         datos.append('guardar_ruta', '1');
 
         try {
-            var respuesta = await fetch('../php/recursos-rutas.php', {
+            const respuesta = await fetch('../php/recursos-rutas.php', {
                 method: 'POST',
                 body: datos
             });
-            var resultado = await respuesta.json();
+            const resultado = await respuesta.json();
 
             if (resultado.exito) {
                 volverAModoAlta();
