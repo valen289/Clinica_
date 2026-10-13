@@ -1,0 +1,120 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+body {
+  background-color: #f0f2f5;
+  padding: 20px;
+}
+
+/* Estructura con Grid: 1fr para controles, 2fr para mapa */
+.grid-container {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 20px;
+  height: 90vh;
+  max-width: 1300px;
+  margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+  .grid-container {
+    grid-template-columns: 1fr;
+    height: auto;
+  }
+}
+
+/* Panel de controles */
+.panel-control {
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.panel-control h2 {
+  font-size: 1.2rem;
+  color: #1a73e8;
+  margin-bottom: 5px;
+}
+
+.grupo-campo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.grupo-campo label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #444;
+}
+
+.grupo-campo input {
+  padding: 10px;
+  border: 1px solid #cccccc;
+  border-radius: 5px;
+  font-size: 0.9rem;
+  outline: none;
+}
+
+.grupo-campo input:focus {
+  border-color: #1a73e8;
+}
+
+.grupo-campo input[readonly] {
+  background-color: #f8f9fa;
+  color: #666;
+}
+
+.separador {
+  border: none;
+  border-top: 1px solid #e0e0e0;
+  margin: 8px 0;
+}
+
+/* Botones */
+.btn {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btn-primario {
+  background-color: #1a73e8;
+  color: white;
+}
+
+.btn-primario:hover {
+  background-color: #1557b0;
+}
+
+.btn-secundario {
+  background-color: #34a853;
+  color: white;
+}
+
+.btn-secundario:hover {
+  background-color: #2d8e47;
+}
+
+/* Mapa */
+#visualizar {
+  width: 100%;
+  height: 100%;
+  min-height: 450px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+  z-index: 1;
+}
+
