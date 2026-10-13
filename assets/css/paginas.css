@@ -235,27 +235,38 @@
     background-color: white;
     border-radius: 12px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    border-top: 5px solid #326cf5;
+
 }
 
 .encuesta h1 {
     text-align: center;
     margin-bottom: 10px;
+    color: #2455ce;
 }
 
 .encuesta p {
     text-align: center;
-    color: #666;
+    color: #260466;
     margin-bottom: 30px;
+   
+
 }
 
 .pregunta {
-    margin-bottom: 35px;
+    margin-bottom: 30px;
+    margin-top: 20px;
+    background-color: #f0f4ff;
+    border-radius: 8px;
+    padding: 18px;
+    color: #05045e;
 }
 
 .pregunta > label {
     display: block;
     margin-bottom: 15px;
     font-weight: bold;
+    color: #1835d6;
 }
 
 .encuesta input[type="email"] {
@@ -264,7 +275,7 @@
     border: 1px solid #ccc;
     border-radius: 6px;
     box-sizing: border-box;
-    front-size: 15px;
+    font-size: 15px;
 }
 .encuesta input[type="email"]:focus {
     outline: none;
@@ -276,6 +287,7 @@
     flex-direction: row;
     flex-wrap: wrap;
     gap: 15px;
+    color: #020005;
 }
 
 .opciones label {
