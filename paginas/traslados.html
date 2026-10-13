@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="../assets/css/componentes.css">
     <link rel="stylesheet" href="../assets/css/paginas.css">
     <link rel="stylesheet" href="../assets/css/responsive.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 </head>
 <body>
 
@@ -73,9 +74,17 @@
                 </section>
 
             </div>
+
+            <section class="tarjeta tarjeta-mapa">
+                <h3>Mapa de la Ruta</h3>
+                <p id="mapa-estado" class="mapa-estado">Seleccioná una ruta en el formulario de despacho para verla en el mapa.</p>
+                <div id="mapa-ruta"></div>
+            </section>
+
         </main>
     </div>
 
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="../js/shell.js"></script>
     <script src="../js/traslados.js"></script>
 
