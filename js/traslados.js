@@ -108,10 +108,10 @@ document.addEventListener('DOMContentLoaded', async function () {
         iconAnchor: [19, 45],
     });
 
-    const mapa = L.map('mapa-ruta').setView([-34.9011, -56.1645], 12);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '© OpenStreetMap',
-    }).addTo(mapa);
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '© OpenStreetMap',
+    maxZoom: 19,
+}).addTo(mapa);
 
     const estadoMapa = document.querySelector('#mapa-estado');
     let marcadorOrigen = null;
@@ -125,11 +125,11 @@ document.addEventListener('DOMContentLoaded', async function () {
     }
 
     async function geocodificar(direccion) {
-        const texto = direccion + ', Uruguay';
-        const url = 'https://api.geoapify.com/v1/geocode/search?' +
-            'text=' + encodeURIComponent(texto) +
-            '&filter=countrycode:uy' +
-            '&lang=es&limit=1&format=json&apiKey=' + GEOAPIFY_API_KEY;
+    const texto = direccion + ', Uruguay';
+    const url = 'https://api.geoapify.com/v1/geocode/search?' +
+        'text=' + encodeURIComponent(texto) +
+        '&filter=countrycode:uy' +
+        '&lang=es&limit=1&format=json&apiKey=' + GEOAPIFY_API_KEY;
 
         const respuesta = await fetch(url);
         const dato = await respuesta.json();
