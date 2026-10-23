@@ -18,9 +18,17 @@
         <div id="sidebar"></div>
 
         <main class="contenido">
+            <div class="cabecera-folletos">
+                <div>
+                    <h2>Módulo 1: Gestión de Folletos de Pautas para Pacientes</h2>
+                    <p>Cargue y administre las indicaciones médicas que el Hospital de Clínicas pone a disposición mediante códigos QR descargables en celulares.</p>
+                </div>
+                <button type="button" id="boton-agregar-folleto" class="boton boton-primario">+ Agregar folleto médico</button>
+            </div>
+
             <div class="tarjetas-portal">
 
-                <section class="tarjeta tarjeta-formulario">
+                <section class="tarjeta tarjeta-formulario" id="seccion-formulario" hidden>
                     <h3 id="titulo-formulario">Agregar Documento Médico</h3>
                     <!-- sin enctype="multipart/form-data" el archivo llega vacio al servidor, no tira error, simplemente no llega -->
                     <form id="form-documento" enctype="multipart/form-data">
@@ -56,12 +64,13 @@
                         <div id="mensaje-form" class="mensaje-error"></div>
 
                         <button type="submit" id="boton-formulario" class="boton boton-primario">Agregar Documento Médico</button>
+                        <button type="button" id="boton-cancelar" class="boton boton-secundario">Cancelar</button>
                     </form>
                 </section>
 
-                <div id="lista-documentos"></div>
-
             </div>
+
+            <div id="lista-documentos" class="grilla-folletos"></div>
         </main>
     </div>
 

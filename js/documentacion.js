@@ -7,28 +7,32 @@ document.addEventListener('DOMContentLoaded', async function () {
     const mensaje = document.querySelector('#mensaje-form');
     const contenedorLista = document.querySelector('#lista-documentos');
     const campoArchivo = document.querySelector('#archivo');
+    const seccionFormulario = document.querySelector('#seccion-formulario');
     let listaDocumentos = [];
 
-    function nombreArchivo(rutaGuardada) {
-        return rutaGuardada.split('/').pop();
+    function textoPlural(cantidad, singular, plural) {
+        return cantidad + ' ' + (cantidad === 1 ? singular : plural);
     }
 
     function renderTarjeta(doc) {
-        const itemsInstrucciones = doc.instrucciones.map(function (instr) {
-            const clase = instr.es_pauta_alarma ? ' class="pauta-alarma"' : '';
-            return '<li' + clase + '>' + SIGSM.escapar(instr.texto_instruccion) + '</li>';
-        }).join('');
+        const cantidadPautas = doc.instrucciones.filter(function (i) { return !Number(i.es_pauta_alarma); }).length;
+        const cantidadAlarmas = doc.instrucciones.length - cantidadPautas;
 
-        return '<section class="tarjeta tarjeta-documento">' +
-            '<span class="badge">' + SIGSM.escapar(doc.departamento) + '</span>' +
+        return '<section class="tarjeta tarjeta-folleto">' +
+            '<div class="folleto-encabezado">' +
+                '<span class="badge badge-departamento">' + SIGSM.escapar(doc.departamento) + '</span>' +
+                '<span class="fecha-documento">' + SIGSM.escapar(doc.fecha_carga) + '</span>' +
+            '</div>' +
             '<h3>' + SIGSM.escapar(doc.titulo) + '</h3>' +
-            '<p>' + SIGSM.escapar(doc.descripcion) + '</p>' +
-            '<p class="fecha-documento">Cargado el ' + SIGSM.escapar(doc.fecha_carga) + '</p>' +
-            '<ul class="lista-instrucciones">' + itemsInstrucciones + '</ul>' +
-            '<a href="../documentos/' + encodeURIComponent(nombreArchivo(doc.archivo)) + '" target="_blank" class="boton boton-secundario">Ver Archivo</a>' +
-            '<div class="acciones-tarjeta">' +
+            '<p class="folleto-descripcion">' + SIGSM.escapar(doc.descripcion) + '</p>' +
+            '<dl class="folleto-conteos">' +
+                '<dt>Instrucciones:</dt><dd>' + textoPlural(cantidadPautas, 'pauta', 'pautas') + '</dd>' +
+                '<dt class="conteo-alarma">Pautas de alarma:</dt><dd class="conteo-alarma">' + textoPlural(cantidadAlarmas, 'crítica', 'críticas') + '</dd>' +
+            '</dl>' +
+            '<div class="folleto-acciones">' +
+                '<a href="documento-publico.html?id=' + doc.id_documento + '" target="_blank" class="boton boton-escanear">Simular escaneo</a>' +
                 '<a href="#" class="enlace-accion" data-accion="editar" data-id="' + doc.id_documento + '">Editar</a>' +
-                '<a href="#" class="enlace-accion confirmar-borrado" data-accion="borrar" data-id="' + doc.id_documento + '">Borrar</a>' +
+                '<button type="button" class="boton-icono confirmar-borrado" title="Borrar folleto" data-accion="borrar" data-id="' + doc.id_documento + '">&#128465;</button>' +
             '</div>' +
         '</section>';
     }
@@ -68,6 +72,8 @@ document.addEventListener('DOMContentLoaded', async function () {
         document.querySelector('#label-archivo').textContent = 'Archivo (PDF) — dejar vacío para mantener el actual:';
         document.querySelector('#titulo-formulario').textContent = 'Editar Documento Médico';
         document.querySelector('#boton-formulario').textContent = 'Actualizar Documento';
+        seccionFormulario.hidden = false;
+        seccionFormulario.scrollIntoView({ behavior: 'smooth' });
     }
 
     function volverAModoAlta() {
@@ -78,7 +84,17 @@ document.addEventListener('DOMContentLoaded', async function () {
         document.querySelector('#label-archivo').textContent = 'Archivo (PDF):';
         document.querySelector('#titulo-formulario').textContent = 'Agregar Documento Médico';
         document.querySelector('#boton-formulario').textContent = 'Agregar Documento Médico';
+        mensaje.textContent = '';
+        seccionFormulario.hidden = true;
     }
+
+    document.querySelector('#boton-agregar-folleto').addEventListener('click', function () {
+        volverAModoAlta();
+        seccionFormulario.hidden = false;
+        seccionFormulario.scrollIntoView({ behavior: 'smooth' });
+    });
+
+    document.querySelector('#boton-cancelar').addEventListener('click', volverAModoAlta);
 
     contenedorLista.addEventListener('click', async function (e) {
         const enlace = e.target.closest('[data-accion]');
