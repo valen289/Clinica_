@@ -83,6 +83,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
             if (resultado.exito) {
                 formulario.reset();
+                reiniciarMapa();
                 await cargarDatos();
             } else {
                 mensaje.textContent = resultado.error;
@@ -108,10 +109,15 @@ document.addEventListener('DOMContentLoaded', async function () {
         iconAnchor: [19, 45],
     });
 
+    const mapa = L.map('mapa-ruta').setView([-34.9011, -56.1645], 12);
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '© OpenStreetMap',
-    maxZoom: 19,
-}).addTo(mapa);
+        attribution: '© OpenStreetMap',
+        maxZoom: 19,
+    }).addTo(mapa);
+
+    // si el contenedor cambia de tamaño (la tabla se llena, se redimensiona la ventana)
+    // Leaflet no se entera solo y deja tiles/marcadores mal ubicados
+    new ResizeObserver(function () { mapa.invalidateSize(); }).observe(document.querySelector('#mapa-ruta'));
 
     const estadoMapa = document.querySelector('#mapa-estado');
     let marcadorOrigen = null;
@@ -125,11 +131,11 @@ document.addEventListener('DOMContentLoaded', async function () {
     }
 
     async function geocodificar(direccion) {
-    const texto = direccion + ', Uruguay';
-    const url = 'https://api.geoapify.com/v1/geocode/search?' +
-        'text=' + encodeURIComponent(texto) +
-        '&filter=countrycode:uy' +
-        '&lang=es&limit=1&format=json&apiKey=' + GEOAPIFY_API_KEY;
+        const texto = direccion + ', Uruguay';
+        const url = 'https://api.geoapify.com/v1/geocode/search?' +
+            'text=' + encodeURIComponent(texto) +
+            '&filter=countrycode:uy' +
+            '&lang=es&limit=1&format=json&apiKey=' + GEOAPIFY_API_KEY;
 
         const respuesta = await fetch(url);
         const dato = await respuesta.json();
@@ -138,7 +144,10 @@ document.addEventListener('DOMContentLoaded', async function () {
         return { lat: dato.results[0].lat, lon: dato.results[0].lon };
     }
 
+    let numeroTrazado = 0;
+
     async function trazarRuta(origenTexto, destinoTexto) {
+        const miTrazado = ++numeroTrazado;
         limpiarMapa();
         estadoMapa.className = 'mapa-estado';
         estadoMapa.textContent = 'Buscando la ruta en el mapa…';
@@ -148,6 +157,8 @@ document.addEventListener('DOMContentLoaded', async function () {
                 geocodificar(origenTexto),
                 geocodificar(destinoTexto),
             ]);
+
+            if (miTrazado !== numeroTrazado) return;
 
             if (!origen || !destino) {
                 estadoMapa.className = 'mapa-estado mapa-error';
@@ -167,6 +178,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
             const respuestaRuta = await fetch(urlRuta);
             const routeo = await respuestaRuta.json();
+            if (miTrazado !== numeroTrazado) return;
 
             if (!routeo.features || routeo.features.length === 0) {
                 mapa.fitBounds(L.latLngBounds([marcadorOrigen.getLatLng(), marcadorDestino.getLatLng()]), { padding: [40, 40] });
@@ -176,11 +188,16 @@ document.addEventListener('DOMContentLoaded', async function () {
             }
 
             const routeoDatos = routeo.features[0].properties;
-            const puntosRuta = routeo.features[0].geometry.coordinates.map(function (coordenada) {
+            // Geoapify devuelve un MultiLineString: una lista de tramos, cada uno con puntos [lon, lat].
+            // Si fuera un LineString simple, coordinates ya es la lista de puntos.
+            const geometria = routeo.features[0].geometry;
+            const tramos = (geometria.type === 'MultiLineString') ? geometria.coordinates : [geometria.coordinates];
+            const puntosRuta = [].concat.apply([], tramos).map(function (coordenada) {
                 return [coordenada[1], coordenada[0]]; // Geoapify da [lon, lat]; Leaflet necesita [lat, lon]
             });
 
             lineaRuta = L.polyline(puntosRuta, { color: '#2f6fed', weight: 5 }).addTo(mapa);
+            mapa.invalidateSize();
             mapa.fitBounds(lineaRuta.getBounds(), { padding: [40, 40] });
 
             const distanciaKm = (routeoDatos.distance / 1000).toFixed(1);
@@ -191,6 +208,15 @@ document.addEventListener('DOMContentLoaded', async function () {
             estadoMapa.className = 'mapa-estado mapa-error';
             estadoMapa.textContent = 'No se pudo conectar con el servicio de mapas.';
         }
+    }
+
+    function reiniciarMapa() {
+        numeroTrazado++;
+        limpiarMapa();
+        mapa.stop(); // corta una animacion de fitBounds en curso, si no pisa el setView
+        mapa.setView([-34.9011, -56.1645], 12, { animate: false });
+        estadoMapa.className = 'mapa-estado';
+        estadoMapa.textContent = 'Seleccioná una ruta en el formulario de despacho para verla en el mapa.';
     }
 
     selectRuta.addEventListener('change', function () {
