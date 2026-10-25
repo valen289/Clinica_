@@ -7,7 +7,7 @@ requerir_sesion(['Chofer']);
 
 require_once __DIR__ . '/conexion.php';
 
-$id_borrar = $_POST['id_documento'];
+$id_borrar = (int) ($_POST['id_documento'] ?? 0);
 
 // primero las filas hijas (Instruccion y Codigo_qr referencian a Documento por FK,
 // no se puede borrar el Documento mientras existan) y despues el archivo fisico
@@ -34,9 +34,9 @@ $stmt_borrar->bind_param("i", $id_borrar);
 $stmt_borrar->execute();
 $stmt_borrar->close();
 
-if ($doc_a_borrar) {
+if ($doc_a_borrar && $doc_a_borrar['archivo'] !== '') {
     $ruta_fisica = __DIR__ . '/../' . $doc_a_borrar['archivo'];
-    if (file_exists($ruta_fisica)) {
+    if (is_file($ruta_fisica)) {
         unlink($ruta_fisica); // borra el pdf del disco, no solo el registro de la bd
     }
 }

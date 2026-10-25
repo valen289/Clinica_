@@ -26,10 +26,10 @@
                 <button type="button" id="boton-agregar-folleto" class="boton boton-primario">+ Agregar folleto médico</button>
             </div>
 
-            <div class="tarjetas-portal">
-
-                <section class="tarjeta tarjeta-formulario" id="seccion-formulario" hidden>
-                    <h3 id="titulo-formulario">Agregar Documento Médico</h3>
+            <div class="modal-fondo" id="seccion-formulario" hidden>
+                <section class="tarjeta tarjeta-formulario modal-contenido">
+                    <h3 id="titulo-formulario">Crear nuevo folleto de pautas médicas</h3>
+                    <p class="modal-subtitulo">Ingrese la información requerida por el Hospital de Clínicas. Se generará un código QR para el folleto.</p>
                     <!-- sin enctype="multipart/form-data" el archivo llega vacio al servidor, no tira error, simplemente no llega -->
                     <form id="form-documento" enctype="multipart/form-data">
                         <input type="hidden" id="id_documento_editar" name="id_documento_editar" value="">
@@ -40,40 +40,64 @@
                         <label for="descripcion">Descripción:</label>
                         <input type="text" id="descripcion" name="descripcion" placeholder="Protocolo de cuidados..." required>
 
-                        <label for="departamento">Departamento Médico:</label>
-                        <select id="departamento" name="departamento" required>
+                        <div class="fila-campos">
+                            <div>
+                                <label for="departamento">Departamento Médico:</label>
+                                <select id="departamento" name="departamento" required>
                             <option value="Ginecología y Obstetricia">Ginecología y Obstetricia</option>
                             <option value="Urología">Urología</option>
                             <option value="Cardiología y Hematología">Cardiología y Hematología</option>
                             <option value="Radiología / Imagenología">Radiología / Imagenología</option>
                             <option value="Nefrología y Trasplante Renal">Nefrología y Trasplante Renal</option>
-                        </select>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="codigo_qr">Código identificador (QR):</label>
+                                <input type="text" id="codigo_qr" value="" placeholder="Se auto-generará al guardar" readonly>
+                            </div>
+                        </div>
 
-                        <label for="instruccion1">Indicación clínica 1:</label>
-                        <input type="text" id="instruccion1" name="instruccion1" placeholder="Reposo relativo por 48hs" required>
+                        <label>Indicaciones clínicas (mínimo 2):</label>
+                        <div id="lista-instrucciones" class="lista-campos-dinamicos"></div>
+                        <button type="button" id="agregar-instruccion" class="boton-agregar-campo">+ Agregar indicación</button>
 
-                        <label for="instruccion2">Indicación clínica 2:</label>
-                        <input type="text" id="instruccion2" name="instruccion2" placeholder="Tomar la medicación cada 8hs" required>
+                        <label>Pautas de alarma importantes:</label>
+                        <div id="lista-alarmas" class="lista-campos-dinamicos"></div>
+                        <button type="button" id="agregar-alarma" class="boton-agregar-campo">+ Agregar pauta de alarma</button>
 
-                        <label for="pauta_alarma">Pauta de alarma (opcional):</label>
-                        <input type="text" id="pauta_alarma" name="pauta_alarma" placeholder="Fiebre mayor a 38° o sangrado abundante">
-
-                        <label for="archivo" id="label-archivo">Archivo (PDF):</label>
-                        <input type="file" id="archivo" name="archivo" accept="application/pdf" required>
+                        <label for="archivo" id="label-archivo">Archivo PDF (opcional):</label>
+                        <input type="file" id="archivo" name="archivo" accept="application/pdf">
 
                         <div id="mensaje-form" class="mensaje-error"></div>
 
-                        <button type="submit" id="boton-formulario" class="boton boton-primario">Agregar Documento Médico</button>
-                        <button type="button" id="boton-cancelar" class="boton boton-secundario">Cancelar</button>
+                        <div class="acciones-modal">
+                            <button type="button" id="boton-cancelar" class="boton boton-secundario">Cancelar</button>
+                            <button type="submit" id="boton-formulario" class="boton boton-primario">Guardar en servidor</button>
+                        </div>
                     </form>
                 </section>
-
             </div>
 
             <div id="lista-documentos" class="grilla-folletos"></div>
         </main>
     </div>
 
+    <div class="modal-fondo" id="modal-escaneo" hidden>
+        <section class="tarjeta modal-contenido modal-escaneo">
+            <h3>Simular escaneo de código QR</h3>
+            <p class="modal-subtitulo">Un paciente vería este código en el folleto impreso. Escanealo con el celular o abrí la vista del paciente.</p>
+            <p id="escaneo-titulo" class="escaneo-titulo"></p>
+            <div id="escaneo-qr" class="escaneo-qr"></div>
+            <p id="escaneo-codigo" class="escaneo-codigo"></p>
+            <div class="acciones-modal">
+                <button type="button" id="escaneo-cerrar" class="boton boton-secundario">Cerrar</button>
+                <button type="button" id="escaneo-descargar" class="boton boton-secundario">Descargar QR</button>
+                <a id="escaneo-abrir" href="#" target="_blank" class="boton boton-primario">Abrir vista del paciente</a>
+            </div>
+        </section>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script src="../js/shell.js"></script>
     <script src="../js/documentacion.js"></script>
 

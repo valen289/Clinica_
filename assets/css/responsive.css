@@ -107,6 +107,10 @@
     }
 
     /* Documentación */
+    .fila-campos {
+        grid-template-columns: 1fr;
+    }
+
     .cabecera-folletos {
         flex-direction: column;
     }

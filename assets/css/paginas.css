@@ -486,3 +486,166 @@
     margin: 0 auto;
     width: 80%;
 }
+/* ==========================================================
+   MODAL DE FOLLETO (documentacion.html)
+   ========================================================== */
+.modal-fondo {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--espacio-lg);
+    background-color: rgba(20, 33, 61, 0.55);
+    overflow-y: auto;
+}
+
+.modal-fondo[hidden] {
+    display: none;
+}
+
+.modal-contenido {
+    flex: none;
+    width: 100%;
+    max-width: 600px;
+    margin: auto;
+}
+
+.modal-contenido h3 {
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.modal-subtitulo {
+    margin-bottom: var(--espacio-sm);
+}
+
+.fila-campos {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--espacio-md);
+}
+
+.tarjeta-formulario input[readonly] {
+    background-color: var(--color-fondo);
+    color: var(--color-texto-suave);
+}
+
+.acciones-modal {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--espacio-sm);
+    margin-top: var(--espacio-lg);
+    padding-top: var(--espacio-md);
+    border-top: 1px solid var(--color-borde);
+}
+
+.acciones-modal .boton {
+    margin-top: 0;
+}
+
+body.modal-abierto {
+    overflow: hidden;
+}
+
+.lista-campos-dinamicos {
+    display: flex;
+    flex-direction: column;
+    gap: var(--espacio-sm);
+}
+
+.campo-dinamico {
+    display: flex;
+    gap: var(--espacio-sm);
+}
+
+.tarjeta-formulario .boton-quitar-campo {
+    margin-top: 0;
+    padding: 0 12px;
+    background: none;
+    border: 1px solid var(--color-borde-input);
+    border-radius: var(--radio-chico);
+    font-size: 18px;
+    color: var(--color-texto-suave);
+    cursor: pointer;
+}
+
+.tarjeta-formulario .boton-quitar-campo:hover {
+    color: var(--color-peligro-fuerte);
+    border-color: var(--color-peligro-fuerte);
+}
+
+.tarjeta-formulario .boton-agregar-campo {
+    margin-top: var(--espacio-sm);
+    padding: 0;
+    background: none;
+    border: none;
+    font-size: 13px;
+    font-weight: bold;
+    color: var(--color-primario);
+    cursor: pointer;
+}
+
+/* ==========================================================
+   MODAL SIMULAR ESCANEO + VISTA PACIENTE
+   ========================================================== */
+.modal-escaneo {
+    max-width: 420px;
+    text-align: center;
+}
+
+.escaneo-titulo {
+    font-weight: bold;
+    color: var(--color-texto);
+    text-transform: uppercase;
+}
+
+.escaneo-qr {
+    display: flex;
+    justify-content: center;
+    padding: var(--espacio-md);
+    margin: 0 auto var(--espacio-sm);
+}
+
+.escaneo-qr img,
+.escaneo-qr canvas {
+    border: 8px solid var(--color-blanco);
+    outline: 1px solid var(--color-borde);
+}
+
+.escaneo-codigo {
+    font-family: monospace;
+    font-size: 12px;
+    color: var(--color-texto-suave);
+}
+
+.modal-escaneo .acciones-modal {
+    flex-wrap: wrap;
+}
+
+.titulo-indicaciones,
+.bloque-alarma h4 {
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: var(--espacio-md);
+}
+
+.bloque-alarma {
+    margin-top: var(--espacio-md);
+    padding: 0 var(--espacio-md) var(--espacio-sm);
+    background-color: #fef2f2;
+    border: 1px solid #fecaca;
+    border-radius: var(--radio-medio);
+}
+
+.bloque-alarma h4 {
+    color: var(--color-peligro);
+}
+
+.bloque-alarma .lista-instrucciones li {
+    color: var(--color-peligro);
+    font-weight: bold;
+    border-bottom-color: #fecaca;
+}

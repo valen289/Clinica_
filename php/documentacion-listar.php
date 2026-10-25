@@ -7,7 +7,9 @@ requerir_sesion(['Chofer']);
 
 require_once __DIR__ . '/conexion.php';
 
-$sql_listado = "SELECT id_documento, titulo, descripcion, departamento, archivo, fecha_carga FROM Documento ORDER BY id_documento DESC";
+$sql_listado = "SELECT d.id_documento, d.titulo, d.descripcion, d.departamento, d.archivo, d.fecha_carga, q.codigo, q.url
+                FROM Documento d LEFT JOIN Codigo_qr q ON q.id_documento = d.id_documento
+                ORDER BY d.id_documento DESC";
 $resultado_documentos = $con->query($sql_listado);
 
 $documentos = [];

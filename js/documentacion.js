@@ -6,7 +6,9 @@ document.addEventListener('DOMContentLoaded', async function () {
     const formulario = document.querySelector('#form-documento');
     const mensaje = document.querySelector('#mensaje-form');
     const contenedorLista = document.querySelector('#lista-documentos');
-    const campoArchivo = document.querySelector('#archivo');
+    const listaInstrucciones = document.querySelector('#lista-instrucciones');
+    const listaAlarmas = document.querySelector('#lista-alarmas');
+    const MINIMO_INSTRUCCIONES = 2;
     const seccionFormulario = document.querySelector('#seccion-formulario');
     let listaDocumentos = [];
 
@@ -30,7 +32,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                 '<dt class="conteo-alarma">Pautas de alarma:</dt><dd class="conteo-alarma">' + textoPlural(cantidadAlarmas, 'crítica', 'críticas') + '</dd>' +
             '</dl>' +
             '<div class="folleto-acciones">' +
-                '<a href="documento-publico.html?id=' + doc.id_documento + '" target="_blank" class="boton boton-escanear">Simular escaneo</a>' +
+                '<button type="button" class="boton boton-escanear" data-accion="escanear" data-id="' + doc.id_documento + '">Simular escaneo</button>' +
                 '<a href="#" class="enlace-accion" data-accion="editar" data-id="' + doc.id_documento + '">Editar</a>' +
                 '<button type="button" class="boton-icono confirmar-borrado" title="Borrar folleto" data-accion="borrar" data-id="' + doc.id_documento + '">&#128465;</button>' +
             '</div>' +
@@ -46,52 +48,163 @@ document.addEventListener('DOMContentLoaded', async function () {
         contenedorLista.innerHTML = listaDocumentos.map(renderTarjeta).join('');
     }
 
+    // cada campo dinamico es un input con name "instrucciones[]" o "alarmas[]" (PHP los recibe como array)
+    function crearCampo(nombre, placeholder, valor) {
+        const fila = document.createElement('div');
+        fila.className = 'campo-dinamico';
+
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.name = nombre + '[]';
+        input.placeholder = placeholder;
+        input.value = valor || '';
+
+        const quitar = document.createElement('button');
+        quitar.type = 'button';
+        quitar.className = 'boton-quitar-campo';
+        quitar.dataset.quitar = nombre;
+        quitar.title = 'Quitar';
+        quitar.textContent = '×';
+
+        fila.appendChild(input);
+        fila.appendChild(quitar);
+        return fila;
+    }
+
+    function agregarInstruccion(valor) {
+        const numero = listaInstrucciones.children.length + 1;
+        listaInstrucciones.appendChild(crearCampo('instrucciones', 'Instrucción ' + numero, valor));
+        actualizarBotonesQuitar();
+    }
+
+    function agregarAlarma(valor) {
+        listaAlarmas.appendChild(crearCampo('alarmas', 'Pauta de alarma crítica', valor));
+    }
+
+    // las instrucciones minimas no se pueden quitar
+    function actualizarBotonesQuitar() {
+        const puedeQuitar = listaInstrucciones.children.length > MINIMO_INSTRUCCIONES;
+        listaInstrucciones.querySelectorAll('.boton-quitar-campo').forEach(function (boton) {
+            boton.hidden = !puedeQuitar;
+        });
+        Array.from(listaInstrucciones.children).forEach(function (fila, i) {
+            fila.querySelector('input').placeholder = 'Instrucción ' + (i + 1);
+        });
+    }
+
+    function cargarCamposDinamicos(instrucciones, alarmas) {
+        listaInstrucciones.innerHTML = '';
+        listaAlarmas.innerHTML = '';
+        const cantidad = Math.max(MINIMO_INSTRUCCIONES, instrucciones.length);
+        for (let i = 0; i < cantidad; i++) agregarInstruccion(instrucciones[i]);
+        if (alarmas.length === 0) alarmas = [''];
+        alarmas.forEach(agregarAlarma);
+    }
+
+    document.querySelector('#agregar-instruccion').addEventListener('click', function () { agregarInstruccion(''); });
+    document.querySelector('#agregar-alarma').addEventListener('click', function () { agregarAlarma(''); });
+
+    formulario.addEventListener('click', function (e) {
+        const boton = e.target.closest('[data-quitar]');
+        if (!boton) return;
+        boton.parentElement.remove();
+        if (boton.dataset.quitar === 'instrucciones') actualizarBotonesQuitar();
+    });
+
     function activarModoEdicion(doc) {
         document.querySelector('#id_documento_editar').value = doc.id_documento;
         document.querySelector('#titulo').value = doc.titulo;
         document.querySelector('#descripcion').value = doc.descripcion;
         document.querySelector('#departamento').value = doc.departamento;
 
-        // separo las instrucciones ya cargadas: la marcada como pauta de alarma va aparte,
-        // las primeras dos normales van a instruccion1/instruccion2
-        let instruccion1 = '', instruccion2 = '', pautaAlarma = '', contadorNormales = 0;
-        doc.instrucciones.forEach(function (instr) {
-            if (instr.es_pauta_alarma) {
-                pautaAlarma = instr.texto_instruccion;
-            } else {
-                contadorNormales++;
-                if (contadorNormales === 1) instruccion1 = instr.texto_instruccion;
-                else if (contadorNormales === 2) instruccion2 = instr.texto_instruccion;
-            }
-        });
-        document.querySelector('#instruccion1').value = instruccion1;
-        document.querySelector('#instruccion2').value = instruccion2;
-        document.querySelector('#pauta_alarma').value = pautaAlarma;
+        const normales = doc.instrucciones.filter(function (i) { return !Number(i.es_pauta_alarma); });
+        const alarmas = doc.instrucciones.filter(function (i) { return Number(i.es_pauta_alarma); });
+        cargarCamposDinamicos(normales.map(function (i) { return i.texto_instruccion; }), alarmas.map(function (i) { return i.texto_instruccion; }));
 
-        campoArchivo.required = false;
-        document.querySelector('#label-archivo').textContent = 'Archivo (PDF) — dejar vacío para mantener el actual:';
-        document.querySelector('#titulo-formulario').textContent = 'Editar Documento Médico';
-        document.querySelector('#boton-formulario').textContent = 'Actualizar Documento';
+        document.querySelector('#label-archivo').textContent = 'Archivo PDF (opcional) — dejar vacío para mantener el actual:';
+        document.querySelector('#titulo-formulario').textContent = 'Editar folleto de pautas médicas';
+        document.querySelector('#boton-formulario').textContent = 'Guardar cambios';
+        document.querySelector('#codigo_qr').value = doc.codigo || '';
+        abrirModal();
+    }
+
+    function abrirModal() {
         seccionFormulario.hidden = false;
-        seccionFormulario.scrollIntoView({ behavior: 'smooth' });
+        document.body.classList.add('modal-abierto');
+    }
+
+    function cerrarModal() {
+        seccionFormulario.hidden = true;
+        document.body.classList.remove('modal-abierto');
     }
 
     function volverAModoAlta() {
         formulario.reset();
         document.querySelector('#id_documento_editar').value = '';
 
-        campoArchivo.required = true;
-        document.querySelector('#label-archivo').textContent = 'Archivo (PDF):';
-        document.querySelector('#titulo-formulario').textContent = 'Agregar Documento Médico';
-        document.querySelector('#boton-formulario').textContent = 'Agregar Documento Médico';
+        cargarCamposDinamicos([], []);
+        document.querySelector('#label-archivo').textContent = 'Archivo PDF (opcional):';
+        document.querySelector('#titulo-formulario').textContent = 'Crear nuevo folleto de pautas médicas';
+        document.querySelector('#boton-formulario').textContent = 'Guardar en servidor';
         mensaje.textContent = '';
-        seccionFormulario.hidden = true;
+        document.querySelector('#codigo_qr').value = '';
+        cerrarModal();
     }
 
     document.querySelector('#boton-agregar-folleto').addEventListener('click', function () {
         volverAModoAlta();
-        seccionFormulario.hidden = false;
-        seccionFormulario.scrollIntoView({ behavior: 'smooth' });
+        abrirModal();
+        document.querySelector('#titulo').focus();
+    });
+
+    // cerrar tocando el fondo oscuro o con Escape
+    seccionFormulario.addEventListener('click', function (e) {
+        if (e.target === seccionFormulario) volverAModoAlta();
+    });
+    document.addEventListener('keydown', function (e) {
+        if (e.key !== 'Escape') return;
+        if (!seccionFormulario.hidden) volverAModoAlta();
+        if (!modalEscaneo.hidden) cerrarEscaneo();
+    });
+
+    // ---- modal "Simular escaneo": QR real generado en el navegador con la URL guardada ----
+    const modalEscaneo = document.querySelector('#modal-escaneo');
+    const contenedorQr = document.querySelector('#escaneo-qr');
+
+    function abrirEscaneo(doc) {
+        const url = doc.url || new URL('documento-publico.html?id=' + doc.id_documento, window.location.href).href;
+
+        contenedorQr.innerHTML = '';
+        if (window.QRCode) {
+            new QRCode(contenedorQr, { text: url, width: 220, height: 220, correctLevel: QRCode.CorrectLevel.M });
+        } else {
+            contenedorQr.textContent = 'No se pudo cargar el generador de QR (revisá la conexión).';
+        }
+
+        document.querySelector('#escaneo-titulo').textContent = doc.titulo;
+        document.querySelector('#escaneo-codigo').textContent = doc.codigo || '';
+        document.querySelector('#escaneo-abrir').href = 'documento-publico.html?id=' + doc.id_documento;
+        modalEscaneo.hidden = false;
+        document.body.classList.add('modal-abierto');
+    }
+
+    function cerrarEscaneo() {
+        modalEscaneo.hidden = true;
+        document.body.classList.remove('modal-abierto');
+    }
+
+    document.querySelector('#escaneo-cerrar').addEventListener('click', cerrarEscaneo);
+    modalEscaneo.addEventListener('click', function (e) {
+        if (e.target === modalEscaneo) cerrarEscaneo();
+    });
+
+    document.querySelector('#escaneo-descargar').addEventListener('click', function () {
+        const canvas = contenedorQr.querySelector('canvas');
+        if (!canvas) return;
+        const enlace = document.createElement('a');
+        enlace.href = canvas.toDataURL('image/png');
+        enlace.download = (document.querySelector('#escaneo-codigo').textContent || 'qr') + '.png';
+        enlace.click();
     });
 
     document.querySelector('#boton-cancelar').addEventListener('click', volverAModoAlta);
@@ -106,6 +219,12 @@ document.addEventListener('DOMContentLoaded', async function () {
         if (enlace.dataset.accion === 'editar') {
             const doc = listaDocumentos.find(function (d) { return String(d.id_documento) === id; });
             if (doc) activarModoEdicion(doc);
+            return;
+        }
+
+        if (enlace.dataset.accion === 'escanear') {
+            const doc = listaDocumentos.find(function (d) { return String(d.id_documento) === id; });
+            if (doc) abrirEscaneo(doc);
             return;
         }
 
@@ -124,6 +243,12 @@ document.addEventListener('DOMContentLoaded', async function () {
     formulario.addEventListener('submit', async function (e) {
         e.preventDefault();
         mensaje.textContent = '';
+
+        const llenas = Array.from(listaInstrucciones.querySelectorAll('input')).filter(function (i) { return i.value.trim() !== ''; });
+        if (llenas.length < MINIMO_INSTRUCCIONES) {
+            mensaje.textContent = 'Ingresá al menos ' + MINIMO_INSTRUCCIONES + ' indicaciones clínicas.';
+            return;
+        }
 
         const datos = new FormData(formulario);
 
@@ -145,6 +270,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
     });
 
+    cargarCamposDinamicos([], []);
     cargarListado();
 
 });

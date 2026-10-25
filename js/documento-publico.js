@@ -15,13 +15,21 @@ document.addEventListener('DOMContentLoaded', async function () {
             '</section>';
         return;
     }
+    function lista(items) {
+        return '<ul class="lista-instrucciones">' + items.map(function (instr) {
+            return '<li>' + SIGSM.escapar(instr.texto_instruccion) + '</li>';
+        }).join('') + '</ul>';
+    }
 
-    const itemsInstrucciones = documento.instrucciones.map(function (instr) {
-        const clase = instr.es_pauta_alarma ? ' class="pauta-alarma"' : '';
-        return '<li' + clase + '>' + SIGSM.escapar(instr.texto_instruccion) + '</li>';
-    }).join('');
+    const normales = documento.instrucciones.filter(function (i) { return !Number(i.es_pauta_alarma); });
+    const alarmas = documento.instrucciones.filter(function (i) { return Number(i.es_pauta_alarma); });
+    const seccionAlarmas = alarmas.length
+        ? '<div class="bloque-alarma"><h4>Pautas de alarma: consultá de inmediato si presentás</h4>' + lista(alarmas) + '</div>'
+        : '';
 
-    const nombreArchivo = documento.archivo.split('/').pop();
+    const botonPdf = documento.archivo
+        ? '<a href="../documentos/' + encodeURIComponent(documento.archivo.split('/').pop()) + '" target="_blank" class="boton boton-primario">Ver Documento Completo (PDF)</a>'
+        : '';
 
     contenedor.innerHTML =
         '<section class="tarjeta">' +
@@ -29,8 +37,9 @@ document.addEventListener('DOMContentLoaded', async function () {
             '<h3>' + SIGSM.escapar(documento.titulo) + '</h3>' +
             '<p>' + SIGSM.escapar(documento.descripcion) + '</p>' +
             '<p class="fecha-documento">Publicado el ' + SIGSM.escapar(documento.fecha_carga) + '</p>' +
-            '<ul class="lista-instrucciones">' + itemsInstrucciones + '</ul>' +
-            '<a href="../documentos/' + encodeURIComponent(nombreArchivo) + '" target="_blank" class="boton boton-primario">Ver Documento Completo (PDF)</a>' +
+            '<h4 class="titulo-indicaciones">Indicaciones</h4>' + lista(normales) +
+            seccionAlarmas +
+            botonPdf +
         '</section>';
 
 });
