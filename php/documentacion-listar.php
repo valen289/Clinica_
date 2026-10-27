@@ -14,16 +14,19 @@ $resultado_documentos = $con->query($sql_listado);
 
 $documentos = [];
 while ($doc = $resultado_documentos->fetch_assoc()) {
-
-    $stmt_instrucciones = $con->prepare("SELECT texto_instruccion, es_pauta_alarma FROM Instruccion WHERE id_documento = ? ORDER BY orden");
-    $stmt_instrucciones->bind_param("i", $doc['id_documento']);
-    $stmt_instrucciones->execute();
-    $resultado_instrucciones = $stmt_instrucciones->get_result();
-    $doc['instrucciones'] = filas($resultado_instrucciones);
-    $stmt_instrucciones->close();
-
-    $documentos[] = $doc;
+    $doc['instrucciones'] = [];
+    $documentos[$doc['id_documento']] = $doc;
 }
 
-echo json_encode(['exito' => true, 'datos' => $documentos]);
+// una sola consulta para todas las instrucciones (en vez de una por documento)
+$resultado_instrucciones = $con->query("SELECT id_documento, texto_instruccion, es_pauta_alarma FROM Instruccion ORDER BY id_documento, orden");
+while ($instruccion = $resultado_instrucciones->fetch_assoc()) {
+    $id_doc = $instruccion['id_documento'];
+    if (isset($documentos[$id_doc])) {
+        unset($instruccion['id_documento']);
+        $documentos[$id_doc]['instrucciones'][] = $instruccion;
+    }
+}
+
+echo json_encode(['exito' => true, 'datos' => array_values($documentos)]);
 $con->close();
