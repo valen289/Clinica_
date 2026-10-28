@@ -203,6 +203,12 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
     });
 
+    // el acceso "Crear usuario" de Inicio llega con ?nuevo=1 (se saca de la URL para que recargar no lo repita)
+    if (new URLSearchParams(window.location.search).get('nuevo') === '1') {
+        history.replaceState(null, '', window.location.pathname);
+        abrirModal();
+    }
+
     cargarListado();
 
 });

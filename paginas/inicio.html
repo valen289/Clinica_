@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIGSM - Inicio</title>
+    <link rel="stylesheet" href="../assets/css/variables.css?v=7">
+    <link rel="stylesheet" href="../assets/css/layout.css?v=7">
+    <link rel="stylesheet" href="../assets/css/componentes.css?v=7">
+    <link rel="stylesheet" href="../assets/css/paginas.css?v=9">
+    <link rel="stylesheet" href="../assets/css/responsive.css?v=7">
+</head>
+<body>
+
+    <div id="header"></div>
+
+    <div class="layout">
+        <div id="sidebar"></div>
+
+        <main class="contenido">
+            <div class="cabecera-inicio">
+                <div>
+                    <p class="inicio-fecha" id="inicio-fecha"></p>
+                    <h2 id="inicio-saludo">Inicio</h2>
+                    <p class="inicio-bajada">Resumen del día en el Hospital de Clínicas.</p>
+                </div>
+                <div class="inicio-actualizacion">
+                    <small id="inicio-actualizado" aria-live="polite"></small>
+                    <button type="button" id="boton-actualizar" class="boton boton-secundario boton-chico">Actualizar</button>
+                </div>
+            </div>
+
+            <div id="aviso-inicio" class="aviso-lista" role="status" hidden></div>
+
+            <div class="resumen-folletos" id="resumen-inicio">
+                <div class="dato-resumen esqueleto"></div>
+                <div class="dato-resumen esqueleto"></div>
+                <div class="dato-resumen esqueleto"></div>
+                <div class="dato-resumen esqueleto"></div>
+            </div>
+
+            <div class="grilla-inicio">
+                <section class="tarjeta tarjeta-inicio">
+                    <div class="cabecera-tarjeta">
+                        <h3>Últimos traslados</h3>
+                        <a class="enlace-ver-todo" href="traslados.html">Ver todos</a>
+                    </div>
+                    <ul class="lista-traslados-inicio" id="lista-traslados">
+                        <li class="esqueleto esqueleto-linea"></li>
+                        <li class="esqueleto esqueleto-linea"></li>
+                        <li class="esqueleto esqueleto-linea"></li>
+                    </ul>
+                </section>
+
+                <div class="columna-inicio">
+                    <section class="tarjeta tarjeta-inicio">
+                        <h3>Requiere atención</h3>
+                        <ul class="lista-alertas" id="lista-alertas">
+                            <li class="esqueleto esqueleto-linea"></li>
+                        </ul>
+                    </section>
+
+                    <section class="tarjeta tarjeta-inicio">
+                        <h3>Accesos rápidos</h3>
+                        <div class="accesos-rapidos" id="accesos-rapidos"></div>
+                    </section>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../js/shell.js?v=7"></script>
+    <script src="../js/inicio.js?v=8"></script>
+
+</body>
+</html>

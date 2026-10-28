@@ -572,8 +572,27 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
     });
 
+    // enlaces que llegan desde Inicio: ?estado=incompleto filtra y ?nuevo=1 abre el alta.
+    // Se sacan de la URL para que recargar la página no repita la acción.
+    function aplicarParametrosUrl() {
+        const parametros = new URLSearchParams(window.location.search);
+        const estado = parametros.get('estado');
+        if (estado && Array.from(filtroEstado.options).some(function (o) { return o.value === estado; })) {
+            buscador.value = '';
+            filtroDepartamento.value = '';
+            filtroEstado.value = estado;
+        }
+        if (parametros.get('nuevo') === '1') {
+            document.querySelector('#boton-agregar-folleto').click();
+        }
+        if (parametros.toString()) {
+            history.replaceState(null, '', window.location.pathname);
+        }
+    }
+
     cargarCamposDinamicos([], []);
     restaurarFiltros();
+    aplicarParametrosUrl();
     mostrarEsqueleto();
     cargarListado();
 

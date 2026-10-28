@@ -19,12 +19,6 @@ document.addEventListener('DOMContentLoaded', async function () {
         });
     }
 
-    function claseEstado(estado) {
-        if (['En curso', 'Retornando'].indexOf(estado) !== -1) return 'pill-azul';
-        if (['Llegado a destino', 'Finalizado'].indexOf(estado) !== -1) return 'pill-verde';
-        return 'pill-naranja';
-    }
-
     function renderFilaTraslado(t) {
         const esFinalizado = (t.estado === 'Finalizado');
         return '<tr>' +
@@ -33,7 +27,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             '<td>' + SIGSM.escapar(t.origen + ' → ' + t.destino) + '</td>' +
             '<td>' + SIGSM.escapar(t.fecha) + '</td>' +
             '<td>' + SIGSM.escapar(t.hora_salida) + '</td>' +
-            '<td><span class="pill-estado ' + claseEstado(t.estado) + '">' + SIGSM.escapar(t.estado) + '</span></td>' +
+            '<td><span class="pill-estado ' + SIGSM.claseEstadoTraslado(t.estado) + '">' + SIGSM.escapar(t.estado) + '</span></td>' +
             '<td>' +
                 (esFinalizado ? '' : '<button type="button" class="enlace-accion" data-accion="avanzar" data-id="' + t.id_traslado + '">Avanzar →</button>') +
             '</td>' +

@@ -11,6 +11,9 @@ const SIGSM = (function () {
     // menú agrupado por área; "roles: null" = cualquier usuario logueado.
     // Es la única fuente de permisos del lado del cliente: protegerPagina() la usa también.
     const SECCIONES_SIDEBAR = [
+        { titulo: 'General', enlaces: [
+            { pagina: 'inicio', href: 'inicio.html', texto: 'Inicio', icono: 'inicio', roles: null },
+        ] },
         { titulo: 'Atención al paciente', enlaces: [
             { pagina: 'documentacion', href: 'documentacion.html', texto: 'Documentos médicos', icono: 'documento', roles: ROLES_PERSONAL },
         ] },
@@ -28,6 +31,12 @@ const SIGSM = (function () {
 
     // trazos de iconos (estilo lineal, se dibujan dentro de un <svg viewBox="0 0 24 24">)
     const ICONOS = {
+        inicio: '<path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/>',
+        actividad: '<path d="M3 12h4l2-6 3 12 2-8 2 2h5"/>',
+        reloj: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+        ambulancia: '<path d="M3 17V7a1 1 0 0 1 1-1h10v11"/><path d="M14 10h4l3 3v4h-2"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/><path d="M9 17h6"/><path d="M8 9v4M6 11h4"/>',
+        check: '<polyline points="20 6 9 17 4 12"/>',
+        flecha: '<path d="M5 12h14M13 6l6 6-6 6"/>',
         documento: '<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h6"/>',
         qr: '<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3h-3zM20 14v.01M14 20h.01M17 20h4v-3"/>',
         ruta: '<circle cx="6" cy="19" r="2"/><circle cx="18" cy="5" r="2"/><path d="M8 19h6a4 4 0 0 0 0-8h-4a4 4 0 0 1 0-8h6"/>',
@@ -71,6 +80,13 @@ const SIGSM = (function () {
         return String(texto || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
     }
 
+    // color de la pill según el estado del traslado (Traslados e Inicio lo muestran igual)
+    function claseEstadoTraslado(estado) {
+        if (['En curso', 'Retornando'].indexOf(estado) !== -1) return 'pill-azul';
+        if (['Llegado a destino', 'Finalizado'].indexOf(estado) !== -1) return 'pill-verde';
+        return 'pill-naranja';
+    }
+
     // el contenedor de toasts se crea solo la primera vez que se usa
     function mostrarToast(texto, tipo) {
         let contenedor = document.querySelector('.toasts');
@@ -112,6 +128,12 @@ const SIGSM = (function () {
             if (enlace) return enlace;
         }
         return null;
+    }
+
+    // para no ofrecer accesos a páginas que el rol después no puede abrir
+    function puedeEntrar(pagina, rol) {
+        const enlace = buscarEnlace(pagina);
+        return !enlace || puedeVer(enlace, rol);
     }
 
     // primera página del menú que el rol puede ver: es a donde va después del login
@@ -220,6 +242,8 @@ const SIGSM = (function () {
         protegerPagina: protegerPagina,
         obtenerSesion: obtenerSesion,
         paginaInicial: paginaInicial,
+        puedeEntrar: puedeEntrar,
+        claseEstadoTraslado: claseEstadoTraslado,
         escapar: escapar,
         icono: icono,
         ICONOS: ICONOS,

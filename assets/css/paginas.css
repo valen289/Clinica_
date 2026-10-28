@@ -1213,6 +1213,289 @@ button.dato-resumen:hover,
     margin-top: var(--espacio-sm);
 }
 
+/* ==========================================================
+   INICIO (inicio.html)
+   ========================================================== */
+.cabecera-inicio {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: var(--espacio-lg);
+    margin-bottom: var(--espacio-lg);
+}
+
+.inicio-fecha {
+    margin-bottom: var(--espacio-xs);
+    font-size: 13px;
+    font-weight: bold;
+    color: var(--color-primario);
+}
+
+.cabecera-inicio h2 {
+    margin-bottom: var(--espacio-xs);
+    font-size: 24px;
+    letter-spacing: -0.2px;
+}
+
+.inicio-bajada {
+    font-size: 14px;
+    color: var(--color-texto-suave);
+}
+
+.inicio-actualizacion {
+    display: flex;
+    align-items: center;
+    gap: var(--espacio-sm);
+    flex-shrink: 0;
+}
+
+.inicio-actualizacion small {
+    font-size: 12px;
+    color: var(--color-texto-suave);
+}
+
+.cabecera-inicio + .aviso-lista {
+    margin: 0 0 var(--espacio-lg);
+}
+
+/* los datos del inicio son enlaces: se levantan al pasar el mouse en vez de marcarse como filtro */
+a.dato-resumen {
+    text-decoration: none;
+    transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+a.dato-resumen:hover {
+    border-color: var(--color-borde-input);
+    box-shadow: 0 4px 12px rgba(20, 33, 61, 0.08);
+}
+
+.dato-resumen.esqueleto {
+    height: 70px;
+}
+
+.dato-total {
+    font-size: 14px;
+    font-weight: normal;
+    color: var(--color-texto-suave);
+}
+
+.grilla-inicio {
+    display: grid;
+    grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+    gap: var(--espacio-lg);
+    align-items: start;
+    margin-top: var(--espacio-lg);
+}
+
+.columna-inicio {
+    display: flex;
+    flex-direction: column;
+    gap: var(--espacio-lg);
+}
+
+.tarjeta-inicio {
+    padding: var(--espacio-lg);
+}
+
+.tarjeta-inicio h3 {
+    margin-bottom: 12px;
+}
+
+.tarjeta-inicio .cabecera-tarjeta {
+    margin-bottom: var(--espacio-xs);
+}
+
+.enlace-ver-todo {
+    font-size: 13px;
+    font-weight: bold;
+    color: var(--color-primario);
+    text-decoration: none;
+}
+
+.enlace-ver-todo:hover {
+    text-decoration: underline;
+}
+
+.lista-traslados-inicio,
+.lista-alertas {
+    list-style: none;
+}
+
+.esqueleto-linea {
+    height: 44px;
+    margin-bottom: var(--espacio-sm);
+    border-radius: var(--radio-medio);
+}
+
+/* ---- últimos traslados ---- */
+.item-traslado {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--color-borde);
+}
+
+.item-traslado:last-child {
+    border-bottom: none;
+}
+
+.item-traslado-icono {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
+    border-radius: var(--radio-medio);
+    background-color: var(--color-primario-suave);
+    color: var(--color-primario);
+}
+
+.item-traslado-datos {
+    flex: 1;
+    min-width: 0;
+}
+
+.item-traslado-datos strong,
+.item-traslado-datos small {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.item-traslado-datos strong {
+    font-size: 14px;
+}
+
+.item-traslado-datos small,
+.item-traslado-estado small {
+    font-size: 12px;
+    color: var(--color-texto-suave);
+}
+
+.item-traslado-estado {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: var(--espacio-xs);
+    flex-shrink: 0;
+}
+
+.vacio-inicio {
+    padding: var(--espacio-lg) 0 var(--espacio-sm);
+    text-align: center;
+}
+
+.tarjeta .vacio-inicio p {
+    margin-bottom: var(--espacio-sm);
+    color: var(--color-texto-suave);
+}
+
+/* ---- requiere atención ---- */
+.lista-alertas {
+    display: flex;
+    flex-direction: column;
+    gap: var(--espacio-sm);
+}
+
+.alerta-inicio {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 12px;
+    border: 1px solid transparent;
+    border-radius: var(--radio-medio);
+    background-color: var(--color-fondo);
+    color: inherit;
+    text-decoration: none;
+}
+
+a.alerta-inicio {
+    transition: border-color 0.15s;
+}
+
+a.alerta-inicio:hover {
+    border-color: currentColor;
+}
+
+.alerta-inicio strong {
+    display: block;
+    font-size: 13px;
+    color: var(--color-texto);
+}
+
+.alerta-inicio small {
+    font-size: 12px;
+    color: var(--color-texto-secundario);
+}
+
+.alerta-icono {
+    display: flex;
+    flex-shrink: 0;
+    margin-top: 1px;
+}
+
+.alerta-rojo { background-color: #fef2f2; color: var(--color-peligro); }
+.alerta-ambar { background-color: #fffbeb; color: #b45309; }
+.alerta-ok { background-color: #f0fdf4; color: var(--color-verde-hover); }
+
+/* ---- accesos rápidos ---- */
+/* dos columnas si entran; en una columna angosta quedan uno debajo del otro */
+.accesos-rapidos {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+    gap: var(--espacio-sm);
+}
+
+.acceso-rapido {
+    display: flex;
+    align-items: center;
+    gap: var(--espacio-sm);
+    padding: 10px 12px;
+    border: 1px solid var(--color-borde);
+    border-radius: var(--radio-medio);
+    color: var(--color-texto-medio);
+    font-size: 13px;
+    font-weight: bold;
+    text-decoration: none;
+    transition: border-color 0.15s, background-color 0.15s, color 0.15s;
+}
+
+.acceso-rapido svg {
+    flex-shrink: 0;
+    color: var(--color-primario);
+}
+
+.acceso-rapido:hover {
+    border-color: var(--color-primario);
+    background-color: var(--color-primario-suave);
+    color: var(--color-primario);
+}
+
+@media (max-width: 900px) {
+    /* minmax(0, ...) y no 1fr: si no, el texto largo de una ruta ensancha la columna y la tarjeta se sale */
+    .grilla-inicio {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .cabecera-inicio {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .cabecera-inicio h2 {
+        font-size: 21px;
+    }
+
+    .item-traslado-icono {
+        display: none;
+    }
+}
+
 @media (prefers-reduced-motion: reduce) {
     .tarjeta-folleto, .modal-contenido, .toast, .esqueleto {
         animation: none;
