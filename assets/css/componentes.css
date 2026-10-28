@@ -18,6 +18,11 @@
     cursor: pointer;
 }
 
+/* sin esto el display de .boton le gana al atributo hidden y el botón no se oculta */
+.boton[hidden] {
+    display: none;
+}
+
 .boton-primario {
     background-color: var(--color-primario);
     color: var(--color-blanco);
@@ -168,6 +173,11 @@
 .pill-estado.pill-azul {
     background-color: #dbeafe;
     color: var(--color-primario-hover);
+}
+
+.pill-estado.pill-violeta {
+    background-color: var(--color-violeta-suave);
+    color: var(--color-violeta-hover);
 }
 
 /* ==========================================================

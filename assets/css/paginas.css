@@ -4,7 +4,7 @@
    ========================================================== */
 
 /* ==========================================================
-   AUTENTICACIÓN (index.html = login, registro.html)
+   AUTENTICACIÓN (index.html = login)
    ========================================================== */
 .pantalla-auth {
     min-height: 100vh;
@@ -79,7 +79,7 @@
 
 .marca-footer {
     font-size: 12px;
-    color: #6f80a3;
+    color: #94a3c4;
 }
 
 .panel-formulario {
@@ -144,7 +144,7 @@
 }
 
 /* ==========================================================
-   PANTALLA CENTRADA (documento-publico.html, registro.html)
+   PANTALLA CENTRADA (documento-publico.html)
    ========================================================== */
 .pantalla-paciente {
     min-height: 100vh;
@@ -864,6 +864,7 @@ button.dato-resumen:hover,
 .dato-violeta .dato-icono { background-color: var(--color-violeta-suave); color: var(--color-violeta); }
 .dato-rojo .dato-icono { background-color: #fee2e2; color: var(--color-peligro-fuerte); }
 .dato-ambar .dato-icono { background-color: #fef3c7; color: #b45309; }
+.dato-verde .dato-icono { background-color: #dcfce7; color: var(--color-verde-hover); }
 
 /* ---- barra de filtros ---- */
 .barra-filtros {
@@ -1135,6 +1136,81 @@ button.dato-resumen:hover,
         left: var(--espacio-md);
         right: var(--espacio-md);
     }
+}
+
+/* ==========================================================
+   USUARIOS (usuarios.html)
+   Reutiliza cabecera, resumen, filtros y modal de documentacion.
+   ========================================================== */
+.tarjeta-usuarios {
+    margin-top: var(--espacio-sm);
+    padding: 0;
+    overflow: hidden;
+}
+
+.tabla-desplazable {
+    overflow-x: auto;
+}
+
+.tarjeta-usuarios table {
+    min-width: 620px;
+}
+
+.tarjeta-usuarios th,
+.tarjeta-usuarios td {
+    padding: 12px var(--espacio-lg);
+    vertical-align: middle;
+}
+
+.tarjeta-usuarios th {
+    background-color: #f9fafb;
+}
+
+.tarjeta-usuarios tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.tarjeta-usuarios tbody tr:hover {
+    background-color: #f9fafb;
+}
+
+.celda-usuario {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.celda-usuario strong {
+    font-size: 14px;
+}
+
+.celda-usuario small {
+    display: block;
+    font-size: 12px;
+    color: var(--color-texto-suave);
+}
+
+.chip-vos {
+    display: inline-block;
+    margin-left: 6px;
+    padding: 2px 8px;
+    border-radius: var(--radio-pill);
+    background-color: var(--color-primario-suave);
+    color: var(--color-primario);
+    font-size: 11px;
+    font-weight: bold;
+    vertical-align: 1px;
+}
+
+/* .tarjeta delante para ganarle a ".tarjeta p" */
+.tarjeta .ayuda-campo {
+    margin: 6px 0 var(--espacio-sm);
+    font-size: 12px;
+    color: var(--color-texto-suave);
+}
+
+#esqueleto-usuarios {
+    margin-top: var(--espacio-sm);
 }
 
 @media (prefers-reduced-motion: reduce) {

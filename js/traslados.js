@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', async function () {
 
-    const sesion = await SIGSM.protegerPagina('traslados', null);
+    const sesion = await SIGSM.protegerPagina('traslados');
     if (!sesion) return;
 
     const formulario = document.querySelector('#form-despacho');

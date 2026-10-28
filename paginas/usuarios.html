@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIGSM - Usuarios</title>
+    <link rel="stylesheet" href="../assets/css/variables.css?v=5">
+    <link rel="stylesheet" href="../assets/css/layout.css?v=5">
+    <link rel="stylesheet" href="../assets/css/componentes.css?v=5">
+    <link rel="stylesheet" href="../assets/css/paginas.css?v=6">
+    <link rel="stylesheet" href="../assets/css/responsive.css?v=5">
+</head>
+<body>
+
+    <div id="header"></div>
+
+    <div class="layout">
+        <div id="sidebar"></div>
+
+        <main class="contenido">
+            <div class="cabecera-folletos">
+                <div>
+                    <h2>Usuarios del sistema</h2>
+                    <p>Cuentas del personal que ingresa a SIGSM. Solo un administrador puede crear usuarios nuevos.</p>
+                </div>
+                <button type="button" id="boton-nuevo-usuario" class="boton boton-primario">+ Nuevo usuario</button>
+            </div>
+
+            <div class="resumen-folletos" id="resumen-usuarios" hidden></div>
+
+            <div class="barra-filtros" id="barra-filtros" hidden>
+                <div class="campo-busqueda">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+                    <input type="search" id="buscar-usuario" placeholder="Buscar por nombre, usuario, cédula o email   ( / )" aria-label="Buscar usuario">
+                </div>
+                <select id="filtro-rol" aria-label="Filtrar por rol">
+                    <option value="">Todos los roles</option>
+                </select>
+                <button type="button" id="limpiar-filtros" class="boton boton-secundario boton-chico" hidden>Limpiar</button>
+            </div>
+            <p class="contador-resultados" id="contador-resultados" aria-live="polite"></p>
+
+            <div id="aviso-lista" class="aviso-lista" role="status" hidden></div>
+            <div id="esqueleto-usuarios" class="tarjeta esqueleto"></div>
+
+            <section class="tarjeta tarjeta-usuarios" id="tarjeta-usuarios" hidden>
+                <div class="tabla-desplazable">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Usuario</th>
+                                <th>Cédula</th>
+                                <th>Rol</th>
+                            </tr>
+                        </thead>
+                        <tbody id="lista-usuarios"></tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <div class="modal-fondo" id="modal-usuario" hidden>
+        <section class="tarjeta tarjeta-formulario modal-contenido" role="dialog" aria-modal="true" aria-labelledby="titulo-modal-usuario">
+            <h3 id="titulo-modal-usuario">Nuevo usuario</h3>
+            <p class="modal-subtitulo">La persona va a ingresar con este usuario y contraseña. Entregale la contraseña en persona o por un medio seguro.</p>
+
+            <form id="form-usuario">
+                <div class="fila-campos">
+                    <div>
+                        <label for="nombre">Nombre:</label>
+                        <input type="text" id="nombre" name="nombre" maxlength="50" placeholder="Juan" required>
+                    </div>
+                    <div>
+                        <label for="apellido">Apellido:</label>
+                        <input type="text" id="apellido" name="apellido" maxlength="50" placeholder="Pérez" required>
+                    </div>
+                </div>
+
+                <div class="fila-campos">
+                    <div>
+                        <label for="email">Email:</label>
+                        <input type="email" id="email" name="email" maxlength="40" placeholder="jperez@hc.edu.uy" required>
+                    </div>
+                    <div>
+                        <label for="ci">Cédula:</label>
+                        <input type="text" id="ci" name="ci" maxlength="11" placeholder="1.234.567-8" required>
+                    </div>
+                </div>
+
+                <div class="fila-campos">
+                    <div>
+                        <label for="usuario">Usuario:</label>
+                        <input type="text" id="usuario" name="usuario" maxlength="40" placeholder="jperez" autocomplete="off" required>
+                    </div>
+                    <div>
+                        <label for="rol">Rol:</label>
+                        <select id="rol" name="rol" required>
+                            <option value="">Seleccione un rol</option>
+                        </select>
+                    </div>
+                </div>
+
+                <label for="contrasenia">Contraseña inicial:</label>
+                <input type="password" id="contrasenia" name="contrasenia" minlength="8" autocomplete="new-password" required>
+                <p class="ayuda-campo">Mínimo 8 caracteres.</p>
+
+                <div id="mensaje-form" class="mensaje-error"></div>
+
+                <div class="acciones-modal">
+                    <button type="button" id="boton-cancelar" class="boton boton-secundario">Cancelar</button>
+                    <button type="submit" id="boton-guardar" class="boton boton-primario">Crear usuario</button>
+                </div>
+            </form>
+        </section>
+    </div>
+
+    <script src="../js/shell.js?v=6"></script>
+    <script src="../js/usuarios.js?v=5"></script>
+
+</body>
+</html>

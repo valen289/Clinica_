@@ -1,7 +1,9 @@
 <?php
 
-session_start();
 header('Content-Type: application/json');
+
+require_once __DIR__ . '/auth.php';
+iniciar_sesion();
 
 if (isset($_SESSION['id_funcionario'])) {
     echo json_encode([

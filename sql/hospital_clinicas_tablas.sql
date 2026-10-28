@@ -3,6 +3,7 @@ USE hospital_clinicas;
 
 SET FOREIGN_KEY_CHECKS = 0;
 
+DROP TABLE IF EXISTS Intento_login;
 DROP TABLE IF EXISTS Respuesta;
 DROP TABLE IF EXISTS Pregunta;
 DROP TABLE IF EXISTS Encuesta;
@@ -201,6 +202,16 @@ CREATE TABLE Traslado (
     CONSTRAINT fk_traslado_funcionario
         FOREIGN KEY (id_funcionario)
         REFERENCES Funcionario(id_funcionario)
+);
+
+-- Intentos de login fallidos: auth-login.php bloquea un rato a un usuario+IP con demasiados fallos
+CREATE TABLE Intento_login (
+    id_intento INT AUTO_INCREMENT PRIMARY KEY,
+    usuario VARCHAR(40) NOT NULL,
+    ip VARCHAR(45) NOT NULL,
+    fecha DATETIME NOT NULL,
+
+    INDEX idx_intento_usuario_ip (usuario, ip, fecha)
 );
 
 SET FOREIGN_KEY_CHECKS = 1;

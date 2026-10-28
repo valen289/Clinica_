@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', async function () {
 
-    const sesion = await SIGSM.protegerPagina('recursos', ['Administrador', 'Recepción', 'Médico'], 'traslados.html');
+    const sesion = await SIGSM.protegerPagina('recursos');
     if (!sesion) return;
 
     const formulario = document.querySelector('#form-ambulancia');
@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         document.querySelector('#modelo').value = amb.modelo;
         document.querySelector('#estado').value = amb.estado;
 
-        document.querySelector('#icono-formulario').innerHTML = SIGSM.TRAZOS_ICONO.pencil;
+        document.querySelector('#icono-formulario').innerHTML = SIGSM.ICONOS.lapiz;
         document.querySelector('#titulo-formulario').textContent = 'Editar Ambulancia';
         document.querySelector('#boton-formulario').textContent = 'Actualizar Vehículo';
     }
@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         formulario.reset();
         document.querySelector('#id_ambulancia_editar').value = '';
 
-        document.querySelector('#icono-formulario').innerHTML = SIGSM.TRAZOS_ICONO.plus;
+        document.querySelector('#icono-formulario').innerHTML = SIGSM.ICONOS.mas;
         document.querySelector('#titulo-formulario').textContent = 'Registrar Nueva Ambulancia';
         document.querySelector('#boton-formulario').textContent = 'Guardar Vehículo';
     }

@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', async function () {
 
-    const sesion = await SIGSM.protegerPagina('recursos', ['Administrador', 'Recepción', 'Médico'], 'traslados.html');
+    const sesion = await SIGSM.protegerPagina('recursos');
     if (!sesion) return;
 
     const formulario = document.querySelector('#form-personal');
@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         document.querySelector('#rol').value = (persona.tipo === 'conductor') ? 'Conductor Profesional' : persona.rol;
         document.querySelector('#estado').value = persona.estado;
 
-        document.querySelector('#icono-formulario').innerHTML = SIGSM.TRAZOS_ICONO.pencil;
+        document.querySelector('#icono-formulario').innerHTML = SIGSM.ICONOS.lapiz;
         document.querySelector('#titulo-formulario').textContent = 'Editar Personal Operativo';
         document.querySelector('#boton-formulario').textContent = 'Actualizar Personal';
     }
@@ -58,7 +58,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         document.querySelector('#tipo_editar').value = '';
         document.querySelector('#id_ci').readOnly = false;
 
-        document.querySelector('#icono-formulario').innerHTML = SIGSM.TRAZOS_ICONO.plus;
+        document.querySelector('#icono-formulario').innerHTML = SIGSM.ICONOS.mas;
         document.querySelector('#titulo-formulario').textContent = 'Registrar Personal Operativo';
         document.querySelector('#boton-formulario').textContent = 'Guardar Personal';
     }

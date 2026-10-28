@@ -67,11 +67,21 @@
         display: none;
     }
 
-    nav ul {
+    /* en celular el menú es una sola fila deslizable: las secciones se "aplanan" */
+    .sidebar nav {
         display: flex;
         gap: var(--espacio-sm);
         overflow-x: auto;
         padding-bottom: var(--espacio-xs);
+    }
+
+    .sidebar-seccion {
+        display: contents;
+    }
+
+    nav ul {
+        display: flex;
+        gap: var(--espacio-sm);
     }
 
     nav li {

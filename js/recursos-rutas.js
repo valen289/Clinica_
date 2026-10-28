@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', async function () {
 
-    const sesion = await SIGSM.protegerPagina('recursos', ['Administrador', 'Recepción', 'Médico'], 'traslados.html');
+    const sesion = await SIGSM.protegerPagina('recursos');
     if (!sesion) return;
 
     const formulario = document.querySelector('#form-ruta');
@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         document.querySelector('#distancia').value = ruta.distancia !== null ? ruta.distancia : '';
         document.querySelector('#descripcion').value = ruta.descripcion;
 
-        document.querySelector('#icono-formulario').innerHTML = SIGSM.TRAZOS_ICONO.pencil;
+        document.querySelector('#icono-formulario').innerHTML = SIGSM.ICONOS.lapiz;
         document.querySelector('#titulo-formulario').textContent = 'Editar Ruta';
         document.querySelector('#boton-formulario').textContent = 'Actualizar Ruta';
     }
@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         formulario.reset();
         document.querySelector('#id_ruta_editar').value = '';
 
-        document.querySelector('#icono-formulario').innerHTML = SIGSM.TRAZOS_ICONO.plus;
+        document.querySelector('#icono-formulario').innerHTML = SIGSM.ICONOS.mas;
         document.querySelector('#titulo-formulario').textContent = 'Registrar Nueva Ruta';
         document.querySelector('#boton-formulario').textContent = 'Guardar Ruta';
     }

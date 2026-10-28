@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', async function () {
 
-    const sesion = await SIGSM.protegerPagina('documentacion', ['Administrador', 'Recepción', 'Médico'], 'traslados.html');
+    const sesion = await SIGSM.protegerPagina('documentacion');
     if (!sesion) return;
 
     const formulario = document.querySelector('#form-documento');
@@ -19,43 +19,22 @@ document.addEventListener('DOMContentLoaded', async function () {
     const limpiarFiltros = document.querySelector('#limpiar-filtros');
     const contadorResultados = document.querySelector('#contador-resultados');
     const resumen = document.querySelector('#resumen-folletos');
-    const contenedorToasts = document.querySelector('#toasts');
     const CLAVE_FILTROS = 'sigsm_documentacion_filtros';
     const COLORES_ACENTO = ['#2f6fed', '#7c3aed', '#0d9488', '#d97706', '#db2777', '#4f46e5'];
     let listaDocumentos = [];
 
-    // trazos de iconos (estilo lineal, se dibujan dentro de un <svg viewBox="0 0 24 24">)
-    const ICONOS = {
-        qr: '<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3h-3zM20 14v.01M14 20h.01M17 20h4v-3"/>',
-        lapiz: '<path d="M17 3a2.83 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/>',
-        enlace: '<path d="M10 13a5 5 0 0 0 7.07 0l3-3a5 5 0 0 0-7.07-7.07l-1.5 1.5"/><path d="M14 11a5 5 0 0 0-7.07 0l-3 3a5 5 0 0 0 7.07 7.07l1.5-1.5"/>',
-        basura: '<path d="M3 6h18"/><path d="M8 6V4h8v2"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/>',
-        archivo: '<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h6"/>',
-        alarma: '<path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4M12 17h.01"/>',
-        libro: '<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V3H6.5A2.5 2.5 0 0 0 4 5.5z"/><path d="M4 19.5V21h16"/>',
-        incompleto: '<circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/>',
-    };
-
-    function icono(nombre, tamanio) {
-        const t = tamanio || 18;
-        return '<svg viewBox="0 0 24 24" width="' + t + '" height="' + t + '" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + ICONOS[nombre] + '</svg>';
-    }
+    // utilidades compartidas (viven en shell.js)
+    const icono = SIGSM.icono;
+    const textoPlural = SIGSM.textoPlural;
+    const formatearFecha = SIGSM.formatearFecha;
+    const normalizar = SIGSM.normalizar;
+    const mostrarToast = SIGSM.mostrarToast;
 
     // el filtro reutiliza los departamentos del formulario
     const departamentos = Array.from(document.querySelectorAll('#departamento option')).map(function (o) { return o.value; });
     departamentos.forEach(function (nombre) {
         filtroDepartamento.appendChild(new Option(nombre, nombre));
     });
-
-    function textoPlural(cantidad, singular, plural) {
-        return cantidad + ' ' + (cantidad === 1 ? singular : plural);
-    }
-
-    // la fecha viene como 2026-08-15, se muestra como 15/08/2026
-    function formatearFecha(fecha) {
-        const partes = String(fecha || '').split('-');
-        return partes.length === 3 ? partes[2] + '/' + partes[1] + '/' + partes[0] : (fecha || '');
-    }
 
     function esReciente(fecha) {
         const cargado = new Date(fecha + 'T00:00:00');
@@ -86,7 +65,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             : '<span class="badge badge-departamento badge-sin-departamento">Sin departamento</span>';
         const etiquetas =
             (esReciente(doc.fecha_carga) ? '<span class="chip-nuevo">Nuevo</span>' : '') +
-            (doc.archivo ? '<a class="chip-pdf" href="../documentos/' + encodeURIComponent(doc.archivo.split('/').pop()) + '" target="_blank" rel="noopener" title="Abrir el PDF adjunto">' + icono('archivo', 12) + ' PDF</a>' : '') +
+            (doc.archivo ? '<a class="chip-pdf" href="../documentos/' + encodeURIComponent(doc.archivo.split('/').pop()) + '" target="_blank" rel="noopener" title="Abrir el PDF adjunto">' + icono('documento', 12) + ' PDF</a>' : '') +
             (incompleto ? '<span class="chip-incompleto" title="Tiene menos de ' + MINIMO_INSTRUCCIONES + ' indicaciones">' + icono('incompleto', 12) + ' Incompleto</span>' : '');
 
         return '<section class="tarjeta tarjeta-folleto" style="--acento:' + colorAcento(doc) + '">' +
@@ -127,7 +106,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
         resumen.innerHTML =
             dato('libro', total, 'Folletos cargados', '', '') +
-            dato('archivo', conPdf, 'Con PDF adjunto', 'dato-violeta', 'con-pdf') +
+            dato('documento', conPdf, 'Con PDF adjunto', 'dato-violeta', 'con-pdf') +
             dato('alarma', alarmas, 'Pautas de alarma', 'dato-rojo', '') +
             dato('incompleto', incompletos, 'Incompletos', 'dato-ambar', 'incompleto');
         resumen.hidden = total === 0;
@@ -137,10 +116,6 @@ document.addEventListener('DOMContentLoaded', async function () {
         avisoLista.textContent = texto;
         avisoLista.classList.toggle('aviso-error', !!esError);
         avisoLista.hidden = !texto;
-    }
-
-    function normalizar(texto) {
-        return String(texto || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
     }
 
     function filtrarYOrdenar() {
@@ -229,18 +204,6 @@ document.addEventListener('DOMContentLoaded', async function () {
             resumen.hidden = true;
             mostrarAviso('No se pudieron cargar los folletos. Revisá la conexión e intentá de nuevo.', true);
         }
-    }
-
-    function mostrarToast(texto, tipo) {
-        const toast = document.createElement('div');
-        toast.className = 'toast toast-' + (tipo || 'ok');
-        toast.setAttribute('role', 'status');
-        toast.textContent = texto;
-        contenedorToasts.appendChild(toast);
-        setTimeout(function () {
-            toast.classList.add('toast-saliendo');
-            setTimeout(function () { toast.remove(); }, 300);
-        }, 3200);
     }
 
     function exportarCsv() {
