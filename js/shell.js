@@ -15,6 +15,7 @@ const SIGSM = (function () {
             { pagina: 'inicio', href: 'inicio.html', texto: 'Inicio', icono: 'inicio', roles: null },
         ] },
         { titulo: 'Atención al paciente', enlaces: [
+            { pagina: 'pacientes', href: 'pacientes.html', texto: 'Pacientes', icono: 'usuario', roles: ROLES_PERSONAL },
             { pagina: 'documentacion', href: 'documentacion.html', texto: 'Documentos médicos', icono: 'documento', roles: ROLES_PERSONAL },
         ] },
         { titulo: 'Traslados', enlaces: [
@@ -37,6 +38,14 @@ const SIGSM = (function () {
         ambulancia: '<path d="M3 17V7a1 1 0 0 1 1-1h10v11"/><path d="M14 10h4l3 3v4h-2"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/><path d="M9 17h6"/><path d="M8 9v4M6 11h4"/>',
         check: '<polyline points="20 6 9 17 4 12"/>',
         flecha: '<path d="M5 12h14M13 6l6 6-6 6"/>',
+        volver: '<path d="M19 12H5M11 18l-6-6 6-6"/>',
+        laboratorio: '<path d="M9 3h6M10 3v6L4.5 18.5A2 2 0 0 0 6.2 21h11.6a2 2 0 0 0 1.7-2.5L14 9V3"/><path d="M7 15h10"/>',
+        imagen: '<rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/>',
+        calendario: '<rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/>',
+        telefono: '<path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/>',
+        correo: '<rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 6l-10 7L2 6"/>',
+        ubicacion: '<path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/>',
+        cedula: '<rect x="2" y="5" width="20" height="14" rx="2"/><circle cx="8" cy="12" r="2"/><path d="M14 10h4M14 14h4"/>',
         documento: '<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h6"/>',
         qr: '<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3h-3zM20 14v.01M14 20h.01M17 20h4v-3"/>',
         ruta: '<circle cx="6" cy="19" r="2"/><circle cx="18" cy="5" r="2"/><path d="M8 19h6a4 4 0 0 0 0-8h-4a4 4 0 0 1 0-8h6"/>',
@@ -73,6 +82,41 @@ const SIGSM = (function () {
     function formatearFecha(fecha) {
         const partes = String(fecha || '').split('-');
         return partes.length === 3 ? partes[2] + '/' + partes[1] + '/' + partes[0] : (fecha || '');
+    }
+
+    // cédula uruguaya: mismo algoritmo que php/cedula.php (cada dígito por 2987634, módulo 10)
+    function digitoVerificador(cuerpo) {
+        const pesos = [2, 9, 8, 7, 6, 3, 4];
+        const relleno = String(cuerpo).padStart(7, '0');
+        let suma = 0;
+        for (let i = 0; i < 7; i++) suma += Number(relleno[i]) * pesos[i];
+        return (10 - (suma % 10)) % 10;
+    }
+
+    // acepta "1.234.567-2" o "12345672"; devuelve true si el dígito verificador coincide
+    function cedulaValida(texto) {
+        const digitos = String(texto || '').replace(/\D/g, '');
+        if (digitos.length < 7 || digitos.length > 8) return false;
+        return digitoVerificador(digitos.slice(0, -1)) === Number(digitos.slice(-1));
+    }
+
+    // 12345672 -> "1.234.567-2"
+    function formatearCedula(numero) {
+        const digitos = String(numero || '').replace(/\D/g, '');
+        if (digitos.length < 2) return digitos;
+        const cuerpo = digitos.slice(0, -1).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+        return cuerpo + '-' + digitos.slice(-1);
+    }
+
+    // años cumplidos a partir de "1980-05-20"; null si no hay fecha
+    function calcularEdad(fechaNacimiento) {
+        if (!fechaNacimiento) return null;
+        const nacimiento = new Date(fechaNacimiento + 'T00:00:00');
+        const hoy = new Date();
+        let edad = hoy.getFullYear() - nacimiento.getFullYear();
+        const yaCumplio = hoy.getMonth() > nacimiento.getMonth() || (hoy.getMonth() === nacimiento.getMonth() && hoy.getDate() >= nacimiento.getDate());
+        if (!yaCumplio) edad--;
+        return isNaN(edad) ? null : edad;
     }
 
     // minúsculas y sin tildes, para que la búsqueda de "medico" encuentre "Médico"
@@ -249,6 +293,10 @@ const SIGSM = (function () {
         ICONOS: ICONOS,
         textoPlural: textoPlural,
         formatearFecha: formatearFecha,
+        cedulaValida: cedulaValida,
+        digitoVerificador: digitoVerificador,
+        formatearCedula: formatearCedula,
+        calcularEdad: calcularEdad,
         normalizar: normalizar,
         mostrarToast: mostrarToast,
         cargarResumenRecursos: cargarResumenRecursos,

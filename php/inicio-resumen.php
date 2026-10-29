@@ -44,10 +44,18 @@ $datos = [
     'traslados' => $traslados,
     'ambulancias' => $ambulancias,
     'documentos' => null,
+    'pacientes' => null,
 ];
 
-// los choferes no trabajan con folletos: a ellos no se les mandan esos datos
+// los choferes no trabajan con documentos ni pacientes: a ellos no se les mandan esos datos
 if ($_SESSION['rol'] !== 'Chofer') {
+    $datos['pacientes'] = [
+        'total' => contar($con, "SELECT COUNT(*) AS total FROM Paciente"),
+        'altas_mes' => contar($con, "SELECT COUNT(*) AS total FROM Paciente WHERE fecha_alta >= DATE_FORMAT(CURDATE(), '%Y-%m-01')"),
+        // estudios que una semana después de hechos siguen sin resultado
+        'estudios_demorados' => contar($con, "SELECT COUNT(*) AS total FROM Estudio WHERE estado = 'Pendiente' AND fecha_estudio < CURDATE() - INTERVAL 7 DAY"),
+    ];
+
     $datos['documentos'] = [
         'total' => contar($con, "SELECT COUNT(*) AS total FROM Documento"),
         'con_pdf' => contar($con, "SELECT COUNT(*) AS total FROM Documento WHERE archivo <> ''"),

@@ -4,6 +4,8 @@ USE hospital_clinicas;
 SET FOREIGN_KEY_CHECKS = 0;
 
 DROP TABLE IF EXISTS Intento_login;
+DROP TABLE IF EXISTS Paciente_documento;
+DROP TABLE IF EXISTS Estudio;
 DROP TABLE IF EXISTS Respuesta;
 DROP TABLE IF EXISTS Pregunta;
 DROP TABLE IF EXISTS Encuesta;
@@ -106,18 +108,61 @@ CREATE TABLE Codigo_qr (
         REFERENCES Documento(id_documento)
 );
 
+-- id_ci: la cédula solo con números, incluido el dígito verificador (1.234.567-2 -> 12345672)
 CREATE TABLE Paciente (
     id_ci INT PRIMARY KEY,
     nombre VARCHAR(50) NOT NULL,
     apellido VARCHAR(50) NOT NULL,
     telefono VARCHAR(70),
+    email VARCHAR(80),
     direccion VARCHAR(60),
     fecha_nacimiento DATE,
-    id_qr INT,
+    fecha_alta DATE
+);
 
-    CONSTRAINT fk_paciente_qr
-        FOREIGN KEY (id_qr)
-        REFERENCES Codigo_qr(id_qr)
+-- Estudios y análisis de cada paciente. El PDF va en /estudios/ (carpeta cerrada al público)
+-- y solo se entrega a través de php/estudio-archivo.php
+CREATE TABLE Estudio (
+    id_estudio INT AUTO_INCREMENT PRIMARY KEY,
+    id_paciente INT NOT NULL,
+    tipo VARCHAR(40) NOT NULL,
+    titulo VARCHAR(100) NOT NULL,
+    fecha_estudio DATE NOT NULL,
+    estado VARCHAR(20) NOT NULL DEFAULT 'Pendiente',
+    archivo VARCHAR(150) NOT NULL DEFAULT '',
+    observaciones VARCHAR(500),
+    fecha_carga DATETIME NOT NULL,
+    id_funcionario INT NOT NULL,
+
+    CONSTRAINT fk_estudio_paciente
+        FOREIGN KEY (id_paciente)
+        REFERENCES Paciente(id_ci),
+
+    CONSTRAINT fk_estudio_funcionario
+        FOREIGN KEY (id_funcionario)
+        REFERENCES Funcionario(id_funcionario)
+);
+
+-- Documentos de pautas que el personal le asignó a cada paciente
+CREATE TABLE Paciente_documento (
+    id_paciente INT NOT NULL,
+    id_documento INT NOT NULL,
+    fecha_asignacion DATE NOT NULL,
+    id_funcionario INT NOT NULL,
+
+    PRIMARY KEY (id_paciente, id_documento),
+
+    CONSTRAINT fk_pacdoc_paciente
+        FOREIGN KEY (id_paciente)
+        REFERENCES Paciente(id_ci),
+
+    CONSTRAINT fk_pacdoc_documento
+        FOREIGN KEY (id_documento)
+        REFERENCES Documento(id_documento),
+
+    CONSTRAINT fk_pacdoc_funcionario
+        FOREIGN KEY (id_funcionario)
+        REFERENCES Funcionario(id_funcionario)
 );
 
 CREATE TABLE Encuesta (

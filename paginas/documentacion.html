@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SIGSM - Documentos Médicos</title>
-    <link rel="stylesheet" href="../assets/css/variables.css?v=7">
-    <link rel="stylesheet" href="../assets/css/layout.css?v=7">
-    <link rel="stylesheet" href="../assets/css/componentes.css?v=7">
-    <link rel="stylesheet" href="../assets/css/paginas.css?v=9">
-    <link rel="stylesheet" href="../assets/css/responsive.css?v=7">
+    <link rel="stylesheet" href="../assets/css/variables.css?v=14">
+    <link rel="stylesheet" href="../assets/css/layout.css?v=14">
+    <link rel="stylesheet" href="../assets/css/componentes.css?v=14">
+    <link rel="stylesheet" href="../assets/css/paginas.css?v=14">
+    <link rel="stylesheet" href="../assets/css/responsive.css?v=14">
 </head>
 <body>
 
@@ -23,13 +23,13 @@
                     <h2>Módulo 1: Gestión de documentos de Pautas para Pacientes</h2>
                     <p>Cargue y administre las indicaciones médicas que el Hospital de Clínicas pone a disposición mediante códigos QR descargables en celulares.</p>
                 </div>
-                <button type="button" id="boton-agregar-folleto" class="boton boton-primario">+ Agregar folleto médico</button>
+                <button type="button" id="boton-agregar-folleto" class="boton boton-primario">+ Agregar documento médico</button>
             </div>
 
             <div class="modal-fondo" id="seccion-formulario" hidden>
                 <section class="tarjeta tarjeta-formulario modal-contenido">
-                    <h3 id="titulo-formulario">Crear nuevo folleto de pautas médicas</h3>
-                    <p class="modal-subtitulo">Ingrese la información requerida por el Hospital de Clínicas. Se generará un código QR para el folleto.</p>
+                    <h3 id="titulo-formulario">Crear nuevo documento de pautas médicas</h3>
+                    <p class="modal-subtitulo">Ingrese la información requerida por el Hospital de Clínicas. Se generará un código QR para el documento.</p>
                     <!-- sin enctype="multipart/form-data" el archivo llega vacio al servidor, no tira error, simplemente no llega -->
                     <form id="form-documento" enctype="multipart/form-data">
                         <input type="hidden" id="id_documento_editar" name="id_documento_editar" value="">
@@ -83,7 +83,7 @@
             <div class="barra-filtros" id="barra-filtros" hidden>
                 <div class="campo-busqueda">
                     <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
-                    <input type="search" id="buscar-folleto" placeholder="Buscar por título o descripción   ( / )" aria-label="Buscar folleto">
+                    <input type="search" id="buscar-folleto" placeholder="Buscar por título o descripción   ( / )" aria-label="Buscar documento">
                 </div>
                 <select id="filtro-departamento" aria-label="Filtrar por departamento">
                     <option value="">Todos los departamentos</option>
@@ -94,7 +94,7 @@
                     <option value="sin-pdf">Sin PDF</option>
                     <option value="incompleto">Incompletos</option>
                 </select>
-                <select id="orden-folletos" aria-label="Ordenar folletos">
+                <select id="orden-folletos" aria-label="Ordenar documentos">
                     <option value="recientes">Más recientes</option>
                     <option value="antiguos">Más antiguos</option>
                     <option value="titulo">Título (A-Z)</option>
@@ -113,7 +113,7 @@
     <div class="modal-fondo" id="modal-escaneo" hidden>
         <section class="tarjeta modal-contenido modal-escaneo">
             <h3>Simular escaneo de código QR</h3>
-            <p class="modal-subtitulo">Un paciente vería este código en el folleto impreso. Escanealo con el celular o abrí la vista del paciente.</p>
+            <p class="modal-subtitulo">Un paciente vería este código en el documento impreso. Escanealo con el celular o abrí la vista del paciente.</p>
             <p id="escaneo-titulo" class="escaneo-titulo"></p>
             <div id="escaneo-qr" class="escaneo-qr"></div>
             <p id="escaneo-codigo" class="escaneo-codigo"></p>
@@ -127,7 +127,7 @@
 
     <div class="modal-fondo" id="modal-borrar" hidden>
         <section class="tarjeta modal-contenido modal-confirmar">
-            <h3>Eliminar folleto</h3>
+            <h3>Eliminar documento</h3>
             <p class="modal-subtitulo">Vas a eliminar <strong id="borrar-titulo"></strong>, con su código QR y su PDF. Esta acción no se puede deshacer.</p>
             <div id="borrar-error" class="mensaje-error"></div>
             <div class="acciones-modal">
@@ -139,8 +139,8 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
-    <script src="../js/shell.js?v=7"></script>
-    <script src="../js/documentacion.js?v=7"></script>
+    <script src="../js/shell.js?v=14"></script>
+    <script src="../js/documentacion.js?v=14"></script>
 
 </body>
 </html>

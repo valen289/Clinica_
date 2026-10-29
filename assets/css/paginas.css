@@ -1139,10 +1139,10 @@ button.dato-resumen:hover,
 }
 
 /* ==========================================================
-   USUARIOS (usuarios.html)
+   LISTADOS EN TABLA (usuarios.html, pacientes.html)
    Reutiliza cabecera, resumen, filtros y modal de documentacion.
    ========================================================== */
-.tarjeta-usuarios {
+.tarjeta-listado {
     margin-top: var(--espacio-sm);
     padding: 0;
     overflow: hidden;
@@ -1152,25 +1152,30 @@ button.dato-resumen:hover,
     overflow-x: auto;
 }
 
-.tarjeta-usuarios table {
+.tarjeta-listado table {
     min-width: 620px;
 }
 
-.tarjeta-usuarios th,
-.tarjeta-usuarios td {
+.tarjeta-listado th,
+.tarjeta-listado td {
     padding: 12px var(--espacio-lg);
     vertical-align: middle;
 }
 
-.tarjeta-usuarios th {
+/* cédula, edad, fechas: en una sola línea (si no entra, la tabla se desliza de costado) */
+.tarjeta-listado td:not(:first-child) {
+    white-space: nowrap;
+}
+
+.tarjeta-listado th {
     background-color: #f9fafb;
 }
 
-.tarjeta-usuarios tbody tr:last-child td {
+.tarjeta-listado tbody tr:last-child td {
     border-bottom: none;
 }
 
-.tarjeta-usuarios tbody tr:hover {
+.tarjeta-listado tbody tr:hover {
     background-color: #f9fafb;
 }
 
@@ -1178,6 +1183,12 @@ button.dato-resumen:hover,
     display: flex;
     align-items: center;
     gap: 12px;
+}
+
+/* en Pacientes el avatar lleva dos iniciales: con letra más chica no quedan pegadas al borde */
+.celda-usuario .usuario-avatar {
+    flex-shrink: 0;
+    font-size: 12px;
 }
 
 .celda-usuario strong {
@@ -1279,7 +1290,8 @@ a.dato-resumen:hover {
     color: var(--color-texto-suave);
 }
 
-.grilla-inicio {
+.grilla-inicio,
+.grilla-ficha {
     display: grid;
     grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
     gap: var(--espacio-lg);
@@ -1327,8 +1339,8 @@ a.dato-resumen:hover {
     border-radius: var(--radio-medio);
 }
 
-/* ---- últimos traslados ---- */
-.item-traslado {
+/* ---- ítems de lista (últimos traslados; también la ficha del paciente) ---- */
+.item-lista {
     display: flex;
     align-items: center;
     gap: 12px;
@@ -1336,11 +1348,11 @@ a.dato-resumen:hover {
     border-bottom: 1px solid var(--color-borde);
 }
 
-.item-traslado:last-child {
+.item-lista:last-child {
     border-bottom: none;
 }
 
-.item-traslado-icono {
+.item-lista-icono {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1352,30 +1364,30 @@ a.dato-resumen:hover {
     color: var(--color-primario);
 }
 
-.item-traslado-datos {
+.item-lista-datos {
     flex: 1;
     min-width: 0;
 }
 
-.item-traslado-datos strong,
-.item-traslado-datos small {
+.item-lista-datos strong,
+.item-lista-datos small {
     display: block;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
 }
 
-.item-traslado-datos strong {
+.item-lista-datos strong {
     font-size: 14px;
 }
 
-.item-traslado-datos small,
-.item-traslado-estado small {
+.item-lista-datos small,
+.item-lista-estado small {
     font-size: 12px;
     color: var(--color-texto-suave);
 }
 
-.item-traslado-estado {
+.item-lista-estado {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
@@ -1476,7 +1488,8 @@ a.alerta-inicio:hover {
 
 @media (max-width: 900px) {
     /* minmax(0, ...) y no 1fr: si no, el texto largo de una ruta ensancha la columna y la tarjeta se sale */
-    .grilla-inicio {
+    .grilla-inicio,
+    .grilla-ficha {
         grid-template-columns: minmax(0, 1fr);
     }
 }
@@ -1491,8 +1504,230 @@ a.alerta-inicio:hover {
         font-size: 21px;
     }
 
-    .item-traslado-icono {
+    .item-lista-icono {
         display: none;
+    }
+}
+
+/* ==========================================================
+   PACIENTES (pacientes.html: listado y ficha)
+   ========================================================== */
+.esqueleto-tabla {
+    height: 220px;
+    margin-top: var(--espacio-sm);
+}
+
+.fila-enlace {
+    cursor: pointer;
+}
+
+.fila-enlace a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.fila-enlace a:hover {
+    color: var(--color-primario);
+}
+
+.texto-tenue {
+    color: var(--color-texto-tenue);
+}
+
+.chip-pendiente {
+    display: inline-block;
+    margin-left: 4px;
+    padding: 2px 8px;
+    border-radius: var(--radio-pill);
+    background-color: #fef3c7;
+    color: #92400e;
+    font-size: 11px;
+    font-weight: bold;
+}
+
+.tarjeta .ayuda-campo.ayuda-error {
+    color: var(--color-peligro);
+}
+
+.tarjeta-formulario textarea {
+    display: block;
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--color-borde-input);
+    border-radius: var(--radio-chico);
+    font-family: inherit;
+    font-size: 14px;
+    resize: vertical;
+}
+
+.tarjeta-formulario textarea:focus {
+    outline: none;
+    border-color: var(--color-primario);
+    box-shadow: 0 0 0 3px var(--color-primario-suave);
+}
+
+.enlace-volver {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: var(--espacio-md);
+    font-size: 13px;
+    font-weight: bold;
+    color: var(--color-texto-suave);
+    text-decoration: none;
+}
+
+.enlace-volver:hover {
+    color: var(--color-primario);
+}
+
+/* ---- cabecera de la ficha ---- */
+.ficha-cabecera {
+    display: flex;
+    align-items: center;
+    gap: var(--espacio-lg);
+    padding: 24px;
+}
+
+.ficha-avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 64px;
+    height: 64px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background-color: var(--color-primario-suave);
+    color: var(--color-primario);
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.ficha-identidad {
+    flex: 1;
+    min-width: 0;
+}
+
+.ficha-identidad h2 {
+    margin-bottom: var(--espacio-sm);
+    font-size: 22px;
+    letter-spacing: -0.2px;
+}
+
+.ficha-datos {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 18px;
+    list-style: none;
+}
+
+.ficha-datos li {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: var(--color-texto-secundario);
+}
+
+.ficha-datos svg {
+    flex-shrink: 0;
+    color: var(--color-texto-tenue);
+}
+
+.ficha-datos .ficha-alta {
+    color: var(--color-texto-tenue);
+}
+
+/* ---- listas de la ficha (estudios, folletos, traslados) ---- */
+.lista-ficha {
+    list-style: none;
+}
+
+.lista-ficha .item-lista {
+    align-items: flex-start;
+}
+
+/* en la ficha el detalle puede ocupar dos líneas: no se corta */
+.lista-ficha .item-lista-datos small {
+    white-space: normal;
+}
+
+.item-lista-nota {
+    margin-top: var(--espacio-xs);
+    font-size: 12px;
+    color: var(--color-texto-secundario);
+    line-height: 1.5;
+}
+
+.tarjeta .item-lista-nota {
+    margin-bottom: 0;
+    font-size: 12px;
+}
+
+.item-lista-botones {
+    display: flex;
+    gap: 2px;
+    flex-shrink: 0;
+}
+
+.item-lista-botones .boton-icono {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border: none;
+    border-radius: var(--radio-chico);
+    background: none;
+    color: var(--color-texto-suave);
+    cursor: pointer;
+}
+
+.item-lista-botones .boton-icono:hover {
+    background-color: var(--color-primario-suave);
+    color: var(--color-primario);
+}
+
+.item-lista-botones .boton-icono-peligro:hover {
+    background-color: #fee2e2;
+    color: var(--color-peligro-fuerte);
+}
+
+.item-lista-botones .boton-icono:disabled {
+    opacity: 0.5;
+    cursor: wait;
+}
+
+.tarjeta-inicio .cabecera-tarjeta .boton {
+    margin-top: 0;
+    white-space: nowrap;
+}
+
+.grilla-ficha {
+    margin-top: var(--espacio-lg);
+}
+
+@media (max-width: 600px) {
+    .ficha-cabecera {
+        flex-wrap: wrap;
+        align-items: flex-start;
+        gap: var(--espacio-md);
+        padding: var(--espacio-lg);
+    }
+
+    /* en celular el botón baja a su propia fila y el nombre usa todo el ancho */
+    .ficha-cabecera > .boton {
+        flex: 1 1 100%;
+    }
+
+    .ficha-avatar {
+        width: 52px;
+        height: 52px;
+        font-size: 18px;
+    }
+
+    .ficha-identidad h2 {
+        font-size: 19px;
     }
 }
 

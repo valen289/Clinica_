@@ -83,9 +83,9 @@ document.addEventListener('DOMContentLoaded', async function () {
             '<div class="folleto-acciones">' +
                 '<button type="button" class="boton boton-escanear" data-accion="escanear" data-id="' + doc.id_documento + '">' + icono('qr', 16) + ' Ver QR</button>' +
                 '<span class="folleto-iconos">' +
-                    botonIcono('editar', doc.id_documento, 'lapiz', 'Editar folleto') +
+                    botonIcono('editar', doc.id_documento, 'lapiz', 'Editar documento') +
                     botonIcono('copiar', doc.id_documento, 'enlace', 'Copiar enlace del paciente') +
-                    botonIcono('borrar', doc.id_documento, 'basura', 'Eliminar folleto', 'boton-icono-peligro confirmar-borrado') +
+                    botonIcono('borrar', doc.id_documento, 'basura', 'Eliminar documento', 'boton-icono-peligro confirmar-borrado') +
                 '</span>' +
             '</div>' +
         '</section>';
@@ -105,7 +105,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
 
         resumen.innerHTML =
-            dato('libro', total, 'Folletos cargados', '', '') +
+            dato('libro', total, 'Documentos cargados', '', '') +
             dato('documento', conPdf, 'Con PDF adjunto', 'dato-violeta', 'con-pdf') +
             dato('alarma', alarmas, 'Pautas de alarma', 'dato-rojo', '') +
             dato('incompleto', incompletos, 'Incompletos', 'dato-ambar', 'incompleto');
@@ -157,9 +157,9 @@ document.addEventListener('DOMContentLoaded', async function () {
         guardarFiltros();
 
         if (listaDocumentos.length === 0) {
-            mostrarAviso('Todavía no hay folletos cargados. Usá "+ Agregar folleto médico" para crear el primero.', false);
+            mostrarAviso('Todavía no hay documentos cargados. Usá "+ Agregar documento médico" para crear el primero.', false);
         } else if (visibles.length === 0) {
-            mostrarAviso('Ningún folleto coincide con los filtros aplicados.', false);
+            mostrarAviso('Ningún documento coincide con los filtros aplicados.', false);
         } else {
             mostrarAviso('', false);
         }
@@ -202,13 +202,13 @@ document.addEventListener('DOMContentLoaded', async function () {
         } catch (error) {
             contenedorLista.innerHTML = '';
             resumen.hidden = true;
-            mostrarAviso('No se pudieron cargar los folletos. Revisá la conexión e intentá de nuevo.', true);
+            mostrarAviso('No se pudieron cargar los documentos. Revisá la conexión e intentá de nuevo.', true);
         }
     }
 
     function exportarCsv() {
         const filas = filtrarYOrdenar();
-        if (!filas.length) { mostrarToast('No hay folletos para exportar.', 'error'); return; }
+        if (!filas.length) { mostrarToast('No hay documentos para exportar.', 'error'); return; }
 
         const celda = function (v) { return '"' + String(v == null ? '' : v).replace(/"/g, '""') + '"'; };
         const lineas = [['Título', 'Descripción', 'Departamento', 'Fecha', 'Pautas', 'Pautas de alarma', 'Código QR', 'Tiene PDF'].map(celda).join(';')];
@@ -220,10 +220,10 @@ document.addEventListener('DOMContentLoaded', async function () {
         const blob = new Blob(['﻿' + lineas.join('\r\n')], { type: 'text/csv;charset=utf-8' });
         const enlace = document.createElement('a');
         enlace.href = URL.createObjectURL(blob);
-        enlace.download = 'folletos-medicos.csv';
+        enlace.download = 'documentos-medicos.csv';
         enlace.click();
         URL.revokeObjectURL(enlace.href);
-        mostrarToast('Se exportaron ' + filas.length + ' folletos.');
+        mostrarToast('Se exportaron ' + filas.length + ' documentos.');
     }
 
     async function copiarEnlace(doc) {
@@ -345,7 +345,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         cargarCamposDinamicos(normales.map(function (i) { return i.texto_instruccion; }), alarmas.map(function (i) { return i.texto_instruccion; }));
 
         document.querySelector('#label-archivo').textContent = 'Archivo PDF (opcional) — dejar vacío para mantener el actual:';
-        document.querySelector('#titulo-formulario').textContent = 'Editar folleto de pautas médicas';
+        document.querySelector('#titulo-formulario').textContent = 'Editar documento de pautas médicas';
         document.querySelector('#boton-formulario').textContent = 'Guardar cambios';
         document.querySelector('#codigo_qr').value = doc.codigo || '';
         abrirModal();
@@ -389,7 +389,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
         cargarCamposDinamicos([], []);
         document.querySelector('#label-archivo').textContent = 'Archivo PDF (opcional):';
-        document.querySelector('#titulo-formulario').textContent = 'Crear nuevo folleto de pautas médicas';
+        document.querySelector('#titulo-formulario').textContent = 'Crear nuevo documento de pautas médicas';
         document.querySelector('#boton-formulario').textContent = 'Guardar en servidor';
         mensaje.textContent = '';
         document.querySelector('#codigo_qr').value = '';
@@ -524,9 +524,9 @@ document.addEventListener('DOMContentLoaded', async function () {
             if (!resultado.exito) throw new Error(resultado.error || 'Error al eliminar');
             cerrarBorrado();
             await cargarListado();
-            mostrarToast('Folleto eliminado.');
+            mostrarToast('Documento eliminado.');
         } catch (error) {
-            errorBorrar.textContent = 'No se pudo eliminar el folleto. Intentá de nuevo.';
+            errorBorrar.textContent = 'No se pudo eliminar el documento. Intentá de nuevo.';
         } finally {
             botonBorrar.disabled = false;
         }
@@ -559,7 +559,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             if (resultado.exito) {
                 volverAModoAlta();
                 await cargarListado();
-                mostrarToast(editando ? 'Cambios guardados.' : 'Folleto creado con su código QR.');
+                mostrarToast(editando ? 'Cambios guardados.' : 'Documento creado con su código QR.');
             } else {
                 mensaje.textContent = resultado.error;
             }

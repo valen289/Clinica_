@@ -15,8 +15,9 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     // solo se ofrecen los accesos a páginas que este rol puede abrir
     const ACCESOS = [
+        { pagina: 'pacientes', href: 'pacientes.html?nuevo=1', texto: 'Registrar paciente', icono: 'usuario' },
         { pagina: 'traslados', href: 'traslados.html#form-despacho', texto: 'Despachar ambulancia', icono: 'ruta' },
-        { pagina: 'documentacion', href: 'documentacion.html?nuevo=1', texto: 'Nuevo folleto médico', icono: 'documento' },
+        { pagina: 'documentacion', href: 'documentacion.html?nuevo=1', texto: 'Nuevo documento médico', icono: 'documento' },
         { pagina: 'recursos', href: 'recursos-ambulancias.html', texto: 'Registrar ambulancia', icono: 'ambulancia' },
         { pagina: 'usuarios', href: 'usuarios.html?nuevo=1', texto: 'Crear usuario', icono: 'usuarios' },
     ];
@@ -44,9 +45,10 @@ document.addEventListener('DOMContentLoaded', async function () {
         const claseAmbulancias = a.total > 0 && a.disponibles === 0 ? 'dato-rojo' : 'dato-verde';
         const hrefAmbulancias = SIGSM.puedeEntrar('recursos', sesion.rol) ? 'recursos-ambulancias.html' : 'traslados.html';
 
+        // el personal ve pacientes; el chofer, los traslados que esperan salir
         let cuarto;
-        if (datos.documentos) {
-            cuarto = dato('documentacion.html', 'documento', datos.documentos.total, 'Folletos publicados', 'dato-ambar');
+        if (datos.pacientes) {
+            cuarto = dato('pacientes.html', 'usuario', datos.pacientes.total, 'Pacientes registrados', 'dato-ambar');
         } else {
             cuarto = dato('traslados.html', 'reloj', t.pendientes, 'Esperando salida', 'dato-ambar');
         }
@@ -77,13 +79,13 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
 
         listaTraslados.innerHTML = recientes.map(function (t) {
-            return '<li class="item-traslado">' +
-                '<span class="item-traslado-icono">' + SIGSM.icono('ambulancia', 18) + '</span>' +
-                '<div class="item-traslado-datos">' +
+            return '<li class="item-lista">' +
+                '<span class="item-lista-icono">' + SIGSM.icono('ambulancia', 18) + '</span>' +
+                '<div class="item-lista-datos">' +
                     '<strong>' + SIGSM.escapar(t.origen + ' → ' + t.destino) + '</strong>' +
                     '<small>' + SIGSM.escapar(t.matricula + ' · ' + t.conductor_nombre + ' ' + t.conductor_apellido) + '</small>' +
                 '</div>' +
-                '<div class="item-traslado-estado">' +
+                '<div class="item-lista-estado">' +
                     '<span class="pill-estado ' + SIGSM.claseEstadoTraslado(t.estado) + '">' + SIGSM.escapar(t.estado) + '</span>' +
                     '<small>' + SIGSM.escapar(cuando(t.fecha, t.hora_salida)) + '</small>' +
                 '</div>' +
@@ -116,10 +118,18 @@ document.addEventListener('DOMContentLoaded', async function () {
                 href: 'traslados.html',
             });
         }
+        if (datos.pacientes && datos.pacientes.estudios_demorados > 0) {
+            alertas.push({
+                tipo: 'ambar', icono: 'laboratorio',
+                titulo: SIGSM.textoPlural(datos.pacientes.estudios_demorados, 'estudio sin resultado', 'estudios sin resultado'),
+                detalle: 'Siguen pendientes una semana después de hechos.',
+                href: 'pacientes.html?filtro=pendientes',
+            });
+        }
         if (datos.documentos && datos.documentos.incompletos > 0) {
             alertas.push({
                 tipo: 'ambar', icono: 'incompleto',
-                titulo: SIGSM.textoPlural(datos.documentos.incompletos, 'folleto incompleto', 'folletos incompletos'),
+                titulo: SIGSM.textoPlural(datos.documentos.incompletos, 'documento incompleto', 'documentos incompletos'),
                 detalle: 'Tienen menos de 2 indicaciones clínicas.',
                 href: 'documentacion.html?estado=incompleto',
             });

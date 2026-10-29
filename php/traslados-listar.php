@@ -13,6 +13,7 @@ $conductores_disponibles = $con->query("SELECT id_ci, nombre, apellido FROM Cond
 $acompanantes = $con->query("SELECT id_ci, nombre, apellido FROM Acompaniante");
 $elementos = $con->query("SELECT id_elemento, tipo FROM Elemento_traslado");
 $rutas = $con->query("SELECT id_ruta, origen, destino FROM Ruta");
+$pacientes = $con->query("SELECT id_ci, nombre, apellido FROM Paciente ORDER BY apellido, nombre");
 
 // listado de traslados ya despachados, con datos legibles en vez de ids sueltos
 $sql_listado = "SELECT t.id_traslado, t.fecha, t.hora_salida, t.estado,
@@ -34,6 +35,7 @@ echo json_encode([
         'acompanantes' => filas($acompanantes),
         'elementos' => filas($elementos),
         'rutas' => filas($rutas),
+        'pacientes' => filas($pacientes),
         'traslados' => filas($resultado_traslados),
     ],
 ]);

@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIGSM - Pacientes</title>
+    <link rel="stylesheet" href="../assets/css/variables.css?v=14">
+    <link rel="stylesheet" href="../assets/css/layout.css?v=14">
+    <link rel="stylesheet" href="../assets/css/componentes.css?v=14">
+    <link rel="stylesheet" href="../assets/css/paginas.css?v=14">
+    <link rel="stylesheet" href="../assets/css/responsive.css?v=14">
+</head>
+<body>
+
+    <div id="header"></div>
+
+    <div class="layout">
+        <div id="sidebar"></div>
+
+        <main class="contenido">
+
+            <!-- ===== Vista listado (pacientes.html) ===== -->
+            <div id="vista-listado" hidden>
+                <div class="cabecera-folletos">
+                    <div>
+                        <h2>Pacientes</h2>
+                        <p>Registro de pacientes del hospital, con sus estudios, análisis y documentos de indicaciones.</p>
+                    </div>
+                    <button type="button" id="boton-nuevo-paciente" class="boton boton-primario">+ Nuevo paciente</button>
+                </div>
+
+                <div class="resumen-folletos" id="resumen-pacientes" hidden></div>
+
+                <div class="barra-filtros" id="barra-filtros" hidden>
+                    <div class="campo-busqueda">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+                        <input type="search" id="buscar-paciente" placeholder="Buscar por nombre, cédula o teléfono   ( / )" aria-label="Buscar paciente">
+                    </div>
+                    <select id="filtro-estudios" aria-label="Filtrar por estudios">
+                        <option value="">Todos los pacientes</option>
+                        <option value="pendientes">Con estudios pendientes</option>
+                        <option value="disponibles">Con resultados disponibles</option>
+                        <option value="sin-estudios">Sin estudios</option>
+                    </select>
+                    <button type="button" id="limpiar-filtros" class="boton boton-secundario boton-chico" hidden>Limpiar</button>
+                </div>
+                <p class="contador-resultados" id="contador-resultados" aria-live="polite"></p>
+
+                <div id="aviso-lista" class="aviso-lista" role="status" hidden></div>
+                <div id="esqueleto-pacientes" class="tarjeta esqueleto esqueleto-tabla"></div>
+
+                <section class="tarjeta tarjeta-listado" id="tarjeta-pacientes" hidden>
+                    <div class="tabla-desplazable">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Paciente</th>
+                                    <th>Cédula</th>
+                                    <th>Edad</th>
+                                    <th>Estudios</th>
+                                    <th>Alta</th>
+                                </tr>
+                            </thead>
+                            <tbody id="lista-pacientes"></tbody>
+                        </table>
+                    </div>
+                </section>
+            </div>
+
+            <!-- ===== Vista ficha (pacientes.html?ci=12345672) ===== -->
+            <div id="vista-ficha" hidden>
+                <a href="pacientes.html" class="enlace-volver" id="enlace-volver"></a>
+
+                <div id="aviso-ficha" class="aviso-lista" role="status" hidden></div>
+                <div id="esqueleto-ficha" class="tarjeta esqueleto esqueleto-tabla"></div>
+
+                <div id="contenido-ficha" hidden>
+                    <section class="tarjeta ficha-cabecera">
+                        <span class="ficha-avatar" id="ficha-avatar"></span>
+                        <div class="ficha-identidad">
+                            <h2 id="ficha-nombre"></h2>
+                            <ul class="ficha-datos" id="ficha-datos"></ul>
+                        </div>
+                        <button type="button" id="boton-editar-paciente" class="boton boton-secundario boton-chico">Editar datos</button>
+                    </section>
+
+                    <div class="grilla-ficha">
+                        <section class="tarjeta tarjeta-inicio">
+                            <div class="cabecera-tarjeta">
+                                <h3>Estudios y análisis</h3>
+                                <button type="button" id="boton-nuevo-estudio" class="boton boton-primario boton-chico">+ Cargar estudio</button>
+                            </div>
+                            <ul class="lista-ficha" id="lista-estudios"></ul>
+                        </section>
+
+                        <div class="columna-inicio">
+                            <section class="tarjeta tarjeta-inicio">
+                                <div class="cabecera-tarjeta">
+                                    <h3>Documentos asignados</h3>
+                                    <button type="button" id="boton-asignar-documento" class="boton boton-secundario boton-chico">+ Asignar</button>
+                                </div>
+                                <ul class="lista-ficha" id="lista-documentos"></ul>
+                            </section>
+
+                            <section class="tarjeta tarjeta-inicio">
+                                <h3>Traslados</h3>
+                                <ul class="lista-ficha" id="lista-traslados-paciente"></ul>
+                            </section>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- ===== Modal alta / edición de paciente ===== -->
+    <div class="modal-fondo" id="modal-paciente" hidden>
+        <section class="tarjeta tarjeta-formulario modal-contenido" role="dialog" aria-modal="true" aria-labelledby="titulo-modal-paciente">
+            <h3 id="titulo-modal-paciente">Nuevo paciente</h3>
+            <p class="modal-subtitulo">La cédula identifica al paciente en todo el sistema y no se puede cambiar después.</p>
+
+            <form id="form-paciente">
+                <input type="hidden" id="ci_editar" name="ci_editar" value="">
+
+                <div class="fila-campos">
+                    <div>
+                        <label for="ci">Cédula:</label>
+                        <input type="text" id="ci" name="ci" maxlength="11" inputmode="numeric" placeholder="1.234.567-2" autocomplete="off" required>
+                        <p class="ayuda-campo" id="ayuda-ci">Con o sin puntos y guion.</p>
+                    </div>
+                    <div>
+                        <label for="fecha_nacimiento">Fecha de nacimiento:</label>
+                        <input type="date" id="fecha_nacimiento" name="fecha_nacimiento">
+                    </div>
+                </div>
+
+                <div class="fila-campos">
+                    <div>
+                        <label for="nombre">Nombre:</label>
+                        <input type="text" id="nombre" name="nombre" maxlength="50" placeholder="María" required>
+                    </div>
+                    <div>
+                        <label for="apellido">Apellido:</label>
+                        <input type="text" id="apellido" name="apellido" maxlength="50" placeholder="Rodríguez" required>
+                    </div>
+                </div>
+
+                <div class="fila-campos">
+                    <div>
+                        <label for="telefono">Teléfono (opcional):</label>
+                        <input type="tel" id="telefono" name="telefono" maxlength="30" placeholder="099 123 456">
+                    </div>
+                    <div>
+                        <label for="email">Email (opcional):</label>
+                        <input type="email" id="email" name="email" maxlength="80" placeholder="maria@correo.com">
+                    </div>
+                </div>
+
+                <label for="direccion">Dirección (opcional):</label>
+                <input type="text" id="direccion" name="direccion" maxlength="60" placeholder="Av. Italia 2370, Montevideo">
+
+                <div id="mensaje-paciente" class="mensaje-error"></div>
+
+                <div class="acciones-modal">
+                    <button type="button" id="cancelar-paciente" class="boton boton-secundario">Cancelar</button>
+                    <button type="submit" id="guardar-paciente" class="boton boton-primario">Registrar paciente</button>
+                </div>
+            </form>
+        </section>
+    </div>
+
+    <!-- ===== Modal estudio ===== -->
+    <div class="modal-fondo" id="modal-estudio" hidden>
+        <section class="tarjeta tarjeta-formulario modal-contenido" role="dialog" aria-modal="true" aria-labelledby="titulo-modal-estudio">
+            <h3 id="titulo-modal-estudio">Cargar estudio</h3>
+            <p class="modal-subtitulo">Mientras el estudio esté pendiente el paciente lo ve como "en proceso". Al marcarlo disponible puede abrir el PDF del resultado.</p>
+
+            <!-- sin enctype="multipart/form-data" el PDF no llega al servidor -->
+            <form id="form-estudio" enctype="multipart/form-data">
+                <input type="hidden" id="id_estudio_editar" name="id_estudio_editar" value="">
+
+                <div class="fila-campos">
+                    <div>
+                        <label for="tipo">Tipo:</label>
+                        <select id="tipo" name="tipo" required>
+                            <option value="">Seleccione el tipo</option>
+                            <option value="Análisis de laboratorio">Análisis de laboratorio</option>
+                            <option value="Imagenología">Imagenología</option>
+                            <option value="Informe médico">Informe médico</option>
+                            <option value="Otro">Otro</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="fecha_estudio">Fecha del estudio:</label>
+                        <input type="date" id="fecha_estudio" name="fecha_estudio" required>
+                    </div>
+                </div>
+
+                <label for="titulo_estudio">Título:</label>
+                <input type="text" id="titulo_estudio" name="titulo" maxlength="100" placeholder="Hemograma completo" required>
+
+                <label for="estado_estudio">Estado:</label>
+                <select id="estado_estudio" name="estado" required>
+                    <option value="Pendiente">Pendiente (resultado en proceso)</option>
+                    <option value="Disponible">Disponible (el paciente puede verlo)</option>
+                </select>
+
+                <label for="archivo_estudio" id="label-archivo-estudio">PDF del resultado:</label>
+                <input type="file" id="archivo_estudio" name="archivo" accept="application/pdf">
+                <p class="ayuda-campo">Hasta 10 MB. El archivo queda privado: solo se abre desde el sistema.</p>
+
+                <label for="observaciones">Observaciones (opcional):</label>
+                <textarea id="observaciones" name="observaciones" maxlength="500" rows="3" placeholder="Indicaciones o comentarios sobre el resultado"></textarea>
+
+                <div id="mensaje-estudio" class="mensaje-error"></div>
+
+                <div class="acciones-modal">
+                    <button type="button" id="cancelar-estudio" class="boton boton-secundario">Cancelar</button>
+                    <button type="submit" id="guardar-estudio" class="boton boton-primario">Guardar estudio</button>
+                </div>
+            </form>
+        </section>
+    </div>
+
+    <!-- ===== Modal asignar documento ===== -->
+    <div class="modal-fondo" id="modal-documento" hidden>
+        <section class="tarjeta tarjeta-formulario modal-contenido modal-confirmar" role="dialog" aria-modal="true" aria-labelledby="titulo-modal-documento">
+            <h3 id="titulo-modal-documento">Asignar documento</h3>
+            <p class="modal-subtitulo">El paciente va a ver este documento de indicaciones junto a sus estudios.</p>
+            <form id="form-documento">
+                <label for="id_documento_asignar">Documento:</label>
+                <select id="id_documento_asignar" name="id_documento" required></select>
+                <div id="mensaje-documento" class="mensaje-error"></div>
+                <div class="acciones-modal">
+                    <button type="button" id="cancelar-documento" class="boton boton-secundario">Cancelar</button>
+                    <button type="submit" id="guardar-documento" class="boton boton-primario">Asignar</button>
+                </div>
+            </form>
+        </section>
+    </div>
+
+    <!-- ===== Modal confirmar borrado de estudio ===== -->
+    <div class="modal-fondo" id="modal-borrar-estudio" hidden>
+        <section class="tarjeta modal-contenido modal-confirmar" role="dialog" aria-modal="true" aria-labelledby="titulo-borrar-estudio">
+            <h3 id="titulo-borrar-estudio">Eliminar estudio</h3>
+            <p class="modal-subtitulo">Vas a eliminar <strong id="borrar-estudio-titulo"></strong> y su PDF. El paciente deja de verlo. Esta acción no se puede deshacer.</p>
+            <div id="borrar-estudio-error" class="mensaje-error"></div>
+            <div class="acciones-modal">
+                <button type="button" id="borrar-estudio-cancelar" class="boton boton-secundario">Cancelar</button>
+                <button type="button" id="borrar-estudio-confirmar" class="boton boton-peligro">Eliminar</button>
+            </div>
+        </section>
+    </div>
+
+    <script src="../js/shell.js?v=14"></script>
+    <script src="../js/pacientes.js?v=14"></script>
+
+</body>
+</html>

@@ -63,7 +63,7 @@ if ($id_documento_editar) {
     $existente = $stmt_existe->get_result()->fetch_assoc();
     $stmt_existe->close();
     if (!$existente) {
-        responder_error('El folleto que intentás editar no existe.');
+        responder_error('El documento que intentás editar no existe.');
     }
     $archivo_anterior = $existente['archivo'];
 }
@@ -145,7 +145,7 @@ try {
         unlink(__DIR__ . '/../' . $ruta_nueva); // no dejar un PDF huérfano si falló la base
     }
     error_log('documentacion-guardar: ' . $e->getMessage());
-    responder_error('No se pudo guardar el folleto. Intente nuevamente.');
+    responder_error('No se pudo guardar el documento. Intente nuevamente.');
 }
 
 // recién con la base confirmada se borra el PDF reemplazado

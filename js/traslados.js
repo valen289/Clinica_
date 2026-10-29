@@ -47,6 +47,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         llenarSelect(document.querySelector('#id_acompanante'), datos.acompanantes, 'id_ci', function (a) { return a.nombre + ' ' + a.apellido; });
         llenarSelect(document.querySelector('#id_elemento'), datos.elementos, 'id_elemento', function (e) { return e.tipo; });
         llenarSelect(selectRuta, datos.rutas, 'id_ruta', function (r) { return r.origen + ' → ' + r.destino; });
+        llenarSelect(document.querySelector('#id_paciente'), datos.pacientes, 'id_ci', function (p) { return p.apellido + ', ' + p.nombre + ' (' + SIGSM.formatearCedula(p.id_ci) + ')'; });
 
         tabla.innerHTML = datos.traslados.map(renderFilaTraslado).join('');
     }

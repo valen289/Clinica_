@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SIGSM - Rutas de Ambulancias</title>
-    <link rel="stylesheet" href="../assets/css/variables.css?v=7">
-    <link rel="stylesheet" href="../assets/css/layout.css?v=7">
-    <link rel="stylesheet" href="../assets/css/componentes.css?v=7">
-    <link rel="stylesheet" href="../assets/css/paginas.css?v=9">
-    <link rel="stylesheet" href="../assets/css/responsive.css?v=7">
+    <link rel="stylesheet" href="../assets/css/variables.css?v=14">
+    <link rel="stylesheet" href="../assets/css/layout.css?v=14">
+    <link rel="stylesheet" href="../assets/css/componentes.css?v=14">
+    <link rel="stylesheet" href="../assets/css/paginas.css?v=14">
+    <link rel="stylesheet" href="../assets/css/responsive.css?v=14">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 </head>
 <body>
@@ -49,6 +49,11 @@
                             <option value="">Seleccione una ruta</option>
                         </select>
 
+                        <label for="id_paciente">Paciente (opcional):</label>
+                        <select id="id_paciente" name="id_paciente">
+                            <option value="">Sin paciente asignado</option>
+                        </select>
+
                         <div id="mensaje-form" class="mensaje-error"></div>
 
                         <button type="submit" class="boton boton-primario">Despachar Ambulancia</button>
@@ -85,8 +90,8 @@
     </div>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="../js/shell.js?v=7"></script>
-    <script src="../js/traslados.js?v=7"></script>
+    <script src="../js/shell.js?v=14"></script>
+    <script src="../js/traslados.js?v=14"></script>
 
 </body>
 </html>

@@ -1,0 +1,3 @@
+# PDFs de estudios de pacientes: nunca se sirven directo.
+# Se entregan solo a través de php/estudio-archivo.php, que controla quién puede verlos.
+Require all denied

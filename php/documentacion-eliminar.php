@@ -23,6 +23,12 @@ $stmt_borrar_instr->bind_param("i", $id_borrar);
 $stmt_borrar_instr->execute();
 $stmt_borrar_instr->close();
 
+// si el documento estaba asignado a pacientes, deja de estarlo
+$stmt_borrar_asignaciones = $con->prepare("DELETE FROM Paciente_documento WHERE id_documento = ?");
+$stmt_borrar_asignaciones->bind_param("i", $id_borrar);
+$stmt_borrar_asignaciones->execute();
+$stmt_borrar_asignaciones->close();
+
 $stmt_borrar_qr = $con->prepare("DELETE FROM Codigo_qr WHERE id_documento = ?");
 $stmt_borrar_qr->bind_param("i", $id_borrar);
 $stmt_borrar_qr->execute();
