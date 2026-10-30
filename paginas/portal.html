@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal del Paciente - Mis documentos</title>
+    <link rel="stylesheet" href="../assets/css/variables.css?v=18">
+    <link rel="stylesheet" href="../assets/css/layout.css?v=18">
+    <link rel="stylesheet" href="../assets/css/componentes.css?v=18">
+    <link rel="stylesheet" href="../assets/css/paginas.css?v=19">
+    <link rel="stylesheet" href="../assets/css/responsive.css?v=18">
+</head>
+<body>
+
+    <header class="topbar topbar-portal">
+        <a class="marca-topbar" href="portal.html">
+            <div class="logo">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l2-6 3 12 2-8 2 2h5"/></svg>
+            </div>
+            <div class="titulo-sistema">
+                <h1>Hospital de Clínicas</h1>
+                <p>Portal del Paciente</p>
+            </div>
+        </a>
+        <div class="usuario-topbar">
+            <span class="usuario-avatar" id="portal-avatar"></span>
+            <span class="usuario-datos"><strong id="portal-nombre"></strong><small>Paciente</small></span>
+        </div>
+        <button type="button" class="btn-cerrar-sesion" id="cerrar-sesion">Cerrar sesión</button>
+    </header>
+
+    <main class="portal-contenido">
+        <div class="portal-saludo">
+            <h2 id="portal-saludo">Mis documentos</h2>
+            <p>Acá encontrás tus resultados y las indicaciones de tu médico.</p>
+        </div>
+
+        <div class="portal-pestanias" role="tablist" aria-label="Secciones del portal">
+            <button type="button" role="tab" id="pestania-documentos" aria-selected="true" aria-controls="panel-documentos">Mis documentos</button>
+            <button type="button" role="tab" id="pestania-cuenta" aria-selected="false" aria-controls="panel-cuenta">Mi cuenta</button>
+        </div>
+
+        <section id="panel-documentos" role="tabpanel" aria-labelledby="pestania-documentos">
+            <div class="portal-filtros" id="portal-filtros" hidden>
+                <button type="button" class="chip-filtro" data-filtro="" aria-pressed="true"></button>
+                <button type="button" class="chip-filtro" data-filtro="estudio" aria-pressed="false"></button>
+                <button type="button" class="chip-filtro" data-filtro="indicacion" aria-pressed="false"></button>
+            </div>
+
+            <div id="aviso-portal" class="aviso-lista" role="status" hidden></div>
+
+            <ul class="lista-portal" id="lista-portal">
+                <li class="esqueleto"></li>
+                <li class="esqueleto"></li>
+            </ul>
+        </section>
+
+        <section id="panel-cuenta" class="panel-cuenta" role="tabpanel" aria-labelledby="pestania-cuenta" hidden>
+            <div class="tarjeta">
+                <h3>Mis datos</h3>
+                <dl class="datos-portal" id="datos-portal"></dl>
+                <p class="nota-portal">Si algún dato no es correcto, avisá en Recepción del hospital.</p>
+            </div>
+
+            <div class="tarjeta tarjeta-formulario">
+                <h3>Cambiar contraseña</h3>
+                <form id="form-contrasenia" novalidate>
+                    <label for="actual">Contraseña actual:</label>
+                    <input type="password" id="actual" name="actual" autocomplete="current-password" required>
+
+                    <label for="nueva">Contraseña nueva:</label>
+                    <input type="password" id="nueva" name="nueva" minlength="8" autocomplete="new-password" required>
+                    <p class="ayuda-campo">Al menos 8 caracteres.</p>
+
+                    <label for="confirmacion">Repetí la contraseña nueva:</label>
+                    <input type="password" id="confirmacion" name="confirmacion" minlength="8" autocomplete="new-password" required>
+
+                    <div id="mensaje-contrasenia" class="mensaje-error" role="alert"></div>
+                    <button type="submit" class="boton boton-primario" id="guardar-contrasenia">Guardar contraseña</button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <script src="../js/shell.js?v=15"></script>
+    <script src="../js/portal.js?v=15"></script>
+
+</body>
+</html>

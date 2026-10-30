@@ -9,7 +9,12 @@ require_once __DIR__ . '/conexion.php';
 
 $ci = (int) ($_GET['ci'] ?? 0);
 
-$stmt = $con->prepare("SELECT id_ci, nombre, apellido, fecha_nacimiento, telefono, email, direccion, fecha_alta FROM Paciente WHERE id_ci = ?");
+// del portal solo sale el estado de la cuenta: nunca los hashes de la contraseña o del código
+$stmt = $con->prepare("SELECT id_ci, nombre, apellido, fecha_nacimiento, telefono, email, direccion, fecha_alta,
+                              contrasenia IS NOT NULL AS cuenta_activa,
+                              (codigo_activacion IS NOT NULL AND codigo_vence > NOW()) AS codigo_vigente,
+                              codigo_vence, cuenta_activada, ultimo_ingreso
+                       FROM Paciente WHERE id_ci = ?");
 $stmt->bind_param("i", $ci);
 $stmt->execute();
 $paciente = $stmt->get_result()->fetch_assoc();

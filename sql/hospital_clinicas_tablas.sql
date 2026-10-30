@@ -117,7 +117,14 @@ CREATE TABLE Paciente (
     email VARCHAR(80),
     direccion VARCHAR(60),
     fecha_nacimiento DATE,
-    fecha_alta DATE
+    fecha_alta DATE,
+
+    -- acceso al portal del paciente: contraseña y código de activación se guardan hasheados
+    contrasenia VARCHAR(255),
+    codigo_activacion VARCHAR(255),
+    codigo_vence DATETIME,
+    cuenta_activada DATETIME,
+    ultimo_ingreso DATETIME
 );
 
 -- Estudios y análisis de cada paciente. El PDF va en /estudios/ (carpeta cerrada al público)

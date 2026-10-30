@@ -1,16 +1,40 @@
 <?php
 
 // Entrega el PDF de un estudio. Es la única puerta a /estudios/ (la carpeta está cerrada por .htaccess),
-// así que acá se controla quién puede ver cada resultado.
+// así que acá se controla quién puede ver cada resultado:
+//  - el personal (no choferes): cualquier estudio
+//  - el paciente logueado en el portal: solo los suyos y solo si ya están disponibles
 require_once __DIR__ . '/auth.php';
-requerir_sesion(['Chofer']);
+iniciar_sesion();
+
+function cortar($codigo, $texto) {
+    http_response_code($codigo);
+    header('Content-Type: text/plain; charset=utf-8');
+    echo $texto;
+    exit;
+}
+
+$es_personal = isset($_SESSION['id_funcionario']) && ($_SESSION['rol'] ?? '') !== 'Chofer';
+$id_paciente = isset($_SESSION['id_paciente']) ? (int) $_SESSION['id_paciente'] : null;
+
+if (isset($_SESSION['id_funcionario']) && !$es_personal) {
+    cortar(403, 'No autorizado.');
+}
+if (!$es_personal && !$id_paciente) {
+    cortar(401, 'Iniciá sesión para ver este estudio.');
+}
 
 require_once __DIR__ . '/conexion.php';
 
 $id_estudio = (int) ($_GET['id'] ?? 0);
 
-$stmt = $con->prepare("SELECT archivo FROM Estudio WHERE id_estudio = ?");
-$stmt->bind_param("i", $id_estudio);
+if ($es_personal) {
+    $stmt = $con->prepare("SELECT archivo FROM Estudio WHERE id_estudio = ?");
+    $stmt->bind_param("i", $id_estudio);
+} else {
+    $stmt = $con->prepare("SELECT archivo FROM Estudio WHERE id_estudio = ? AND id_paciente = ? AND estado = 'Disponible'");
+    $stmt->bind_param("ii", $id_estudio, $id_paciente);
+}
 $stmt->execute();
 $estudio = $stmt->get_result()->fetch_assoc();
 $stmt->close();
@@ -19,11 +43,9 @@ $con->close();
 // basename por las dudas: el nombre viene de la base, pero nunca se sale de la carpeta
 $ruta = $estudio && $estudio['archivo'] !== '' ? __DIR__ . '/../estudios/' . basename($estudio['archivo']) : null;
 
+// a un paciente que pide un estudio ajeno se le contesta lo mismo que si no existiera
 if (!$ruta || !is_file($ruta)) {
-    http_response_code(404);
-    header('Content-Type: text/plain; charset=utf-8');
-    echo 'El estudio no tiene un PDF disponible.';
-    exit;
+    cortar(404, 'El estudio no tiene un PDF disponible.');
 }
 
 header('Content-Type: application/pdf');

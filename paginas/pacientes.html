@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SIGSM - Pacientes</title>
-    <link rel="stylesheet" href="../assets/css/variables.css?v=14">
-    <link rel="stylesheet" href="../assets/css/layout.css?v=14">
-    <link rel="stylesheet" href="../assets/css/componentes.css?v=14">
-    <link rel="stylesheet" href="../assets/css/paginas.css?v=14">
-    <link rel="stylesheet" href="../assets/css/responsive.css?v=14">
+    <link rel="stylesheet" href="../assets/css/variables.css?v=18">
+    <link rel="stylesheet" href="../assets/css/layout.css?v=18">
+    <link rel="stylesheet" href="../assets/css/componentes.css?v=18">
+    <link rel="stylesheet" href="../assets/css/paginas.css?v=19">
+    <link rel="stylesheet" href="../assets/css/responsive.css?v=18">
 </head>
 <body>
 
@@ -94,6 +94,15 @@
                         </section>
 
                         <div class="columna-inicio">
+                            <section class="tarjeta tarjeta-inicio">
+                                <div class="cabecera-tarjeta">
+                                    <h3>Acceso al portal</h3>
+                                    <span class="pill-estado" id="estado-portal"></span>
+                                </div>
+                                <p class="texto-portal" id="texto-portal"></p>
+                                <button type="button" id="boton-generar-codigo" class="boton boton-secundario boton-chico"></button>
+                            </section>
+
                             <section class="tarjeta tarjeta-inicio">
                                 <div class="cabecera-tarjeta">
                                     <h3>Documentos asignados</h3>
@@ -239,6 +248,46 @@
         </section>
     </div>
 
+    <!-- ===== Modal código de activación del portal (la hoja se puede imprimir) ===== -->
+    <div class="modal-fondo" id="modal-codigo" hidden>
+        <section class="tarjeta modal-contenido modal-codigo" role="dialog" aria-modal="true" aria-labelledby="titulo-modal-codigo">
+            <h3 id="titulo-modal-codigo">Código de activación</h3>
+            <p class="modal-subtitulo">Entregale esta hoja al paciente. El código se muestra una sola vez: si se pierde, generá uno nuevo.</p>
+
+            <div class="hoja-codigo" id="hoja-codigo">
+                <div class="hoja-marca">
+                    <span class="logo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l2-6 3 12 2-8 2 2h5"/></svg></span>
+                    <div>
+                        <strong>Hospital de Clínicas</strong>
+                        <small>Portal del Paciente</small>
+                    </div>
+                </div>
+
+                <p class="hoja-paciente" id="hoja-paciente"></p>
+
+                <p class="hoja-etiqueta">Tu código de activación</p>
+                <p class="hoja-codigo-valor" id="hoja-codigo-valor"></p>
+                <p class="hoja-vence" id="hoja-vence"></p>
+
+                <div class="hoja-cuerpo">
+                    <ol class="hoja-pasos">
+                        <li>Entrá a <strong id="hoja-url"></strong> o escaneá el código QR.</li>
+                        <li>Escribí tu cédula y este código.</li>
+                        <li>Elegí una contraseña. Desde ese momento entrás con tu cédula y esa contraseña.</li>
+                    </ol>
+                    <div class="hoja-qr" id="hoja-qr"></div>
+                </div>
+
+                <p class="hoja-aviso">Este código es personal: no lo compartas. Con tu cuenta vas a ver tus resultados y las indicaciones de tu médico.</p>
+            </div>
+
+            <div class="acciones-modal">
+                <button type="button" id="cerrar-codigo" class="boton boton-secundario">Cerrar</button>
+                <button type="button" id="imprimir-codigo" class="boton boton-primario">Imprimir hoja</button>
+            </div>
+        </section>
+    </div>
+
     <!-- ===== Modal confirmar borrado de estudio ===== -->
     <div class="modal-fondo" id="modal-borrar-estudio" hidden>
         <section class="tarjeta modal-contenido modal-confirmar" role="dialog" aria-modal="true" aria-labelledby="titulo-borrar-estudio">
@@ -252,8 +301,9 @@
         </section>
     </div>
 
-    <script src="../js/shell.js?v=14"></script>
-    <script src="../js/pacientes.js?v=14"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="../js/shell.js?v=15"></script>
+    <script src="../js/pacientes.js?v=15"></script>
 
 </body>
 </html>

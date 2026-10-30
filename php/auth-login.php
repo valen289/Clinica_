@@ -6,10 +6,7 @@ require_once __DIR__ . '/auth.php';
 iniciar_sesion();
 
 require_once __DIR__ . '/conexion.php';
-
-// cuántos intentos fallidos se toleran por usuario + IP antes de bloquear un rato
-$MAX_INTENTOS = 5;
-$MINUTOS_BLOQUEO = 15;
+require_once __DIR__ . '/intentos.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405);
@@ -27,20 +24,8 @@ if ($usuario_ingresado === '' || $contrasenia_ingresada === '') {
     exit;
 }
 
-// limpieza: los intentos de hace más de un día ya no sirven para nada
-$con->query("DELETE FROM Intento_login WHERE fecha < NOW() - INTERVAL 1 DAY");
-
-$stmt = $con->prepare("SELECT COUNT(*) AS total FROM Intento_login WHERE usuario = ? AND ip = ? AND fecha > NOW() - INTERVAL ? MINUTE");
-$stmt->bind_param("ssi", $usuario_ingresado, $ip, $MINUTOS_BLOQUEO);
-$stmt->execute();
-$intentos_recientes = (int) $stmt->get_result()->fetch_assoc()['total'];
-$stmt->close();
-
-if ($intentos_recientes >= $MAX_INTENTOS) {
-    http_response_code(429);
-    echo json_encode(['error' => 'Demasiados intentos fallidos. Esperá ' . $MINUTOS_BLOQUEO . ' minutos y volvé a probar.']);
-    $con->close();
-    exit;
+if (demasiados_intentos($con, $usuario_ingresado, $ip)) {
+    responder_bloqueado($con);
 }
 
 $sql = "SELECT id_funcionario, nombre, contrasenia, rol FROM Funcionario WHERE usuario = ?";
@@ -53,26 +38,21 @@ $stmt->close();
 
 if ($funcionario && password_verify($contrasenia_ingresada, $funcionario['contrasenia'])) {
 
-    // id de sesión nuevo al loguearse: un id que alguien haya "plantado" antes deja de servir
+    // id de sesión nuevo al loguearse: un id que alguien haya "plantado" antes deja de servir.
+    // Se vacía la sesión para que no quede mezclada con una del portal del paciente.
     session_regenerate_id(true);
+    $_SESSION = [];
 
     $_SESSION['id_funcionario'] = $funcionario['id_funcionario'];
     $_SESSION['nombre'] = $funcionario['nombre'];
     $_SESSION['rol'] = $funcionario['rol'];
 
-    $stmt = $con->prepare("DELETE FROM Intento_login WHERE usuario = ? AND ip = ?");
-    $stmt->bind_param("ss", $usuario_ingresado, $ip);
-    $stmt->execute();
-    $stmt->close();
+    limpiar_intentos($con, $usuario_ingresado, $ip);
 
     echo json_encode(['exito' => true, 'rol' => $funcionario['rol']]);
 
 } else {
-    $stmt = $con->prepare("INSERT INTO Intento_login (usuario, ip, fecha) VALUES (?, ?, NOW())");
-    $stmt->bind_param("ss", $usuario_ingresado, $ip);
-    $stmt->execute();
-    $stmt->close();
-
+    registrar_intento_fallido($con, $usuario_ingresado, $ip);
     echo json_encode(['error' => 'Usuario o contraseña incorrectos.']);
 }
 

@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     // ---- modales: abrir, cerrar y avisar antes de descartar cambios (igual que en Documentos) ----
     const modalesAbiertos = [];
 
-    function controlarModal(modal, formulario, mensaje) {
+    function controlarModal(modal, formulario, mensaje, alCerrar) {
         let instantanea = '';
         let avisado = false;
 
@@ -65,6 +65,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                 document.body.classList.remove('modal-abierto');
                 const posicion = modalesAbiertos.indexOf(control);
                 if (posicion !== -1) modalesAbiertos.splice(posicion, 1);
+                if (alCerrar) alCerrar();
             },
             // el primer intento de cerrar con cambios avisa; el segundo descarta
             intentarCerrar: function () {
@@ -440,6 +441,105 @@ document.addEventListener('DOMContentLoaded', async function () {
         }).join('');
     }
 
+    // "2026-11-05 20:40:00" -> "05/11/2026 20:40" (o solo la fecha)
+    function fechaHora(valor, conHora) {
+        if (!valor) return '';
+        const fecha = SIGSM.formatearFecha(valor.slice(0, 10));
+        return conHora ? fecha + ' ' + valor.slice(11, 16) : fecha;
+    }
+
+    // ---- acceso al portal del paciente ----
+    const estadoPortal = document.querySelector('#estado-portal');
+    const textoPortal = document.querySelector('#texto-portal');
+    const botonGenerarCodigo = document.querySelector('#boton-generar-codigo');
+
+    function renderPortal() {
+        const activa = Number(paciente.cuenta_activa) === 1;
+        const codigoVigente = Number(paciente.codigo_vigente) === 1;
+        let estado, clase, texto, boton;
+
+        if (activa) {
+            estado = 'Activa';
+            clase = 'pill-verde';
+            texto = 'Activó su cuenta el ' + fechaHora(paciente.cuenta_activada) +
+                (paciente.ultimo_ingreso ? '. Último ingreso: ' + fechaHora(paciente.ultimo_ingreso, true) + '.' : '.') +
+                (codigoVigente ? ' Tiene un código para elegir otra contraseña que vence el ' + fechaHora(paciente.codigo_vence) + '.' : ' Si olvidó la contraseña, generale un código para que elija otra.');
+            boton = 'Restablecer contraseña';
+        } else if (codigoVigente) {
+            estado = 'Código entregado';
+            clase = 'pill-naranja';
+            texto = 'Todavía no activó la cuenta. El código vence el ' + fechaHora(paciente.codigo_vence) + '; si lo perdió, generá uno nuevo (el anterior deja de servir).';
+            boton = 'Generar código nuevo';
+        } else {
+            estado = 'Sin activar';
+            clase = 'pill-gris';
+            texto = 'Todavía no tiene acceso al portal. Generá un código de activación y entregáselo para que vea sus estudios y documentos desde el celular.' +
+                (paciente.codigo_vence ? ' El último código venció el ' + fechaHora(paciente.codigo_vence) + '.' : '');
+            boton = 'Generar código de activación';
+        }
+
+        estadoPortal.textContent = estado;
+        estadoPortal.className = 'pill-estado ' + clase;
+        textoPortal.textContent = texto;
+        botonGenerarCodigo.textContent = boton;
+        botonGenerarCodigo.className = 'boton boton-chico ' + (activa ? 'boton-secundario' : 'boton-primario');
+    }
+
+    // al cerrar (botón, Escape o clic afuera) el código se borra de la página:
+    // no queda a la vista de quien use la computadora después
+    const modalCodigo = document.querySelector('#modal-codigo');
+    const controlCodigo = controlarModal(modalCodigo, null, null, function () {
+        document.querySelector('#hoja-codigo-valor').textContent = '';
+        document.querySelector('#hoja-qr').innerHTML = '';
+    });
+
+    function mostrarHojaCodigo(datos) {
+        // la URL del QR tiene que ser absoluta para poder abrirse desde el celular del paciente
+        const urlActivar = new URL('portal-activar.html', window.location.href).href;
+
+        document.querySelector('#hoja-paciente').textContent = datos.nombre + ' ' + datos.apellido + ' · CI ' + SIGSM.formatearCedula(datos.id_ci);
+        document.querySelector('#hoja-codigo-valor').textContent = datos.codigo;
+        document.querySelector('#hoja-vence').textContent = 'Vence el ' + fechaHora(datos.vence, true);
+        document.querySelector('#hoja-url').textContent = urlActivar;
+
+        const contenedorQr = document.querySelector('#hoja-qr');
+        contenedorQr.innerHTML = '';
+        if (window.QRCode) {
+            new QRCode(contenedorQr, { text: urlActivar, width: 120, height: 120, correctLevel: QRCode.CorrectLevel.M });
+        }
+
+        controlCodigo.abrir();
+        document.querySelector('#imprimir-codigo').focus();
+    }
+
+    botonGenerarCodigo.addEventListener('click', async function () {
+        const datos = new FormData();
+        datos.append('ci', paciente.id_ci);
+        botonGenerarCodigo.disabled = true;
+        try {
+            const respuesta = await fetch('../php/paciente-codigo.php', { method: 'POST', body: datos });
+            const resultado = await respuesta.json();
+            if (!resultado.exito) throw new Error(resultado.error);
+            mostrarHojaCodigo(resultado.datos);
+            await cargarFicha();
+        } catch (error) {
+            SIGSM.mostrarToast('No se pudo generar el código. Intentá de nuevo.', 'error');
+        } finally {
+            botonGenerarCodigo.disabled = false;
+        }
+    });
+
+    document.querySelector('#cerrar-codigo').addEventListener('click', controlCodigo.cerrar);
+
+    // se imprime solo la hoja (ver @media print en paginas.css)
+    document.querySelector('#imprimir-codigo').addEventListener('click', function () {
+        document.body.classList.add('imprimir-hoja');
+        window.print();
+    });
+    window.addEventListener('afterprint', function () {
+        document.body.classList.remove('imprimir-hoja');
+    });
+
     async function cargarFicha() {
         const aviso = document.querySelector('#aviso-ficha');
         try {
@@ -456,6 +556,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             renderEstudios();
             renderDocumentos();
             renderTrasladosPaciente();
+            renderPortal();
             document.querySelector('#contenido-ficha').hidden = false;
         } catch (error) {
             mostrarAviso(aviso, 'No se pudo cargar la ficha del paciente. Revisá la conexión e intentá de nuevo.', true);

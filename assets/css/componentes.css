@@ -175,6 +175,11 @@
     color: var(--color-primario-hover);
 }
 
+.pill-estado.pill-gris {
+    background-color: var(--color-gris-suave);
+    color: var(--color-texto-suave);
+}
+
 .pill-estado.pill-violeta {
     background-color: var(--color-violeta-suave);
     color: var(--color-violeta-hover);

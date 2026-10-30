@@ -32,6 +32,10 @@
         padding: 26px 24px;
     }
 
+    .marca-contenido {
+        margin-top: var(--espacio-lg);
+    }
+
     .marca-contenido h2 {
         font-size: 19px;
     }

@@ -1731,6 +1731,404 @@ a.alerta-inicio:hover {
     }
 }
 
+/* ---- acceso al portal (ficha del paciente) ---- */
+.tarjeta .texto-portal {
+    margin-bottom: 12px;
+    font-size: 13px;
+}
+
+/* ==========================================================
+   HOJA DEL CÓDIGO DE ACTIVACIÓN (modal en la ficha, se imprime)
+   ========================================================== */
+.modal-codigo {
+    max-width: 520px;
+}
+
+.hoja-codigo {
+    margin-top: var(--espacio-md);
+    padding: var(--espacio-lg);
+    border: 1px solid var(--color-borde);
+    border-radius: var(--radio-grande);
+    background-color: var(--color-blanco);
+}
+
+.hoja-marca {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-bottom: 12px;
+    margin-bottom: 12px;
+    border-bottom: 1px solid var(--color-borde);
+}
+
+.hoja-marca .logo {
+    width: 34px;
+    height: 34px;
+}
+
+.hoja-marca strong {
+    display: block;
+    font-size: 14px;
+}
+
+.hoja-marca small {
+    font-size: 12px;
+    color: var(--color-texto-suave);
+}
+
+.tarjeta .hoja-paciente {
+    margin-bottom: 12px;
+    font-weight: bold;
+    color: var(--color-texto);
+}
+
+.tarjeta .hoja-etiqueta {
+    margin-bottom: 0;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--color-texto-suave);
+}
+
+.tarjeta .hoja-codigo-valor {
+    margin: 4px 0;
+    font-family: "Courier New", monospace;
+    font-size: 32px;
+    font-weight: bold;
+    letter-spacing: 4px;
+    color: var(--color-texto);
+}
+
+.tarjeta .hoja-vence {
+    font-size: 13px;
+    color: var(--color-peligro);
+}
+
+.hoja-cuerpo {
+    display: flex;
+    gap: var(--espacio-md);
+    align-items: center;
+}
+
+.hoja-pasos {
+    flex: 1;
+    padding-left: 18px;
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--color-texto-medio);
+}
+
+.hoja-pasos strong {
+    word-break: break-all;
+}
+
+.hoja-qr {
+    flex-shrink: 0;
+}
+
+.tarjeta .hoja-aviso {
+    margin: 12px 0 0;
+    font-size: 12px;
+    color: var(--color-texto-suave);
+}
+
+@media (max-width: 600px) {
+    .hoja-cuerpo {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+/* al imprimir sale solo la hoja, sin el sistema alrededor */
+@media print {
+    body.imprimir-hoja * {
+        visibility: hidden;
+    }
+
+    body.imprimir-hoja .hoja-codigo,
+    body.imprimir-hoja .hoja-codigo * {
+        visibility: visible;
+    }
+
+    body.imprimir-hoja .hoja-codigo {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        margin: 0;
+        border: none;
+    }
+}
+
+/* ==========================================================
+   PORTAL DEL PACIENTE (portal-ingreso.html, portal-activar.html, portal.html)
+   ========================================================== */
+.marca-footer a {
+    color: #cdd8f0;
+    font-weight: bold;
+}
+
+.lista-features.pasos-activar li {
+    align-items: flex-start;
+}
+
+.pasos-activar .numero-paso {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background-color: rgba(111, 150, 242, 0.25);
+    color: #dbe4f5;
+    font-size: 11px;
+    font-weight: bold;
+}
+
+.tarjeta-login .ayuda-campo {
+    margin: -10px 0 14px;
+}
+
+.portal-contenido {
+    width: 100%;
+    max-width: 860px;
+    margin: 0 auto;
+    padding: var(--espacio-xl) var(--espacio-lg) 48px;
+}
+
+/* el saludo es lo más grande de la página: marca un escalón claro sobre los títulos de las tarjetas */
+.portal-saludo h2 {
+    margin-bottom: var(--espacio-xs);
+    font-size: 28px;
+    letter-spacing: -0.3px;
+}
+
+/* en el portal el texto sobre el fondo gris usa tonos más oscuros: tiene que leerse bien en cualquier celular */
+.portal-saludo p {
+    font-size: 14px;
+    color: var(--color-texto-secundario);
+}
+
+.portal-pestanias {
+    display: flex;
+    gap: var(--espacio-xs);
+    margin: var(--espacio-lg) 0 var(--espacio-md);
+    border-bottom: 1px solid var(--color-borde);
+}
+
+.portal-pestanias button {
+    margin-bottom: -1px;
+    padding: 10px 14px;
+    border: none;
+    border-bottom: 2px solid transparent;
+    background: none;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: bold;
+    color: var(--color-texto-secundario);
+    cursor: pointer;
+}
+
+.portal-pestanias button[aria-selected="true"] {
+    border-bottom-color: var(--color-primario-hover);
+    color: var(--color-primario-hover);
+}
+
+.portal-filtros {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--espacio-sm);
+    margin-bottom: var(--espacio-md);
+}
+
+.chip-filtro {
+    padding: 7px 14px;
+    border: 1px solid var(--color-borde-input);
+    border-radius: var(--radio-pill);
+    background-color: var(--color-blanco);
+    font-family: inherit;
+    font-size: 13px;
+    color: var(--color-texto-medio);
+    cursor: pointer;
+}
+
+.chip-filtro[aria-pressed="true"] {
+    border-color: var(--color-primario);
+    background-color: var(--color-primario-suave);
+    color: var(--color-primario);
+    font-weight: bold;
+}
+
+.lista-portal {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    list-style: none;
+}
+
+.lista-portal .esqueleto {
+    height: 96px;
+    border-radius: var(--radio-grande);
+}
+
+.doc-portal {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 18px;
+    border: 1px solid var(--color-borde);
+    border-radius: var(--radio-grande);
+    background-color: var(--color-blanco);
+}
+
+.doc-portal-icono {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+    border-radius: var(--radio-medio);
+    background-color: var(--color-primario-suave);
+    color: var(--color-primario);
+}
+
+.doc-portal-icono.icono-indicacion {
+    background-color: var(--color-violeta-suave);
+    color: var(--color-violeta);
+}
+
+.doc-portal-datos {
+    flex: 1;
+    min-width: 0;
+}
+
+.doc-portal-tipo {
+    font-size: 11px;
+    font-weight: bold;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+    color: var(--color-texto-suave);
+}
+
+.doc-portal-datos h3 {
+    margin: 2px 0 4px;
+    font-size: 16px;
+}
+
+.doc-portal-fecha {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--espacio-sm);
+    font-size: 13px;
+    color: var(--color-texto-suave);
+}
+
+.doc-portal-nota {
+    margin-top: var(--espacio-sm);
+    padding: 8px 10px;
+    border-radius: var(--radio-chico);
+    background-color: var(--color-fondo);
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--color-texto-secundario);
+}
+
+.doc-portal-accion {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 6px;
+    flex-shrink: 0;
+    text-align: right;
+}
+
+.doc-portal-accion small {
+    max-width: 160px;
+    font-size: 12px;
+    color: var(--color-texto-suave);
+}
+
+.panel-cuenta .tarjeta {
+    margin-bottom: var(--espacio-md);
+}
+
+.datos-portal {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px 24px;
+    margin-top: 12px;
+}
+
+.datos-portal dt {
+    font-size: 12px;
+    color: var(--color-texto-suave);
+}
+
+.datos-portal dd {
+    font-size: 14px;
+    font-weight: bold;
+    overflow-wrap: anywhere;
+}
+
+.tarjeta .nota-portal {
+    margin: var(--espacio-md) 0 0;
+    font-size: 13px;
+}
+
+.panel-cuenta .tarjeta-formulario {
+    max-width: 480px;
+}
+
+@media (max-width: 600px) {
+    .portal-contenido {
+        padding: var(--espacio-lg) var(--espacio-md) 40px;
+    }
+
+    .portal-saludo h2 {
+        font-size: 23px;
+    }
+
+    .doc-portal {
+        flex-wrap: wrap;
+    }
+
+    /* "Hola, Lucía" ya dice quién es: el avatar se saca para que el nombre del hospital entre */
+    .topbar-portal .usuario-topbar {
+        display: none;
+    }
+
+    .topbar-portal .titulo-sistema h1 {
+        font-size: 17px;
+    }
+
+    /* en celular el botón ocupa todo el ancho, abajo, fácil de tocar con el pulgar */
+    .doc-portal-accion {
+        flex-basis: 100%;
+        align-items: stretch;
+        text-align: left;
+    }
+
+    .doc-portal-accion .boton {
+        text-align: center;
+    }
+
+    /* la etiqueta "En proceso" no se estira como el botón */
+    .doc-portal-accion .pill-estado {
+        align-self: flex-start;
+    }
+
+    .doc-portal-accion small {
+        max-width: none;
+    }
+
+    .datos-portal {
+        grid-template-columns: 1fr;
+    }
+}
+
 @media (prefers-reduced-motion: reduce) {
     .tarjeta-folleto, .modal-contenido, .toast, .esqueleto {
         animation: none;
