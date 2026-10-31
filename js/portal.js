@@ -74,7 +74,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                 (d.descripcion ? '<p class="doc-portal-nota">' + SIGSM.escapar(d.descripcion) + '</p>' : '') +
             '</div>' +
             '<div class="doc-portal-accion">' +
-                '<a class="boton boton-secundario boton-chico" href="documento-publico.html?id=' + d.id_documento + '" target="_blank" rel="noopener">Ver indicaciones</a>' +
+                '<a class="boton boton-secundario boton-chico" href="' + SIGSM.urlDocumentoPublico(d.token) + '" target="_blank" rel="noopener">Ver indicaciones</a>' +
             '</div>' +
         '</li>';
     }

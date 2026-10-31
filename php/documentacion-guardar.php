@@ -108,16 +108,18 @@ try {
         $stmt->close();
 
         $codigo_generado = "QR-" . $id_documento . "-" . time();
+        // el token es lo que va en la URL: aleatorio, para que no se puedan adivinar otros documentos
+        $token = bin2hex(random_bytes(16));
 
         // la url del QR tiene que ser absoluta (con dominio) para poder escanearse desde un celular.
         // se arma en base al request actual, asi funciona sin importar el prefijo que use el servidor
         $protocolo_actual = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
         $ruta_actual = strtok($_SERVER['REQUEST_URI'], '?');
         $prefijo_proyecto = preg_replace('#php/documentacion-guardar\.php$#', '', $ruta_actual);
-        $url_generada = $protocolo_actual . '://' . $_SERVER['HTTP_HOST'] . $prefijo_proyecto . "paginas/documento-publico.html?id=" . $id_documento;
+        $url_generada = $protocolo_actual . '://' . $_SERVER['HTTP_HOST'] . $prefijo_proyecto . "paginas/documento-publico.html?t=" . $token;
 
-        $stmt = $con->prepare("INSERT INTO Codigo_qr (codigo, url, id_documento) VALUES (?, ?, ?)");
-        $stmt->bind_param("ssi", $codigo_generado, $url_generada, $id_documento);
+        $stmt = $con->prepare("INSERT INTO Codigo_qr (codigo, token, url, id_documento) VALUES (?, ?, ?, ?)");
+        $stmt->bind_param("sssi", $codigo_generado, $token, $url_generada, $id_documento);
         $stmt->execute();
         $stmt->close();
     }

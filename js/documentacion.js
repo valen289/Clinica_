@@ -227,7 +227,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     }
 
     async function copiarEnlace(doc) {
-        const url = new URL('documento-publico.html?id=' + doc.id_documento, window.location.href).href;
+        const url = SIGSM.urlDocumentoPublico(doc.token);
         try {
             await navigator.clipboard.writeText(url);
             mostrarToast('Enlace copiado al portapapeles.');
@@ -413,12 +413,13 @@ document.addEventListener('DOMContentLoaded', async function () {
         if (!modalBorrar.hidden) cerrarBorrado();
     });
 
-    // ---- modal "Simular escaneo": QR real generado en el navegador con la URL guardada ----
+    // ---- modal "Simular escaneo": QR real generado en el navegador con el token del documento ----
+    // la URL se arma con el servidor actual (no se usa la guardada, que puede tener otro dominio)
     const modalEscaneo = document.querySelector('#modal-escaneo');
     const contenedorQr = document.querySelector('#escaneo-qr');
 
     function abrirEscaneo(doc) {
-        const url = doc.url || new URL('documento-publico.html?id=' + doc.id_documento, window.location.href).href;
+        const url = SIGSM.urlDocumentoPublico(doc.token);
 
         contenedorQr.innerHTML = '';
         if (window.QRCode) {
@@ -429,7 +430,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
         document.querySelector('#escaneo-titulo').textContent = doc.titulo;
         document.querySelector('#escaneo-codigo').textContent = doc.codigo || '';
-        document.querySelector('#escaneo-abrir').href = 'documento-publico.html?id=' + doc.id_documento;
+        document.querySelector('#escaneo-abrir').href = url;
         modalEscaneo.hidden = false;
         document.body.classList.add('modal-abierto');
     }

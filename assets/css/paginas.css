@@ -144,21 +144,6 @@
 }
 
 /* ==========================================================
-   PANTALLA CENTRADA (documento-publico.html)
-   ========================================================== */
-.pantalla-paciente {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: var(--espacio-lg);
-}
-
-.pantalla-paciente .tarjeta {
-    max-width: 380px;
-}
-
-/* ==========================================================
    RECURSOS (recursos-ambulancias / personal / rutas)
    ========================================================== */
 .cabecera-modulo {
@@ -334,22 +319,6 @@
     margin-top: 12px;
 }
 
-.lista-instrucciones {
-    list-style: none;
-    margin: 10px 0;
-}
-
-.lista-instrucciones li {
-    font-size: 13px;
-    color: var(--color-texto-secundario);
-    padding: 6px 0;
-    border-bottom: 1px solid #f0f0f0;
-}
-
-.lista-instrucciones li.pauta-alarma {
-    color: var(--color-peligro);
-    font-weight: bold;
-}
 /* ==========================================================
    MAPA DE RUTA (traslados.html)
    ========================================================== */
@@ -622,32 +591,6 @@ body.modal-abierto {
 
 .modal-escaneo .acciones-modal {
     flex-wrap: wrap;
-}
-
-.titulo-indicaciones,
-.bloque-alarma h4 {
-    font-size: 13px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin-top: var(--espacio-md);
-}
-
-.bloque-alarma {
-    margin-top: var(--espacio-md);
-    padding: 0 var(--espacio-md) var(--espacio-sm);
-    background-color: #fef2f2;
-    border: 1px solid #fecaca;
-    border-radius: var(--radio-medio);
-}
-
-.bloque-alarma h4 {
-    color: var(--color-peligro);
-}
-
-.bloque-alarma .lista-instrucciones li {
-    color: var(--color-peligro);
-    font-weight: bold;
-    border-bottom-color: #fecaca;
 }
 
 /* ==========================================================
@@ -2126,6 +2069,254 @@ a.alerta-inicio:hover {
 
     .datos-portal {
         grid-template-columns: 1fr;
+    }
+}
+
+/* ==========================================================
+   VISTA PÚBLICA DEL DOCUMENTO (documento-publico.html, la que abre el QR)
+   Pensada primero para celular: la mayoría la abre escaneando el código.
+   ========================================================== */
+.pagina-publica {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.cabecera-publica {
+    background-color: var(--color-blanco);
+    border-bottom: 1px solid var(--color-borde-layout);
+}
+
+.cabecera-publica-contenido {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 14px var(--espacio-lg);
+}
+
+.cabecera-publica-contenido strong {
+    display: block;
+    font-size: 15px;
+}
+
+.cabecera-publica-contenido small {
+    font-size: 12px;
+    color: var(--color-texto-secundario);
+}
+
+.documento-publico {
+    flex: 1;
+    width: 100%;
+    max-width: 760px;
+    margin: 0 auto;
+    padding: var(--espacio-lg);
+    display: flex;
+    flex-direction: column;
+    gap: var(--espacio-md);
+}
+
+/* las tarjetas van en columna: .tarjeta trae flex: 1 y acá no tiene que estirarse */
+.documento-publico .tarjeta {
+    flex: none;
+}
+
+.esqueleto-documento {
+    height: 260px;
+}
+
+.chip-departamento {
+    display: inline-block;
+    margin-bottom: var(--espacio-sm);
+    padding: 3px 10px;
+    border-radius: var(--radio-pill);
+    background-color: var(--color-primario-suave);
+    color: var(--color-primario-hover);
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.doc-publico h1 {
+    margin-bottom: var(--espacio-sm);
+    font-size: 26px;
+    line-height: 1.25;
+    letter-spacing: -0.3px;
+}
+
+.tarjeta .doc-publico-descripcion {
+    margin-bottom: var(--espacio-sm);
+    font-size: 15px;
+    color: var(--color-texto-medio);
+}
+
+.tarjeta .doc-publico-fecha {
+    margin-bottom: var(--espacio-md);
+    font-size: 13px;
+    color: var(--color-texto-secundario);
+}
+
+.doc-publico-acciones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--espacio-sm);
+}
+
+.doc-publico-acciones .boton {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+
+.doc-publico-seccion h2 {
+    margin-bottom: 12px;
+    font-size: 18px;
+}
+
+/* indicaciones numeradas: el paciente las sigue en orden */
+.lista-pasos {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    list-style: none;
+}
+
+.lista-pasos li {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.numero-paso-doc {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background-color: var(--color-primario-suave);
+    color: var(--color-primario-hover);
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.tarjeta .lista-pasos p {
+    margin: 3px 0 0;
+    font-size: 15px;
+    line-height: 1.55;
+    color: var(--color-texto);
+}
+
+/* pautas de alarma: el bloque que no se puede pasar por alto */
+.bloque-alarma-publico {
+    padding: var(--espacio-lg);
+    border: 1px solid #fecaca;
+    border-radius: var(--radio-grande);
+    background-color: #fef2f2;
+    color: var(--color-peligro);
+}
+
+.alarma-titulo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+.alarma-titulo svg {
+    flex-shrink: 0;
+}
+
+.alarma-titulo h2 {
+    font-size: 18px;
+}
+
+.lista-alarmas {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding-left: 20px;
+    font-size: 15px;
+    font-weight: bold;
+    line-height: 1.5;
+}
+
+.alarma-emergencia {
+    margin-top: var(--espacio-md);
+    padding-top: 12px;
+    border-top: 1px solid #fecaca;
+    font-size: 14px;
+    color: #7f1d1d;
+}
+
+.doc-no-encontrado {
+    padding: 40px var(--espacio-lg);
+    text-align: center;
+}
+
+.doc-no-encontrado-icono {
+    display: inline-flex;
+    margin-bottom: 12px;
+    color: var(--color-texto-tenue);
+}
+
+.doc-no-encontrado h1 {
+    margin-bottom: var(--espacio-sm);
+    font-size: 22px;
+}
+
+.doc-no-encontrado .boton {
+    margin-top: var(--espacio-sm);
+}
+
+.pie-publico {
+    width: 100%;
+    max-width: 760px;
+    margin: 0 auto;
+    padding: var(--espacio-sm) var(--espacio-lg) var(--espacio-xl);
+    font-size: 13px;
+    color: var(--color-texto-secundario);
+    text-align: center;
+    line-height: 1.6;
+}
+
+.pie-publico a {
+    color: var(--color-primario-hover);
+    font-weight: bold;
+}
+
+@media (max-width: 600px) {
+    .documento-publico {
+        padding: var(--espacio-md);
+    }
+
+    .doc-publico h1 {
+        font-size: 22px;
+    }
+
+    /* en celular los botones ocupan todo el ancho: más fáciles de tocar */
+    .doc-publico-acciones .boton {
+        flex: 1 1 100%;
+    }
+}
+
+/* impreso: sin botones ni enlaces al portal, solo el contenido */
+@media print {
+    .pagina-publica .doc-publico-acciones,
+    .pagina-publica .pie-portal {
+        display: none;
+    }
+
+    .pagina-publica .tarjeta,
+    .pagina-publica .bloque-alarma-publico {
+        border-color: #999;
+        break-inside: avoid;
+    }
+
+    .pagina-publica {
+        background-color: var(--color-blanco);
     }
 }
 

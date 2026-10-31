@@ -39,9 +39,11 @@ $stmt->execute();
 $estudios = filas($stmt->get_result());
 $stmt->close();
 
-$stmt = $con->prepare("SELECT d.id_documento, d.titulo, d.departamento, pd.fecha_asignacion
+// el token es para el enlace "ver como lo ve el paciente" (la vista pública se abre por token)
+$stmt = $con->prepare("SELECT d.id_documento, d.titulo, d.departamento, pd.fecha_asignacion, q.token
                        FROM Paciente_documento pd
                        INNER JOIN Documento d ON d.id_documento = pd.id_documento
+                       LEFT JOIN Codigo_qr q ON q.id_documento = d.id_documento
                        WHERE pd.id_paciente = ?
                        ORDER BY pd.fecha_asignacion DESC, d.titulo");
 $stmt->bind_param("i", $ci);

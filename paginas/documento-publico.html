@@ -3,21 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SIGSM - Documento Médico</title>
-    <link rel="stylesheet" href="../assets/css/variables.css?v=18">
-    <link rel="stylesheet" href="../assets/css/layout.css?v=18">
-    <link rel="stylesheet" href="../assets/css/componentes.css?v=18">
-    <link rel="stylesheet" href="../assets/css/paginas.css?v=19">
-    <link rel="stylesheet" href="../assets/css/responsive.css?v=18">
+    <title>Indicaciones - Hospital de Clínicas</title>
+    <link rel="stylesheet" href="../assets/css/variables.css?v=20">
+    <link rel="stylesheet" href="../assets/css/layout.css?v=20">
+    <link rel="stylesheet" href="../assets/css/componentes.css?v=20">
+    <link rel="stylesheet" href="../assets/css/paginas.css?v=20">
+    <link rel="stylesheet" href="../assets/css/responsive.css?v=20">
 </head>
-<body>
+<body class="pagina-publica">
 
-    <div class="pantalla-paciente">
-        <div id="contenido-documento"></div>
-    </div>
+    <!-- Página pública: la abre cualquiera que escanee el QR de un documento, sin iniciar sesión -->
+    <header class="cabecera-publica">
+        <div class="cabecera-publica-contenido">
+            <div class="logo">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l2-6 3 12 2-8 2 2h5"/></svg>
+            </div>
+            <div>
+                <strong>Hospital de Clínicas</strong>
+                <small>Indicaciones para pacientes</small>
+            </div>
+        </div>
+    </header>
 
-    <script src="../js/shell.js?v=15"></script>
-    <script src="../js/documento-publico.js?v=15"></script>
+    <main class="documento-publico" id="contenido-documento" aria-live="polite">
+        <div class="tarjeta esqueleto esqueleto-documento"></div>
+    </main>
+
+    <footer class="pie-publico">
+        <p>Esta información no reemplaza la consulta con tu médico.</p>
+        <p class="pie-portal">¿Sos paciente del hospital? <a href="portal-ingreso.html">Entrá al portal</a> para ver todos tus documentos y resultados.</p>
+    </footer>
+
+    <script src="../js/shell.js?v=20"></script>
+    <script src="../js/documento-publico.js?v=20"></script>
 
 </body>
 </html>

@@ -417,7 +417,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                     '<small>' + SIGSM.escapar((f.departamento || 'Sin departamento') + ' · asignado ' + SIGSM.formatearFecha(f.fecha_asignacion)) + '</small>' +
                 '</div>' +
                 '<span class="item-lista-botones">' +
-                    '<a class="boton-icono" href="documento-publico.html?id=' + f.id_documento + '" target="_blank" rel="noopener" title="Ver como lo ve el paciente" aria-label="Ver como lo ve el paciente">' + SIGSM.icono('enlace', 16) + '</a>' +
+                    '<a class="boton-icono" href="' + SIGSM.urlDocumentoPublico(f.token) + '" target="_blank" rel="noopener" title="Ver como lo ve el paciente" aria-label="Ver como lo ve el paciente">' + SIGSM.icono('enlace', 16) + '</a>' +
                     botonIcono('quitar-documento', f.id_documento, 'basura', 'Quitar documento', 'boton-icono-peligro') +
                 '</span>' +
             '</li>';

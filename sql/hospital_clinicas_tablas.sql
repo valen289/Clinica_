@@ -97,9 +97,12 @@ CREATE TABLE Instruccion (
         REFERENCES Documento(id_documento)
 );
 
+-- token: 32 caracteres al azar que van en la URL del QR (documento-publico.html?t=...),
+-- así no se pueden recorrer los documentos probando ?id=1, ?id=2...
 CREATE TABLE Codigo_qr (
     id_qr INT AUTO_INCREMENT PRIMARY KEY,
     codigo VARCHAR(150) NOT NULL,
+    token CHAR(32) NOT NULL UNIQUE,
     url VARCHAR(200) NOT NULL,
     id_documento INT NOT NULL UNIQUE,
 

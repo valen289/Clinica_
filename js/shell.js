@@ -124,6 +124,12 @@ const SIGSM = (function () {
         return String(texto || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
     }
 
+    // vista pública de un documento (la que abre el QR): se arma con el token, nunca con el id.
+    // Absoluta y con el servidor actual, para que el QR funcione aunque el documento se haya creado en otra máquina
+    function urlDocumentoPublico(token) {
+        return new URL('documento-publico.html?t=' + encodeURIComponent(token || ''), window.location.href).href;
+    }
+
     // color de la pill según el estado del traslado (Traslados e Inicio lo muestran igual)
     function claseEstadoTraslado(estado) {
         if (['En curso', 'Retornando'].indexOf(estado) !== -1) return 'pill-azul';
@@ -288,6 +294,7 @@ const SIGSM = (function () {
         paginaInicial: paginaInicial,
         puedeEntrar: puedeEntrar,
         claseEstadoTraslado: claseEstadoTraslado,
+        urlDocumentoPublico: urlDocumentoPublico,
         escapar: escapar,
         icono: icono,
         ICONOS: ICONOS,
