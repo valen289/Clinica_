@@ -8,7 +8,7 @@ $ci = requerir_paciente();
 
 require_once __DIR__ . '/conexion.php';
 
-$stmt = $con->prepare("SELECT id_ci, nombre, apellido, fecha_nacimiento, telefono, email, direccion, cuenta_activada FROM Paciente WHERE id_ci = ?");
+$stmt = $con->prepare("SELECT id_ci, numero_paciente, nombre, apellido, fecha_nacimiento, telefono, email, direccion, cuenta_activada FROM Paciente WHERE id_ci = ?");
 $stmt->bind_param("i", $ci);
 $stmt->execute();
 $paciente = $stmt->get_result()->fetch_assoc();

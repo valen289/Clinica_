@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SIGSM - Rutas de Ambulancias</title>
-    <link rel="stylesheet" href="../assets/css/variables.css?v=21">
-    <link rel="stylesheet" href="../assets/css/layout.css?v=21">
-    <link rel="stylesheet" href="../assets/css/componentes.css?v=21">
-    <link rel="stylesheet" href="../assets/css/paginas.css?v=22">
-    <link rel="stylesheet" href="../assets/css/responsive.css?v=21">
+    <title>SIGSM - Traslados</title>
+    <link rel="stylesheet" href="../assets/css/variables.css?v=24">
+    <link rel="stylesheet" href="../assets/css/layout.css?v=24">
+    <link rel="stylesheet" href="../assets/css/componentes.css?v=24">
+    <link rel="stylesheet" href="../assets/css/paginas.css?v=24">
+    <link rel="stylesheet" href="../assets/css/responsive.css?v=24">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 </head>
 <body>
@@ -19,10 +19,19 @@
         <div id="sidebar"></div>
 
         <main class="contenido">
+            <div class="cabecera-folletos">
+                <div>
+                    <h2>Traslados</h2>
+                    <p>Despachá una ambulancia y seguí cada traslado paso a paso hasta que vuelve a la base.</p>
+                </div>
+            </div>
+
+            <div class="resumen-folletos resumen-traslados" id="resumen-traslados" hidden></div>
+
             <div class="tarjetas-portal">
 
-                <section class="tarjeta tarjeta-formulario">
-                    <h3>Despachar Ambulancia</h3>
+                <section class="tarjeta tarjeta-formulario" id="form-despacho-tarjeta">
+                    <h3>Despachar ambulancia</h3>
                     <form id="form-despacho">
                         <label for="id_ambulancia">Ambulancia:</label>
                         <select id="id_ambulancia" name="id_ambulancia" required>
@@ -61,21 +70,21 @@
                 </section>
 
                 <section class="tarjeta tarjeta-tabla">
-                    <h3>Traslados Despachados</h3>
+                    <h3>Traslados despachados</h3>
                     <table>
                         <thead>
                             <tr>
                                 <th>Ambulancia</th>
-                                <th>Conductor</th>
                                 <th>Ruta</th>
-                                <th>Fecha</th>
+                                <th>Paciente</th>
                                 <th>Salida</th>
                                 <th>Estado</th>
-                                <th></th>
+                                <th>Siguiente paso</th>
                             </tr>
                         </thead>
                         <tbody id="tabla-traslados"></tbody>
                     </table>
+                    <p class="sin-traslados" id="sin-traslados" hidden>Todavía no hay traslados. Despachá el primero con el formulario.</p>
                 </section>
 
             </div>
@@ -90,8 +99,8 @@
     </div>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="../js/shell.js?v=21"></script>
-    <script src="../js/traslados.js?v=21"></script>
+    <script src="../js/shell.js?v=24"></script>
+    <script src="../js/traslados.js?v=24"></script>
 
 </body>
 </html>

@@ -2651,6 +2651,44 @@ a.alerta-inicio:hover {
     }
 }
 
+/* ==========================================================
+   TRASLADOS Y RECURSOS (pulido de la Fase 7)
+   ========================================================== */
+.resumen-traslados {
+    margin-bottom: var(--espacio-lg);
+}
+
+.tarjeta-tabla td {
+    vertical-align: middle;
+}
+
+.celda-detalle {
+    display: block;
+    font-size: 12px;
+    color: var(--color-texto-suave);
+}
+
+.celda-fecha,
+.boton-paso {
+    white-space: nowrap;
+}
+
+.tarjeta-tabla .boton-paso {
+    margin-top: 0;
+}
+
+.tarjeta .sin-traslados {
+    margin: var(--espacio-md) 0 0;
+    font-size: 14px;
+    color: var(--color-texto-suave);
+    text-align: center;
+}
+
+/* "Guardar" y "Cancelar edición" en la misma fila del formulario de Recursos */
+.tarjetas-portal .tarjeta-formulario .boton + .boton {
+    margin-left: var(--espacio-sm);
+}
+
 @media (prefers-reduced-motion: reduce) {
     .tarjeta-folleto, .modal-contenido, .toast, .esqueleto {
         animation: none;

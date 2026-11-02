@@ -114,6 +114,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     function renderCuenta(p) {
         const filas = [
             ['Cédula', SIGSM.formatearCedula(p.id_ci)],
+            ['Número de paciente', String(p.numero_paciente)],
             ['Nombre', p.nombre + ' ' + p.apellido],
             ['Fecha de nacimiento', p.fecha_nacimiento ? SIGSM.formatearFecha(p.fecha_nacimiento) : '—'],
             ['Teléfono', p.telefono || '—'],
@@ -245,7 +246,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     // avisos que llegan por la URL una sola vez: recién activó la cuenta o recién respondió una encuesta
     const parametros = new URLSearchParams(window.location.search);
     if (parametros.get('bienvenida') === '1') {
-        SIGSM.mostrarToast('¡Listo! Tu cuenta quedó activada.');
+        SIGSM.mostrarToast('¡Listo! Ya podés ver tus documentos desde acá.');
     }
     if (parametros.get('encuesta') === 'respondida') {
         SIGSM.mostrarToast('¡Gracias por responder la encuesta!');

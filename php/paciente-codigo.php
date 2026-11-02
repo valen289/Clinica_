@@ -15,7 +15,7 @@ $ALFABETO = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
 
 $ci = (int) ($_POST['ci'] ?? 0);
 
-$stmt = $con->prepare("SELECT id_ci, nombre, apellido FROM Paciente WHERE id_ci = ?");
+$stmt = $con->prepare("SELECT id_ci, numero_paciente, nombre, apellido FROM Paciente WHERE id_ci = ?");
 $stmt->bind_param("i", $ci);
 $stmt->execute();
 $paciente = $stmt->get_result()->fetch_assoc();
@@ -54,6 +54,7 @@ echo json_encode([
         'nombre' => $paciente['nombre'],
         'apellido' => $paciente['apellido'],
         'id_ci' => $paciente['id_ci'],
+        'numero_paciente' => $paciente['numero_paciente'],
     ],
 ]);
 $con->close();

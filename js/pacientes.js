@@ -251,7 +251,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                     '<span><a href="pacientes.html?ci=' + p.id_ci + '"><strong>' + SIGSM.escapar(p.nombre + ' ' + p.apellido) + '</strong></a>' +
                     (contacto ? '<small>' + SIGSM.escapar(contacto) + '</small>' : '') + '</span>' +
                 '</div></td>' +
-                '<td><span class="texto-ci">' + SIGSM.formatearCedula(p.id_ci) + '</span></td>' +
+                '<td><span class="texto-ci">' + SIGSM.formatearCedula(p.id_ci) + '</span><small class="celda-detalle">Nº ' + p.numero_paciente + '</small></td>' +
                 '<td>' + textoEdad(p.fecha_nacimiento) + '</td>' +
                 '<td>' + celdaEstudios + '</td>' +
                 '<td>' + (p.fecha_alta ? SIGSM.formatearFecha(p.fecha_alta) : '—') + '</td>' +
@@ -266,7 +266,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                 if (filtro === 'disponibles' && !Number(p.estudios_disponibles)) return false;
                 if (filtro === 'sin-estudios' && Number(p.estudios)) return false;
                 // la cédula se busca con y sin puntos
-                const texto = [p.nombre, p.apellido, p.telefono, p.email, p.id_ci, SIGSM.formatearCedula(p.id_ci)].join(' ');
+                const texto = [p.nombre, p.apellido, p.telefono, p.email, p.id_ci, SIGSM.formatearCedula(p.id_ci), p.numero_paciente].join(' ');
                 return !termino || SIGSM.normalizar(texto).indexOf(termino) !== -1;
             });
         }
@@ -356,6 +356,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     function renderCabeceraFicha() {
         const edad = SIGSM.calcularEdad(paciente.fecha_nacimiento);
         const datos = [
+            ['numeral', 'Paciente Nº ' + paciente.numero_paciente],
             ['cedula', SIGSM.formatearCedula(paciente.id_ci)],
             ['calendario', edad === null ? '' : SIGSM.textoPlural(edad, 'año', 'años') + ' · ' + SIGSM.formatearFecha(paciente.fecha_nacimiento)],
             ['telefono', paciente.telefono],
@@ -468,12 +469,13 @@ document.addEventListener('DOMContentLoaded', async function () {
         } else if (codigoVigente) {
             estado = 'Código entregado';
             clase = 'pill-naranja';
-            texto = 'Todavía no activó la cuenta. El código vence el ' + fechaHora(paciente.codigo_vence) + '; si lo perdió, generá uno nuevo (el anterior deja de servir).';
+            texto = 'Todavía no activó la cuenta. Puede crearla desde el portal con su cédula y su número de paciente (' + paciente.numero_paciente + '), o con el código que vence el ' + fechaHora(paciente.codigo_vence) + '.';
             boton = 'Generar código nuevo';
         } else {
             estado = 'Sin activar';
             clase = 'pill-gris';
-            texto = 'Todavía no tiene acceso al portal. Generá un código de activación y entregáselo para que vea sus estudios y documentos desde el celular.' +
+            // lo normal es que la cree él mismo; el código queda como alternativa
+            texto = 'Todavía no tiene cuenta. Puede crearla desde el portal con su cédula y su número de paciente (' + paciente.numero_paciente + '). Si prefiere, generale un código.' +
                 (paciente.codigo_vence ? ' El último código venció el ' + fechaHora(paciente.codigo_vence) + '.' : '');
             boton = 'Generar código de activación';
         }
@@ -482,7 +484,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         estadoPortal.className = 'pill-estado ' + clase;
         textoPortal.textContent = texto;
         botonGenerarCodigo.textContent = boton;
-        botonGenerarCodigo.className = 'boton boton-chico ' + (activa ? 'boton-secundario' : 'boton-primario');
+        botonGenerarCodigo.className = 'boton boton-chico boton-secundario';
     }
 
     // al cerrar (botón, Escape o clic afuera) el código se borra de la página:
@@ -497,7 +499,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         // la URL del QR tiene que ser absoluta para poder abrirse desde el celular del paciente
         const urlActivar = new URL('portal-activar.html', window.location.href).href;
 
-        document.querySelector('#hoja-paciente').textContent = datos.nombre + ' ' + datos.apellido + ' · CI ' + SIGSM.formatearCedula(datos.id_ci);
+        document.querySelector('#hoja-paciente').textContent = datos.nombre + ' ' + datos.apellido + ' · CI ' + SIGSM.formatearCedula(datos.id_ci) + ' · Paciente Nº ' + datos.numero_paciente;
         document.querySelector('#hoja-codigo-valor').textContent = datos.codigo;
         document.querySelector('#hoja-vence').textContent = 'Vence el ' + fechaHora(datos.vence, true);
         document.querySelector('#hoja-url').textContent = urlActivar;
@@ -741,7 +743,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         if (recienCreado) history.replaceState(null, '', 'pacientes.html?ci=' + encodeURIComponent(ciFicha));
 
         await cargarFicha();
-        if (recienCreado && paciente) SIGSM.mostrarToast('Paciente registrado. Ya podés cargarle estudios.');
+        if (recienCreado && paciente) SIGSM.mostrarToast('Paciente registrado con el número ' + paciente.numero_paciente + '.');
     }
 
     if (ciFicha) {

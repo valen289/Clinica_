@@ -45,6 +45,8 @@ document.addEventListener('DOMContentLoaded', async function () {
         document.querySelector('#icono-formulario').innerHTML = SIGSM.ICONOS.lapiz;
         document.querySelector('#titulo-formulario').textContent = 'Editar Ruta';
         document.querySelector('#boton-formulario').textContent = 'Actualizar Ruta';
+        document.querySelector('#cancelar-edicion').hidden = false;
+        formulario.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
 
     function volverAModoAlta() {
@@ -54,6 +56,8 @@ document.addEventListener('DOMContentLoaded', async function () {
         document.querySelector('#icono-formulario').innerHTML = SIGSM.ICONOS.mas;
         document.querySelector('#titulo-formulario').textContent = 'Registrar Nueva Ruta';
         document.querySelector('#boton-formulario').textContent = 'Guardar Ruta';
+        document.querySelector('#cancelar-edicion').hidden = true;
+        mensaje.textContent = '';
     }
 
     tabla.addEventListener('click', async function (e) {
@@ -70,15 +74,15 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
 
         if (enlace.dataset.accion === 'borrar') {
-            const confirmado = confirm('¿Seguro que querés eliminar este registro? Esta acción no se puede deshacer.');
-            if (!confirmado) return;
-
-            const datos = new FormData();
-            datos.append('eliminar_ruta', '1');
-            datos.append('id_ruta', id);
-
-            await fetch('../php/recursos-rutas.php', { method: 'POST', body: datos });
-            await Promise.all([cargarListado(), SIGSM.cargarResumenRecursos()]);
+            const ruta = listaRutas.find(function (r) { return String(r.id_ruta) === id; });
+            const borrado = await SIGSM.eliminarRecurso({
+                url: '../php/recursos-rutas.php',
+                datos: { eliminar_ruta: '1', id_ruta: id },
+                titulo: 'Eliminar ruta',
+                mensaje: 'Vas a eliminar la ruta ' + (ruta ? ruta.origen + ' → ' + ruta.destino : '') + '. Esta acción no se puede deshacer.',
+                textoExito: 'Ruta eliminada.',
+            });
+            if (borrado) await Promise.all([cargarListado(), SIGSM.cargarResumenRecursos()]);
         }
     });
 
@@ -88,6 +92,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
         const datos = new FormData(formulario);
         datos.append('guardar_ruta', '1');
+        const editando = datos.get('id_ruta_editar') !== '';
 
         try {
             const respuesta = await fetch('../php/recursos-rutas.php', {
@@ -99,6 +104,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             if (resultado.exito) {
                 volverAModoAlta();
                 await Promise.all([cargarListado(), SIGSM.cargarResumenRecursos()]);
+                SIGSM.mostrarToast(editando ? 'Cambios guardados.' : 'Ruta registrada.');
             } else {
                 mensaje.textContent = resultado.error;
             }
@@ -106,6 +112,8 @@ document.addEventListener('DOMContentLoaded', async function () {
             mensaje.textContent = 'No se pudo conectar con el servidor.';
         }
     });
+
+    document.querySelector('#cancelar-edicion').addEventListener('click', volverAModoAlta);
 
     SIGSM.cargarResumenRecursos();
     cargarListado();

@@ -10,7 +10,7 @@ require_once __DIR__ . '/conexion.php';
 // secuencia de estados de un traslado: cada "Avanzar" pasa al siguiente
 $secuencia_estados = ['Pendiente', 'En curso', 'Llegado a destino', 'Retornando', 'Finalizado'];
 
-$id_traslado = $_POST['id_traslado'];
+$id_traslado = (int) ($_POST['id_traslado'] ?? 0);
 
 $stmt_actual = $con->prepare("SELECT estado, hora_llegada FROM Traslado WHERE id_traslado = ?");
 $stmt_actual->bind_param("i", $id_traslado);

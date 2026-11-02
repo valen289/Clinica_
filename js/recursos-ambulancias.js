@@ -49,6 +49,8 @@ document.addEventListener('DOMContentLoaded', async function () {
         document.querySelector('#icono-formulario').innerHTML = SIGSM.ICONOS.lapiz;
         document.querySelector('#titulo-formulario').textContent = 'Editar Ambulancia';
         document.querySelector('#boton-formulario').textContent = 'Actualizar Vehículo';
+        document.querySelector('#cancelar-edicion').hidden = false;
+        formulario.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
 
     function volverAModoAlta() {
@@ -58,6 +60,8 @@ document.addEventListener('DOMContentLoaded', async function () {
         document.querySelector('#icono-formulario').innerHTML = SIGSM.ICONOS.mas;
         document.querySelector('#titulo-formulario').textContent = 'Registrar Nueva Ambulancia';
         document.querySelector('#boton-formulario').textContent = 'Guardar Vehículo';
+        document.querySelector('#cancelar-edicion').hidden = true;
+        mensaje.textContent = '';
     }
 
     tabla.addEventListener('click', async function (e) {
@@ -74,15 +78,15 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
 
         if (enlace.dataset.accion === 'borrar') {
-            const confirmado = confirm('¿Seguro que querés eliminar este registro? Esta acción no se puede deshacer.');
-            if (!confirmado) return;
-
-            const datos = new FormData();
-            datos.append('eliminar_ambulancia', '1');
-            datos.append('id_ambulancia', id);
-
-            await fetch('../php/recursos-ambulancias.php', { method: 'POST', body: datos });
-            await Promise.all([cargarListado(), SIGSM.cargarResumenRecursos()]);
+            const amb = listaAmbulancias.find(function (a) { return String(a.id_ambulancia) === id; });
+            const borrado = await SIGSM.eliminarRecurso({
+                url: '../php/recursos-ambulancias.php',
+                datos: { eliminar_ambulancia: '1', id_ambulancia: id },
+                titulo: 'Eliminar ambulancia',
+                mensaje: 'Vas a eliminar la ambulancia ' + (amb ? amb.matricula : '') + '. Esta acción no se puede deshacer.',
+                textoExito: 'Ambulancia eliminada.',
+            });
+            if (borrado) await Promise.all([cargarListado(), SIGSM.cargarResumenRecursos()]);
         }
     });
 
@@ -92,6 +96,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
         const datos = new FormData(formulario);
         datos.append('guardar_ambulancia', '1');
+        const editando = datos.get('id_ambulancia_editar') !== '';
 
         try {
             const respuesta = await fetch('../php/recursos-ambulancias.php', {
@@ -103,6 +108,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             if (resultado.exito) {
                 volverAModoAlta();
                 await Promise.all([cargarListado(), SIGSM.cargarResumenRecursos()]);
+                SIGSM.mostrarToast(editando ? 'Cambios guardados.' : 'Ambulancia registrada.');
             } else {
                 mensaje.textContent = resultado.error;
             }
@@ -110,6 +116,8 @@ document.addEventListener('DOMContentLoaded', async function () {
             mensaje.textContent = 'No se pudo conectar con el servidor.';
         }
     });
+
+    document.querySelector('#cancelar-edicion').addEventListener('click', volverAModoAlta);
 
     SIGSM.cargarResumenRecursos();
     cargarListado();

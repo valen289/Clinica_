@@ -7,7 +7,29 @@ document.addEventListener('DOMContentLoaded', async function () {
     const mensaje = document.querySelector('#mensaje-form');
     const tabla = document.querySelector('#tabla-traslados');
     const selectRuta = document.querySelector('#id_ruta');
+    const resumen = document.querySelector('#resumen-traslados');
     let rutasCache = [];
+    let listaTraslados = [];
+
+    // mismo orden que traslados-avanzar.php: el botón dice cuál es el próximo paso, no solo "Avanzar"
+    const SIGUIENTE_PASO = {
+        'Pendiente': 'Iniciar traslado',
+        'Preparado': 'Iniciar traslado',
+        'En curso': 'Llegó a destino',
+        'Llegado a destino': 'Emprender regreso',
+        'Retornando': 'Finalizar',
+    };
+
+    function hoyIso() {
+        const hoy = new Date();
+        return hoy.getFullYear() + '-' + String(hoy.getMonth() + 1).padStart(2, '0') + '-' + String(hoy.getDate()).padStart(2, '0');
+    }
+
+    // "2026-10-24" + "21:36:10" -> "Hoy · 21:36" o "24/10/2026 · 21:36"
+    function cuando(fecha, hora) {
+        const dia = fecha === hoyIso() ? 'Hoy' : SIGSM.formatearFecha(fecha);
+        return hora ? dia + ' · ' + String(hora).slice(0, 5) : dia;
+    }
 
     function llenarSelect(select, opciones, campoId, textoFn) {
         while (select.options.length > 1) select.remove(1); // deja solo el placeholder ("Seleccione...")
@@ -20,18 +42,41 @@ document.addEventListener('DOMContentLoaded', async function () {
     }
 
     function renderFilaTraslado(t) {
-        const esFinalizado = (t.estado === 'Finalizado');
+        const paso = SIGUIENTE_PASO[t.estado];
+        const paciente = t.paciente_nombre ? t.paciente_nombre + ' ' + t.paciente_apellido : '';
+        const llegada = t.hora_llegada ? ' · volvió ' + String(t.hora_llegada).slice(0, 5) : '';
+
         return '<tr>' +
-            '<td>' + SIGSM.escapar(t.matricula) + '</td>' +
-            '<td>' + SIGSM.escapar(t.conductor_nombre + ' ' + t.conductor_apellido) + '</td>' +
+            '<td><strong>' + SIGSM.escapar(t.matricula) + '</strong><small class="celda-detalle">' + SIGSM.escapar(t.conductor_nombre + ' ' + t.conductor_apellido) + '</small></td>' +
             '<td>' + SIGSM.escapar(t.origen + ' → ' + t.destino) + '</td>' +
-            '<td>' + SIGSM.escapar(t.fecha) + '</td>' +
-            '<td>' + SIGSM.escapar(t.hora_salida) + '</td>' +
+            '<td>' + (paciente ? SIGSM.escapar(paciente) : '<span class="texto-tenue">—</span>') + '</td>' +
+            '<td class="celda-fecha">' + SIGSM.escapar(cuando(t.fecha, t.hora_salida) + llegada) + '</td>' +
             '<td><span class="pill-estado ' + SIGSM.claseEstadoTraslado(t.estado) + '">' + SIGSM.escapar(t.estado) + '</span></td>' +
             '<td>' +
-                (esFinalizado ? '' : '<button type="button" class="enlace-accion" data-accion="avanzar" data-id="' + t.id_traslado + '">Avanzar →</button>') +
+                (paso ? '<button type="button" class="boton boton-secundario boton-chico boton-paso" data-accion="avanzar" data-id="' + t.id_traslado + '">' + paso + '</button>' : '<span class="texto-tenue">Terminado</span>') +
             '</td>' +
         '</tr>';
+    }
+
+    function dato(nombreIcono, valor, texto, clase) {
+        return '<div class="dato-resumen ' + (clase || '') + '">' +
+            '<span class="dato-icono">' + SIGSM.icono(nombreIcono, 20) + '</span>' +
+            '<span><strong>' + valor + '</strong><small>' + texto + '</small></span></div>';
+    }
+
+    function renderResumen(datos) {
+        const contar = function (estados) {
+            return listaTraslados.filter(function (t) { return estados.indexOf(t.estado) !== -1; }).length;
+        };
+        const finalizadosHoy = listaTraslados.filter(function (t) { return t.estado === 'Finalizado' && t.fecha === hoyIso(); }).length;
+        const libres = datos.ambulancias_disponibles.length;
+
+        resumen.innerHTML =
+            dato('reloj', contar(['Pendiente', 'Preparado']), 'Esperando salida', 'dato-ambar') +
+            dato('actividad', contar(['En curso', 'Llegado a destino', 'Retornando']), 'En curso', 'dato-violeta') +
+            dato('check', finalizadosHoy, 'Finalizados hoy', 'dato-verde') +
+            dato('ambulancia', libres, libres === 1 ? 'Ambulancia libre' : 'Ambulancias libres', libres ? '' : 'dato-rojo');
+        resumen.hidden = false;
     }
 
     async function cargarDatos() {
@@ -49,18 +94,32 @@ document.addEventListener('DOMContentLoaded', async function () {
         llenarSelect(selectRuta, datos.rutas, 'id_ruta', function (r) { return r.origen + ' → ' + r.destino; });
         llenarSelect(document.querySelector('#id_paciente'), datos.pacientes, 'id_ci', function (p) { return p.apellido + ', ' + p.nombre + ' (' + SIGSM.formatearCedula(p.id_ci) + ')'; });
 
-        tabla.innerHTML = datos.traslados.map(renderFilaTraslado).join('');
+        listaTraslados = datos.traslados;
+        tabla.innerHTML = listaTraslados.map(renderFilaTraslado).join('');
+        document.querySelector('#sin-traslados').hidden = listaTraslados.length > 0;
+        renderResumen(datos);
     }
 
     tabla.addEventListener('click', async function (e) {
         const boton = e.target.closest('[data-accion="avanzar"]');
         if (!boton) return;
 
+        const traslado = listaTraslados.find(function (t) { return String(t.id_traslado) === boton.dataset.id; });
         const datos = new FormData();
         datos.append('id_traslado', boton.dataset.id);
 
-        await fetch('../php/traslados-avanzar.php', { method: 'POST', body: datos });
-        await cargarDatos();
+        boton.disabled = true;
+        try {
+            const respuesta = await fetch('../php/traslados-avanzar.php', { method: 'POST', body: datos });
+            const resultado = await respuesta.json();
+            if (!resultado.exito) throw new Error();
+            await cargarDatos();
+            const actualizado = listaTraslados.find(function (t) { return traslado && t.id_traslado === traslado.id_traslado; });
+            SIGSM.mostrarToast(actualizado ? actualizado.matricula + ' pasó a "' + actualizado.estado + '".' : 'Traslado actualizado.');
+        } catch (error) {
+            boton.disabled = false;
+            SIGSM.mostrarToast('No se pudo actualizar el traslado. Intentá de nuevo.', 'error');
+        }
     });
 
     formulario.addEventListener('submit', async function (e) {
@@ -77,9 +136,11 @@ document.addEventListener('DOMContentLoaded', async function () {
             const resultado = await respuesta.json();
 
             if (resultado.exito) {
+                const matricula = formulario.id_ambulancia.selectedOptions[0].textContent;
                 formulario.reset();
                 reiniciarMapa();
                 await cargarDatos();
+                SIGSM.mostrarToast('Ambulancia ' + matricula + ' despachada.');
             } else {
                 mensaje.textContent = resultado.error;
             }

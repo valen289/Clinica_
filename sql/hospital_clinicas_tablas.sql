@@ -112,8 +112,11 @@ CREATE TABLE Codigo_qr (
 );
 
 -- id_ci: la cédula solo con números, incluido el dígito verificador (1.234.567-2 -> 12345672)
+-- numero_paciente: 6 cifras al azar que da el hospital al dar de alta (como el número de socio de una mutualista).
+-- Con la cédula y este número el paciente crea su cuenta del portal
 CREATE TABLE Paciente (
     id_ci INT PRIMARY KEY,
+    numero_paciente INT NOT NULL UNIQUE,
     nombre VARCHAR(50) NOT NULL,
     apellido VARCHAR(50) NOT NULL,
     telefono VARCHAR(70),

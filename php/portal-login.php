@@ -17,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 
 // el mismo mensaje para "no es paciente", "no activó la cuenta" y "contraseña mal":
 // decir cuál de los tres es revelaría quién se atiende en el hospital
-$ERROR_INGRESO = 'Cédula o contraseña incorrectas. Si es la primera vez que entrás, activá tu cuenta con el código que te dieron en el hospital.';
+$ERROR_INGRESO = 'Cédula o contraseña incorrectas. Si es la primera vez que entrás, creá tu cuenta con tu cédula y tu número de paciente.';
 
 $ci = cedula_a_numero($_POST['ci'] ?? '');
 $contrasenia = $_POST['contrasenia'] ?? '';

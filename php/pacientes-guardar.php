@@ -72,8 +72,26 @@ if ($ci_editar) {
     if ($existe) {
         responder_error('Ya hay un paciente registrado con esa cédula.');
     }
-    $stmt = $con->prepare("INSERT INTO Paciente (id_ci, nombre, apellido, fecha_nacimiento, telefono, email, direccion, fecha_alta) VALUES (?, ?, ?, ?, ?, ?, ?, CURDATE())");
-    $stmt->bind_param("issssss", $ci, $nombre, $apellido, $fecha_guardar, $telefono_guardar, $email_guardar, $direccion_guardar);
+
+    // número de paciente: 6 cifras al azar (no correlativo, para que no se pueda adivinar probando números seguidos).
+    // Se busca uno libre; con 900.000 posibles, casi siempre sale al primer intento
+    $numero_paciente = null;
+    for ($intento = 0; $intento < 20 && !$numero_paciente; $intento++) {
+        $candidato = random_int(100000, 999999);
+        $stmt = $con->prepare("SELECT 1 FROM Paciente WHERE numero_paciente = ?");
+        $stmt->bind_param("i", $candidato);
+        $stmt->execute();
+        if ($stmt->get_result()->num_rows === 0) {
+            $numero_paciente = $candidato;
+        }
+        $stmt->close();
+    }
+    if (!$numero_paciente) {
+        responder_error('No se pudo asignar el número de paciente. Intentá de nuevo.');
+    }
+
+    $stmt = $con->prepare("INSERT INTO Paciente (id_ci, numero_paciente, nombre, apellido, fecha_nacimiento, telefono, email, direccion, fecha_alta) VALUES (?, ?, ?, ?, ?, ?, ?, ?, CURDATE())");
+    $stmt->bind_param("iissssss", $ci, $numero_paciente, $nombre, $apellido, $fecha_guardar, $telefono_guardar, $email_guardar, $direccion_guardar);
 }
 
 $stmt->execute();

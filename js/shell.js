@@ -46,6 +46,7 @@ const SIGSM = (function () {
         correo: '<rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 6l-10 7L2 6"/>',
         ubicacion: '<path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/>',
         cedula: '<rect x="2" y="5" width="20" height="14" rx="2"/><circle cx="8" cy="12" r="2"/><path d="M14 10h4M14 14h4"/>',
+        numeral: '<line x1="4" y1="9" x2="20" y2="9"/><line x1="4" y1="15" x2="20" y2="15"/><line x1="10" y1="3" x2="8" y2="21"/><line x1="16" y1="3" x2="14" y2="21"/>',
         documento: '<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h6"/>',
         qr: '<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3h-3zM20 14v.01M14 20h.01M17 20h4v-3"/>',
         ruta: '<circle cx="6" cy="19" r="2"/><circle cx="18" cy="5" r="2"/><path d="M8 19h6a4 4 0 0 0 0-8h-4a4 4 0 0 1 0-8h6"/>',
@@ -156,6 +157,79 @@ const SIGSM = (function () {
             toast.classList.add('toast-saliendo');
             setTimeout(function () { toast.remove(); }, 300);
         }, 3200);
+    }
+
+    // confirmación con el estilo del sistema (reemplaza al confirm() del navegador).
+    // Devuelve una promesa: true si acepta, false si cancela, toca afuera o aprieta Escape.
+    function confirmar(titulo, mensaje, textoBoton) {
+        let modal = document.querySelector('#modal-confirmar-sistema');
+        if (!modal) {
+            modal = document.createElement('div');
+            modal.className = 'modal-fondo';
+            modal.id = 'modal-confirmar-sistema';
+            modal.hidden = true;
+            modal.innerHTML =
+                '<section class="tarjeta modal-contenido modal-confirmar" role="dialog" aria-modal="true" aria-labelledby="confirmar-titulo">' +
+                    '<h3 id="confirmar-titulo"></h3>' +
+                    '<p class="modal-subtitulo" id="confirmar-mensaje"></p>' +
+                    '<div class="acciones-modal">' +
+                        '<button type="button" class="boton boton-secundario" data-respuesta="no">Cancelar</button>' +
+                        '<button type="button" class="boton boton-peligro" data-respuesta="si"></button>' +
+                    '</div>' +
+                '</section>';
+            document.body.appendChild(modal);
+        }
+
+        modal.querySelector('#confirmar-titulo').textContent = titulo;
+        modal.querySelector('#confirmar-mensaje').textContent = mensaje;
+        modal.querySelector('[data-respuesta="si"]').textContent = textoBoton || 'Eliminar';
+        modal.hidden = false;
+        document.body.classList.add('modal-abierto');
+        modal.querySelector('[data-respuesta="no"]').focus();
+
+        return new Promise(function (resolver) {
+            function terminar(respuesta) {
+                modal.hidden = true;
+                document.body.classList.remove('modal-abierto');
+                modal.removeEventListener('click', alHacerClic);
+                document.removeEventListener('keydown', alApretarTecla);
+                resolver(respuesta);
+            }
+            function alHacerClic(e) {
+                if (e.target === modal) terminar(false);
+                const boton = e.target.closest('[data-respuesta]');
+                if (boton) terminar(boton.dataset.respuesta === 'si');
+            }
+            function alApretarTecla(e) {
+                if (e.key === 'Escape') terminar(false);
+            }
+            modal.addEventListener('click', alHacerClic);
+            document.addEventListener('keydown', alApretarTecla);
+        });
+    }
+
+    // borrado de Recursos (ambulancias, personal, rutas): pide confirmación, manda el POST y avisa cómo salió.
+    // Si la base no deja borrar (por ejemplo, tiene traslados) muestra el motivo que manda el PHP.
+    // Devuelve true si se borró, para que la página recargue su tabla.
+    async function eliminarRecurso(opciones) {
+        const aceptado = await confirmar(opciones.titulo, opciones.mensaje, 'Eliminar');
+        if (!aceptado) return false;
+
+        const datos = new FormData();
+        Object.keys(opciones.datos).forEach(function (clave) { datos.append(clave, opciones.datos[clave]); });
+        try {
+            const respuesta = await fetch(opciones.url, { method: 'POST', body: datos });
+            const resultado = await respuesta.json();
+            if (!resultado.exito) {
+                mostrarToast(resultado.error || 'No se pudo eliminar.', 'error');
+                return false;
+            }
+            mostrarToast(opciones.textoExito);
+            return true;
+        } catch (error) {
+            mostrarToast('No se pudo conectar con el servidor.', 'error');
+            return false;
+        }
     }
 
     async function cargarResumenRecursos() {
@@ -306,6 +380,8 @@ const SIGSM = (function () {
         calcularEdad: calcularEdad,
         normalizar: normalizar,
         mostrarToast: mostrarToast,
+        confirmar: confirmar,
+        eliminarRecurso: eliminarRecurso,
         cargarResumenRecursos: cargarResumenRecursos,
     };
 

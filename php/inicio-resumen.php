@@ -40,6 +40,12 @@ while ($fila = $resultado_ambulancias->fetch_assoc()) {
     if ($fila['estado'] === 'Fuera de Servicio') $ambulancias['fuera_servicio'] = (int) $fila['total'];
 }
 
+// "disponible" para despachar = en estado Disponible y sin un traslado sin terminar (mismo criterio que traslados-listar.php)
+$ambulancias['en_traslado'] = contar($con, "SELECT COUNT(DISTINCT t.id_ambulancia) AS total FROM Traslado t
+                                            INNER JOIN Ambulancia a ON a.id_ambulancia = t.id_ambulancia
+                                            WHERE t.estado <> 'Finalizado' AND a.estado = 'Disponible'");
+$ambulancias['disponibles'] -= $ambulancias['en_traslado'];
+
 $datos = [
     'traslados' => $traslados,
     'ambulancias' => $ambulancias,
