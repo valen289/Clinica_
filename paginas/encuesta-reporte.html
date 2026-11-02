@@ -1,126 +1,104 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SIGSM - Encuesta de Satisfacción</title>
-
-    <link rel="stylesheet" href="../assets/css/variables.css?v=20">
-    <link rel="stylesheet" href="../assets/css/layout.css?v=20">
-    <link rel="stylesheet" href="../assets/css/componentes.css?v=20">
-    <link rel="stylesheet" href="../assets/css/paginas.css?v=20">
-    <link rel="stylesheet" href="../assets/css/responsive.css?v=20">
-
- </head>
-
+    <title>SIGSM - Encuestas y reportes</title>
+    <link rel="stylesheet" href="../assets/css/variables.css?v=21">
+    <link rel="stylesheet" href="../assets/css/layout.css?v=21">
+    <link rel="stylesheet" href="../assets/css/componentes.css?v=21">
+    <link rel="stylesheet" href="../assets/css/paginas.css?v=22">
+    <link rel="stylesheet" href="../assets/css/responsive.css?v=21">
+</head>
 <body>
- 
-    <div class="encuesta">
-        <h1>Encuesta de Satisfacción</h1>
-<p>
-    Queremos conocer tu experiencia en nuestro hospital.
-     Tus respuestas nos ayudan a mejorar nuestro servicio
-</p>
 
-<form>
+    <div id="header"></div>
 
-    <div class="pregunta">
+    <div class="layout">
+        <div id="sidebar"></div>
 
- <label> Correo electrónico:</label>
+        <main class="contenido">
 
-<input 
-    type="email" 
-    id="correo" 
-    name="correo"
-    placeholder="ejemplo@gmail.com"
->
+            <!-- ===== Vista listado (encuesta-reporte.html) ===== -->
+            <div id="vista-listado" hidden>
+                <div class="cabecera-folletos">
+                    <div>
+                        <h2>Encuestas de satisfacción</h2>
+                        <p>Los pacientes las responden desde el portal. Acá ves los resultados, sin el nombre de quien respondió.</p>
+                    </div>
+                    <button type="button" id="boton-nueva-encuesta" class="boton boton-primario">+ Nueva encuesta</button>
+                </div>
+
+                <div class="resumen-folletos" id="resumen-encuestas" hidden></div>
+
+                <div id="aviso-lista" class="aviso-lista" role="status" hidden></div>
+                <div id="lista-encuestas" class="grilla-folletos">
+                    <div class="tarjeta esqueleto"></div>
+                    <div class="tarjeta esqueleto"></div>
+                </div>
+            </div>
+
+            <!-- ===== Vista reporte (encuesta-reporte.html?id=1) ===== -->
+            <div id="vista-reporte" hidden>
+                <a href="encuesta-reporte.html" class="enlace-volver" id="enlace-volver"></a>
+                <div id="aviso-reporte" class="aviso-lista" role="status" hidden></div>
+                <div id="contenido-reporte">
+                    <div class="tarjeta esqueleto esqueleto-tabla"></div>
+                </div>
+            </div>
+        </main>
     </div>
 
- <label>¿Cómo calificarías el servicio recibido?</label>
- <div class="opciones">
+    <!-- ===== Modal nueva encuesta ===== -->
+    <div class="modal-fondo" id="modal-encuesta" hidden>
+        <section class="tarjeta tarjeta-formulario modal-contenido" role="dialog" aria-modal="true" aria-labelledby="titulo-modal-encuesta">
+            <h3 id="titulo-modal-encuesta">Nueva encuesta</h3>
+            <p class="modal-subtitulo">Apenas la guardes, los pacientes con cuenta en el portal la van a ver para responder.</p>
 
+            <form id="form-encuesta">
+                <label for="titulo">Título:</label>
+                <input type="text" id="titulo" name="titulo" maxlength="100" placeholder="Atención en Emergencia" required>
 
-    <label>
- <input type="radio" name="servicio" value="Excelente">
- Excelente
-    </label>
+                <div class="fila-campos">
+                    <div>
+                        <label for="descripcion">Descripción (opcional):</label>
+                        <input type="text" id="descripcion" name="descripcion" maxlength="100" placeholder="Contanos cómo te atendimos">
+                    </div>
+                    <div>
+                        <label for="fecha_cierre">Cierra el (opcional):</label>
+                        <input type="date" id="fecha_cierre" name="fecha_cierre">
+                    </div>
+                </div>
 
+                <label>Preguntas:</label>
+                <div id="lista-preguntas" class="lista-campos-dinamicos"></div>
+                <button type="button" id="agregar-pregunta" class="boton-agregar-campo">+ Agregar pregunta</button>
 
-   <label>
-<input type="radio" name="servicio" value="Bueno">
- Bueno
-  </label>
+                <div id="mensaje-encuesta" class="mensaje-error"></div>
 
+                <div class="acciones-modal">
+                    <button type="button" id="cancelar-encuesta" class="boton boton-secundario">Cancelar</button>
+                    <button type="submit" id="guardar-encuesta" class="boton boton-primario">Crear encuesta</button>
+                </div>
+            </form>
+        </section>
+    </div>
 
-  <label>
-<input type="radio" name="servicio" value="Regular">
-Regular
-</label>
+    <!-- ===== Modal confirmar borrado ===== -->
+    <div class="modal-fondo" id="modal-borrar" hidden>
+        <section class="tarjeta modal-contenido modal-confirmar" role="dialog" aria-modal="true" aria-labelledby="titulo-borrar">
+            <h3 id="titulo-borrar">Eliminar encuesta</h3>
+            <p class="modal-subtitulo">Vas a eliminar <strong id="borrar-titulo"></strong> con sus preguntas. Esta acción no se puede deshacer.</p>
+            <div id="borrar-error" class="mensaje-error"></div>
+            <div class="acciones-modal">
+                <button type="button" id="borrar-cancelar" class="boton boton-secundario">Cancelar</button>
+                <button type="button" id="borrar-confirmar" class="boton boton-peligro">Eliminar</button>
+            </div>
+        </section>
+    </div>
 
+    <script src="../js/shell.js?v=21"></script>
+    <script src="../js/encuestas.js?v=21"></script>
 
-  <label>
-<input type="radio" name="servicio" value="Malo">
-Malo
- </label>
-
- </div>
-
-
-  <div class="pregunta">
-
-  <label>
-    Deberiamos cambiar algo de nuestro servicio?
- </label>
-  </div class="opciones">
-
-  <label> 
-    <input type="radio" name="opinion" value="Excelente"> No, todo estuvo excelente
-  </label>
-
-
- <label>
-    <input type="radio" name="opinion" value="Excelente"> No, todo estuvo excelente
- </label>
-
-
- <label>
-     <input type="radio" name="opinion" value="bueno"> Si, pero no es algo grave
- </label>
-
-
- <label>
-    <input type="radio" name="opinion" value="regular"> Horrible, no me gusto para nada
- </label> 
-
- 
- <label>
-    <input type="radio" name="opinion" value="malo"> Deberian cambiar todo
- </label>
- 
-  </div>
-</div>
-
-
-<div class="pregunta ultima-pregunta">
-
-<label for="comentario">
-    ¿Tienes alguna sugerencia?
-</label> 
-
-<textarea 
-    id="comentario" 
-    name="comentario" 
-    placeholder="Escribe tu sugerencia aquí..."
-    rows="5">
-</textarea>
-</div>
-
-  <button type="submit"> Enviar encuesta </button>
-</form>
-
-</div>
-
- </body>
-
+</body>
 </html>

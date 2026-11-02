@@ -132,6 +132,23 @@ document.addEventListener('DOMContentLoaded', async function () {
         document.querySelector('#portal-avatar').textContent = p.nombre.trim().charAt(0).toUpperCase();
     }
 
+    // encuestas abiertas que todavía no respondió: aviso arriba de sus documentos
+    function renderEncuestasPendientes(encuestas) {
+        document.querySelector('#encuestas-pendientes').innerHTML = encuestas.map(function (e) {
+            // si la descripción no termina en punto se le agrega, para que no quede pegada a la frase siguiente
+            const descripcion = (e.descripcion || 'Tu opinión nos ayuda a mejorar la atención.').trim();
+            const conPunto = /[.!?]$/.test(descripcion) ? descripcion : descripcion + '.';
+            return '<section class="aviso-encuesta">' +
+                '<span class="aviso-encuesta-icono">' + SIGSM.icono('grafico', 20) + '</span>' +
+                '<div class="aviso-encuesta-texto">' +
+                    '<strong>' + SIGSM.escapar(e.titulo) + '</strong>' +
+                    '<small>' + SIGSM.escapar(conPunto) + ' Te lleva un minuto.</small>' +
+                '</div>' +
+                '<a class="boton boton-primario boton-chico" href="portal-encuesta.html?id=' + e.id_encuesta + '">Responder</a>' +
+            '</section>';
+        }).join('');
+    }
+
     async function cargar() {
         try {
             const respuesta = await fetch('../php/portal-mis-documentos.php');
@@ -143,6 +160,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             if (!resultado.exito) throw new Error(resultado.error);
 
             renderCabecera(resultado.datos);
+            renderEncuestasPendientes(resultado.datos.encuestas_pendientes || []);
             renderCuenta(resultado.datos);
             items = armarItems(resultado.datos);
             renderFiltros();
@@ -224,10 +242,16 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
     });
 
-    // recién activó la cuenta: se le da la bienvenida una sola vez
-    if (new URLSearchParams(window.location.search).get('bienvenida') === '1') {
-        history.replaceState(null, '', window.location.pathname);
+    // avisos que llegan por la URL una sola vez: recién activó la cuenta o recién respondió una encuesta
+    const parametros = new URLSearchParams(window.location.search);
+    if (parametros.get('bienvenida') === '1') {
         SIGSM.mostrarToast('¡Listo! Tu cuenta quedó activada.');
+    }
+    if (parametros.get('encuesta') === 'respondida') {
+        SIGSM.mostrarToast('¡Gracias por responder la encuesta!');
+    }
+    if (parametros.toString()) {
+        history.replaceState(null, '', window.location.pathname);
     }
 
     cargar();

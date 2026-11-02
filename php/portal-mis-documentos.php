@@ -47,5 +47,18 @@ $stmt->execute();
 $paciente['documentos'] = filas($stmt->get_result());
 $stmt->close();
 
+// encuestas abiertas que todavía no respondió (se le muestran como aviso arriba de sus documentos)
+$stmt = $con->prepare("SELECT e.id_encuesta, e.titulo, e.descripcion
+                       FROM Encuesta e
+                       WHERE e.estado = 1 AND (e.fecha_cierre IS NULL OR e.fecha_cierre >= CURDATE())
+                         AND EXISTS(SELECT 1 FROM Pregunta p WHERE p.id_encuesta = e.id_encuesta)
+                         AND NOT EXISTS(SELECT 1 FROM Respuesta r INNER JOIN Pregunta p ON p.id_pregunta = r.id_pregunta
+                                        WHERE p.id_encuesta = e.id_encuesta AND r.id_ci = ?)
+                       ORDER BY e.id_encuesta DESC");
+$stmt->bind_param("i", $ci);
+$stmt->execute();
+$paciente['encuestas_pendientes'] = filas($stmt->get_result());
+$stmt->close();
+
 echo json_encode(['exito' => true, 'datos' => $paciente]);
 $con->close();

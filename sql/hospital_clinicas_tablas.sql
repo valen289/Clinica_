@@ -207,6 +207,9 @@ CREATE TABLE Respuesta (
     respuesta_texto VARCHAR(500) NOT NULL,
     fecha_respuesta DATE,
 
+    -- cada paciente responde cada pregunta una sola vez
+    UNIQUE KEY uq_respuesta_pregunta_paciente (id_pregunta, id_ci),
+
     CONSTRAINT fk_respuesta_pregunta
         FOREIGN KEY (id_pregunta)
         REFERENCES Pregunta(id_pregunta),
@@ -274,3 +277,15 @@ SET FOREIGN_KEY_CHECKS = 1;
 -- Usuario administrador inicial para poder loguearse (usuario / contraseña: admin_clinicas / admin123)
 INSERT INTO Funcionario (nombre, apellido, email, usuario, rol, ci, contrasenia)
 VALUES ('Admin Clínicas', 'Clínicas', 'admin@hospitalclinicas.uy', 'admin_clinicas', 'Administrador', '1.234.567-8', '$2y$10$vDWjkj7cwAqVwjHCSi/efuonbnrDZdeiw/AIh.v/6pfLx0qLQIc62');
+-- Encuesta de satisfacción inicial (los pacientes la responden desde el portal).
+-- tipo_pregunta: 'escala' (calificación del 1 al 5), 'si_no' o 'texto' (respuesta libre)
+INSERT INTO Encuesta (titulo, descripcion, fecha_creacion, fecha_cierre, estado, id_funcionario)
+SELECT 'Encuesta de satisfacción', 'Contanos cómo fue tu atención en el hospital.', CURDATE(), NULL, TRUE, id_funcionario
+FROM Funcionario WHERE usuario = 'admin_clinicas';
+
+SET @id_encuesta = LAST_INSERT_ID();
+INSERT INTO Pregunta (id_encuesta, texto_pregunta, tipo_pregunta) VALUES
+    (@id_encuesta, '¿Cómo calificarías la atención que recibiste?', 'escala'),
+    (@id_encuesta, '¿El personal te explicó claramente tus indicaciones?', 'si_no'),
+    (@id_encuesta, '¿Recomendarías el Hospital de Clínicas a un familiar o amigo?', 'si_no'),
+    (@id_encuesta, '¿Qué podríamos mejorar?', 'texto');

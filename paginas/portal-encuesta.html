@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal del Paciente - Encuesta</title>
+    <link rel="stylesheet" href="../assets/css/variables.css?v=21">
+    <link rel="stylesheet" href="../assets/css/layout.css?v=21">
+    <link rel="stylesheet" href="../assets/css/componentes.css?v=21">
+    <link rel="stylesheet" href="../assets/css/paginas.css?v=22">
+    <link rel="stylesheet" href="../assets/css/responsive.css?v=21">
+</head>
+<body>
+
+    <header class="topbar topbar-portal">
+        <a class="marca-topbar" href="portal.html">
+            <div class="logo">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l2-6 3 12 2-8 2 2h5"/></svg>
+            </div>
+            <div class="titulo-sistema">
+                <h1>Hospital de Clínicas</h1>
+                <p>Portal del Paciente</p>
+            </div>
+        </a>
+        <button type="button" class="btn-cerrar-sesion" id="cerrar-sesion">Cerrar sesión</button>
+    </header>
+
+    <main class="portal-contenido">
+        <a href="portal.html" class="enlace-volver" id="enlace-volver"></a>
+
+        <div id="aviso-encuesta" class="aviso-lista" role="status" hidden></div>
+        <div id="contenido-encuesta">
+            <div class="tarjeta esqueleto esqueleto-documento"></div>
+        </div>
+    </main>
+
+    <script src="../js/shell.js?v=21"></script>
+    <script src="../js/portal-encuesta.js?v=22"></script>
+
+</body>
+</html>

@@ -23,7 +23,7 @@ const SIGSM = (function () {
             { pagina: 'recursos', href: 'recursos-ambulancias.html', texto: 'Recursos', icono: 'recursos', roles: ROLES_PERSONAL },
         ] },
         { titulo: 'Calidad', enlaces: [
-            { pagina: 'encuestas', href: 'encuesta-reporte.html', texto: 'Encuestas y reportes', icono: 'grafico', roles: null },
+            { pagina: 'encuestas', href: 'encuesta-reporte.html', texto: 'Encuestas y reportes', icono: 'grafico', roles: ROLES_PERSONAL },
         ] },
         { titulo: 'Administración', enlaces: [
             { pagina: 'usuarios', href: 'usuarios.html', texto: 'Usuarios', icono: 'usuarios', roles: ['Administrador'] },

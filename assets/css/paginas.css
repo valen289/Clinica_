@@ -345,117 +345,6 @@
 }
 
 /* ==========================================================
-   ENCUESTA (encuesta-reporte.html)
-   ========================================================== */
-
-.encuesta {
-    width: 80%;
-    max-width: 800px;
-    margin: 40px auto;
-    padding: 35px;
-    background-color: white;
-    border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    border-top: 5px solid #326cf5;
-
-}
-
-.encuesta h1 {
-    text-align: center;
-    margin-bottom: 10px;
-    color: #2455ce;
-}
-
-.encuesta p {
-    text-align: center;
-    color: #260466;
-    margin-bottom: 30px;
-   
-
-}
-
-.pregunta {
-    margin-bottom: 30px;
-    margin-top: 20px;
-    background-color: #f0f4ff;
-    border-radius: 8px;
-    padding: 18px;
-    color: #05045e;
-}
-
-.pregunta > label {
-    display: block;
-    margin-bottom: 15px;
-    font-weight: bold;
-    color: #1835d6;
-}
-
-.encuesta input[type="email"] {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    box-sizing: border-box;
-    font-size: 15px;
-}
-.encuesta input[type="email"]:focus {
-    outline: none;
-    border-color: #2c7be5;
-}
-
-.opciones {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 15px;
-    color: #020005;
-}
-
-.opciones label {
-    font-weight: normal;
-    cursor: pointer;
-}
-.opciones input {
-    margin-right: 8px;
-}
-.encuesta textarea {
-    width: 100%;
-    padding: 12px;
-    border: 10px solid #ccc;
-    border-radius: 6px;
-    box-sizing: border-box;
-    font-size: 15px;
-    resize: vertical;
-}
-.encuesta textarea:focus {
-    outline: none;
-    border-color: #2c7be5;
-}
-.encuesta button {
-    display: block;
-    width: 100%;
-    padding: 13px;
-    background-color: #2c7be5;
-    color: rgb(238, 255, 240);
-    border: none;
-    border-radius: 6px;
-    font-size: 16px;
-    cursor: pointer;
-}
-
-.encuesta button:hover {
-    background-color: #1b5fbf;
-}
-.ultima-pregunta {
-    text-align: center;
-
-}
-.ultima-pregunta textarea {
-    display: block;
-    margin: 0 auto;
-    width: 80%;
-}
-/* ==========================================================
    MODAL DE FOLLETO (documentacion.html)
    ========================================================== */
 .modal-fondo {
@@ -2317,6 +2206,448 @@ a.alerta-inicio:hover {
 
     .pagina-publica {
         background-color: var(--color-blanco);
+    }
+}
+
+/* ==========================================================
+   ENCUESTAS — personal (encuesta-reporte.html: listado y reporte)
+   ========================================================== */
+.tarjeta-encuesta {
+    display: flex;
+    flex-direction: column;
+    padding: var(--espacio-lg);
+}
+
+.tarjeta-encuesta-encabezado {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--espacio-sm);
+    margin-bottom: 12px;
+}
+
+.tarjeta-encuesta h3 {
+    font-size: 17px;
+}
+
+.tarjeta .tarjeta-encuesta-descripcion {
+    margin-bottom: var(--espacio-sm);
+}
+
+.tarjeta .tarjeta-encuesta-meta {
+    margin-bottom: var(--espacio-md);
+    font-size: 13px;
+    color: var(--color-texto-suave);
+}
+
+.tarjeta-encuesta-acciones {
+    display: flex;
+    align-items: center;
+    gap: var(--espacio-sm);
+    margin-top: auto;
+}
+
+.tarjeta-encuesta-acciones .boton-icono {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    margin-left: auto;
+    border: none;
+    border-radius: var(--radio-chico);
+    background: none;
+    color: var(--color-texto-suave);
+    cursor: pointer;
+}
+
+.tarjeta-encuesta-acciones .boton-icono:hover {
+    background-color: #fee2e2;
+    color: var(--color-peligro-fuerte);
+}
+
+/* en el formulario cada pregunta es texto + tipo en la misma fila */
+.campo-pregunta input {
+    flex: 1;
+    min-width: 0;
+}
+
+.tarjeta-formulario .campo-pregunta select {
+    flex: 0 0 200px;
+    width: auto;
+    margin-bottom: 0;
+}
+
+.cabecera-reporte {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: var(--espacio-lg);
+    padding: 24px;
+}
+
+.cabecera-reporte h2 {
+    margin: var(--espacio-sm) 0 var(--espacio-xs);
+    font-size: 22px;
+}
+
+.tarjeta .cabecera-reporte-meta {
+    margin-bottom: 0;
+    font-size: 13px;
+    color: var(--color-texto-suave);
+}
+
+.cabecera-reporte-total {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: var(--espacio-xs);
+    flex-shrink: 0;
+    text-align: right;
+}
+
+.cabecera-reporte-total strong {
+    font-size: 34px;
+    line-height: 1;
+}
+
+.cabecera-reporte-total small {
+    margin-bottom: var(--espacio-sm);
+    font-size: 13px;
+    color: var(--color-texto-suave);
+}
+
+.grilla-preguntas {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(360px, 100%), 1fr));
+    gap: var(--espacio-lg);
+    margin-top: var(--espacio-lg);
+}
+
+.pregunta-reporte {
+    padding: var(--espacio-lg);
+}
+
+.tarjeta .pregunta-reporte-tipo {
+    margin-bottom: var(--espacio-xs);
+    font-size: 11px;
+    font-weight: bold;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+    color: var(--color-texto-suave);
+}
+
+.pregunta-reporte h3 {
+    font-size: 16px;
+}
+
+.tarjeta .pregunta-reporte-total {
+    margin-bottom: 12px;
+    font-size: 13px;
+    color: var(--color-texto-suave);
+}
+
+.promedio-escala {
+    display: flex;
+    align-items: baseline;
+    gap: var(--espacio-sm);
+    margin-bottom: 12px;
+}
+
+.promedio-escala strong {
+    font-size: 32px;
+    line-height: 1;
+}
+
+.promedio-escala span {
+    font-size: 14px;
+    color: var(--color-texto-secundario);
+}
+
+/* barras horizontales: etiqueta | barra | cantidad */
+.fila-barra {
+    display: grid;
+    grid-template-columns: 110px 1fr 70px;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: var(--espacio-sm);
+    font-size: 13px;
+}
+
+.fila-barra-etiqueta {
+    color: var(--color-texto-medio);
+}
+
+.barra-resultado {
+    height: 10px;
+    border-radius: var(--radio-pill);
+    background-color: var(--color-gris-suave);
+    overflow: hidden;
+}
+
+.barra-relleno {
+    display: block;
+    height: 100%;
+    border-radius: var(--radio-pill);
+    background-color: var(--color-primario);
+}
+
+.barra-relleno.barra-si {
+    background-color: var(--color-verde);
+}
+
+.barra-relleno.barra-no {
+    background-color: var(--color-peligro-fuerte);
+}
+
+.fila-barra-valor {
+    text-align: right;
+    font-weight: bold;
+}
+
+.fila-barra-valor small {
+    font-weight: normal;
+    color: var(--color-texto-suave);
+}
+
+.lista-comentarios {
+    display: flex;
+    flex-direction: column;
+    gap: var(--espacio-sm);
+    max-height: 320px;
+    overflow-y: auto;
+    list-style: none;
+}
+
+.lista-comentarios li {
+    padding: 10px 12px;
+    border-radius: var(--radio-medio);
+    background-color: var(--color-fondo);
+}
+
+.tarjeta .lista-comentarios p {
+    margin-bottom: var(--espacio-xs);
+    font-size: 14px;
+    color: var(--color-texto);
+}
+
+.lista-comentarios small {
+    font-size: 12px;
+    color: var(--color-texto-suave);
+}
+
+.tarjeta .sin-respuestas {
+    margin-bottom: 0;
+    font-size: 13px;
+    color: var(--color-texto-suave);
+}
+
+/* ==========================================================
+   ENCUESTAS — paciente (aviso en portal.html y portal-encuesta.html)
+   ========================================================== */
+.aviso-encuesta {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: var(--espacio-md);
+    padding: 16px 18px;
+    border: 1px solid #c7d7fb;
+    border-radius: var(--radio-grande);
+    background-color: var(--color-primario-suave);
+}
+
+.aviso-encuesta-icono {
+    display: flex;
+    flex-shrink: 0;
+    color: var(--color-primario-hover);
+}
+
+.aviso-encuesta-texto {
+    flex: 1;
+    min-width: 0;
+}
+
+.aviso-encuesta-texto strong {
+    display: block;
+    font-size: 15px;
+}
+
+.aviso-encuesta-texto small {
+    font-size: 13px;
+    color: var(--color-texto-secundario);
+}
+
+.aviso-encuesta .boton {
+    flex-shrink: 0;
+}
+
+.formulario-encuesta {
+    padding: 24px;
+}
+
+.formulario-encuesta h2 {
+    margin-bottom: var(--espacio-xs);
+    font-size: 24px;
+}
+
+.tarjeta .nota-encuesta {
+    font-size: 13px;
+    color: var(--color-texto-secundario);
+}
+
+.pregunta-encuesta {
+    margin: 0 0 22px;
+    padding: 0;
+    border: none;
+}
+
+.pregunta-encuesta legend {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 12px;
+    font-size: 15px;
+    font-weight: bold;
+    line-height: 1.4;
+}
+
+.pregunta-numero {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background-color: var(--color-primario-suave);
+    color: var(--color-primario-hover);
+    font-size: 12px;
+}
+
+/* opciones grandes y fáciles de tocar en el celular; el radio queda oculto pero sigue funcionando con teclado */
+.opciones-escala {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: var(--espacio-sm);
+}
+
+.opciones-si-no {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 140px));
+    gap: var(--espacio-sm);
+}
+
+/* .tarjeta-formulario delante para ganarle a ".tarjeta-formulario label" (display: block, márgenes) */
+.tarjeta-formulario .opcion-escala,
+.tarjeta-formulario .opcion-si-no {
+    position: relative;
+    margin: 0;
+    cursor: pointer;
+}
+
+.tarjeta-formulario .opcion-escala input,
+.tarjeta-formulario .opcion-si-no input {
+    position: absolute;
+    opacity: 0;
+    width: 1px;
+    height: 1px;
+}
+
+.tarjeta-formulario .opcion-escala {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    padding: 10px 4px;
+    border: 1px solid var(--color-borde-input);
+    border-radius: var(--radio-medio);
+    background-color: var(--color-blanco);
+    text-align: center;
+}
+
+.opcion-escala-numero {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.opcion-escala-texto {
+    font-size: 11px;
+    color: var(--color-texto-secundario);
+}
+
+.opcion-si-no span {
+    display: block;
+    padding: 12px;
+    border: 1px solid var(--color-borde-input);
+    border-radius: var(--radio-medio);
+    background-color: var(--color-blanco);
+    font-weight: bold;
+    text-align: center;
+}
+
+.opcion-escala:has(input:checked),
+.opcion-si-no input:checked + span {
+    border-color: var(--color-primario);
+    background-color: var(--color-primario-suave);
+    color: var(--color-primario-hover);
+}
+
+.opcion-escala:has(input:checked) .opcion-escala-texto {
+    color: var(--color-primario-hover);
+}
+
+.opcion-escala:has(input:focus-visible),
+.opcion-si-no input:focus-visible + span {
+    outline: 2px solid var(--color-primario);
+    outline-offset: 2px;
+}
+
+.formulario-encuesta .boton-primario {
+    width: 100%;
+}
+
+@media (max-width: 600px) {
+    .cabecera-reporte {
+        flex-direction: column;
+        padding: var(--espacio-lg);
+    }
+
+    .cabecera-reporte-total {
+        align-items: flex-start;
+        text-align: left;
+    }
+
+    .fila-barra {
+        grid-template-columns: 90px 1fr 60px;
+    }
+
+    .campo-pregunta {
+        flex-wrap: wrap;
+    }
+
+    .tarjeta-formulario .campo-pregunta select {
+        flex: 1 1 auto;
+    }
+
+    .aviso-encuesta {
+        flex-wrap: wrap;
+    }
+
+    .aviso-encuesta .boton {
+        flex: 1 1 100%;
+        text-align: center;
+    }
+
+    .formulario-encuesta {
+        padding: var(--espacio-lg);
+    }
+
+    .opciones-escala {
+        gap: 6px;
+    }
+
+    .opcion-escala-texto {
+        font-size: 10px;
     }
 }
 
